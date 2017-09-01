@@ -6,34 +6,33 @@
  */ 
 
 #include <avr/io.h>
+#include <stdio.h>
 #include "bit_functions.h"
+#include "driver_uart.h"
+
+FILE *uart; 
+
+
 
 int UART_init(unsigned int ubrr ){
 /* 
 Set baud rate
  */
 	UBRR0L = ubrr;
-	//UBRR0H = (unsigned char)(ubrr>>8);
-	//UBRR0L = (unsigned char)ubrr;
+
 /* 
 Enable receiver and transmitter
  */
 	UCSR0B =(1<<RXEN0)|(1<<TXEN0);
-	//set_bit(UCSR0B,RXCIE0);
-	//set_bit(UCSR0B,TXCIE0);
 	
-/* 
-Set frame format: 8data, 2stop bit
- */
-	//set_bit(UCSR0C,URSEL0);
-	//set_bit(UCSR0C,USBS0);
-	//set_bit(UCSR0C,UCSZ00);
+	uart = fdevopen(&UART_transmit, &UART_receive);
 	
 	return 0; 
-
 }
 
-int UART_transmit(unsigned char data){
+
+
+int UART_transmit(unsigned char data, FILE *stream){
 	
 	//Wait for empty transmit buffer
 	
@@ -45,7 +44,7 @@ int UART_transmit(unsigned char data){
 	return 0; 
 }
 
-unsigned char UART_receive(void){
+unsigned char UART_receive(FILE *stream){
 
 	//Wait for data to be received
 
@@ -55,3 +54,5 @@ unsigned char UART_receive(void){
  
 	return UDR0;
 }
+
+

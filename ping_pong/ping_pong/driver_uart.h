@@ -12,12 +12,13 @@
 #define FOSC 4915200// Clock Speed
 #define BAUD 9600
 #define MYUBRR FOSC/16/BAUD-1
-//#define UBRR 31
+
+#include <stdio.h>
 
 int UART_init( unsigned int ubrr );
-unsigned char UART_receive(void);
-int UART_transmit(unsigned char data);
+unsigned char UART_receive(FILE *stream);
+int UART_transmit(unsigned char data, FILE *stream);
 
-
+extern FILE *uart; 
 
 #endif /* DRIVER_ATMEGA_H_ */
