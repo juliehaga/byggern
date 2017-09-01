@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Atmel Studio Solution File, Format Version 11.00
-Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "ping_pong_game", "ping_pong_game\ping_pong_game.cproj", "{72912F2E-E22C-4B2E-8845-EDABEBFBD752}"
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "ping_pong", "ping_pong\ping_pong.cproj", "{D750C3E5-0742-4E97-B79A-7B81D07158B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|AVR = Release|AVR
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{72912F2E-E22C-4B2E-8845-EDABEBFBD752}.Debug|AVR.ActiveCfg = Debug|AVR
-		{72912F2E-E22C-4B2E-8845-EDABEBFBD752}.Debug|AVR.Build.0 = Debug|AVR
-		{72912F2E-E22C-4B2E-8845-EDABEBFBD752}.Release|AVR.ActiveCfg = Release|AVR
-		{72912F2E-E22C-4B2E-8845-EDABEBFBD752}.Release|AVR.Build.0 = Release|AVR
+		{D750C3E5-0742-4E97-B79A-7B81D07158B3}.Debug|AVR.ActiveCfg = Debug|AVR
+		{D750C3E5-0742-4E97-B79A-7B81D07158B3}.Debug|AVR.Build.0 = Debug|AVR
+		{D750C3E5-0742-4E97-B79A-7B81D07158B3}.Release|AVR.ActiveCfg = Release|AVR
+		{D750C3E5-0742-4E97-B79A-7B81D07158B3}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
