@@ -44,7 +44,7 @@ int UART_transmit(unsigned char data, FILE *stream){
 	return 0; 
 }
 
-unsigned char UART_receive(FILE *stream){
+unsigned char UART_receive(){
 
 	//Wait for data to be received
 
@@ -55,4 +55,14 @@ unsigned char UART_receive(FILE *stream){
 	return UDR0;
 }
 
+unsigned char UART_receiveT(){
+
+	//Wait for data to be received
+
+	while( !(UCSR0A & (1<<RXC0)) );
+	
+	//Get and return received data from buffer
+	
+	return UDR0;
+}
 

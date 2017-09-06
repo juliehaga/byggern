@@ -14,17 +14,19 @@
 
 int main(void)
 {
+	
    UART_init(31);
-   unsigned char a; 
+   unsigned char a[8] = "hewf"; 
+   
+   //unsigned char t = UART_receive();
 
    while (1){
 
-
-				
+		printf("%s\n", a);
+		scanf("%s", &a);
+		//unsigned char t = UART_receiveT();
+		//printf("Here %c\n", t);
 		
-		if (scanf("%c\n", &a)){
-			printf("%c\n", a);
-		}
 
 	   /*UART_transmit('a');
 	   
