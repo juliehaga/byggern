@@ -118,6 +118,9 @@
     <Compile Include="driver_uart.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="register_init.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="sram_test.h">
       <SubType>compile</SubType>
     </Compile>

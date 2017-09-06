@@ -11,26 +11,37 @@
 #include <util/delay.h>
 #include "driver_uart.h"
 #include "bit_functions.h"
+#include "register_init.h"
 
 int main(void)
 {
 	
    UART_init(31);
    
-   set_bit(DDRA,PA7);
-   set_bit(DDRE, DDE1);
-   set_bit(PORTE, PE1);	
-   
-   //enabler SRAM i MCU
-   set_bit(MCUCR, SRE);
-   set_bit(SFIOR, XMM0);
+   register_init();
    
    
-   SRAM_test();
+   
+   
+   set_bit(PORTE, PE1);
+   
+   
+   
+   set_bit(PORTC, PC3);
+   set_bit(PORTC, PC2);
+   set_bit(PORTC, PC1);
+   set_bit(PORTC, PC0);
+   
+   
+   
+   
+   
+   
+   //SRAM_test();
    
    
    while (1){
-	  
+	
 	   
 	   //set_bit(PORTA,PA7);
 	      
