@@ -118,7 +118,13 @@
     <Compile Include="driver_uart.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="sram_test.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="ping_pong.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="sram_test.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

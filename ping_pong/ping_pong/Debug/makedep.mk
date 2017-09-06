@@ -6,3 +6,5 @@ driver_uart.c
 
 ping_pong.c
 
+sram_test.c
+

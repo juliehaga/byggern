@@ -16,33 +16,25 @@ int main(void)
 {
 	
    UART_init(31);
-   unsigned char a[8] = "hewf"; 
    
-   //unsigned char t = UART_receive();
-
+   set_bit(DDRA,PA7);
+   set_bit(DDRE, DDE1);
+   set_bit(PORTE, PE1);	
+   
+   //enabler SRAM i MCU
+   set_bit(MCUCR, SRE);
+   set_bit(SFIOR, XMM0);
+   
+   
+   SRAM_test();
+   
+   
    while (1){
-
-		printf("%s\n", a);
-		scanf("%s", &a);
-		//unsigned char t = UART_receiveT();
-		//printf("Here %c\n", t);
-		
-
-	   /*UART_transmit('a');
+	  
 	   
-	   UART_transmit('b');
-	   _delay_ms(3000);
-	   
-	   char temp = UART_receive();
-	   if (temp){
-		   UART_transmit(temp);
-	   }
-	   */
-	   	   
-	   //printf("Hello world\n");
-		//char test = 'h';
-	    //; 
-		//USART_transmit('B'); 
+	   //set_bit(PORTA,PA7);
+	      
 	}
+	
 	return 0; 
 }

@@ -38,7 +38,8 @@ SUBDIRS :=
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../driver_uart.c \
-../ping_pong.c
+../ping_pong.c \
+../sram_test.c
 
 
 PREPROCESSING_SRCS += 
@@ -49,19 +50,23 @@ ASM_SRCS +=
 
 OBJS +=  \
 driver_uart.o \
-ping_pong.o
+ping_pong.o \
+sram_test.o
 
 OBJS_AS_ARGS +=  \
 driver_uart.o \
-ping_pong.o
+ping_pong.o \
+sram_test.o
 
 C_DEPS +=  \
 driver_uart.d \
-ping_pong.d
+ping_pong.d \
+sram_test.d
 
 C_DEPS_AS_ARGS +=  \
 driver_uart.d \
-ping_pong.d
+ping_pong.d \
+sram_test.d
 
 OUTPUT_FILE_PATH +=ping_pong.elf
 
@@ -77,6 +82,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 
