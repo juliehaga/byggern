@@ -12,6 +12,7 @@
 #include "driver_uart.h"
 #include "bit_functions.h"
 #include "register_init.h"
+#include "sram_test.h"
 
 int main(void)
 {
@@ -20,30 +21,14 @@ int main(void)
    
    register_init();
    
-   
-   
-   
-   set_bit(PORTE, PE1);
-   
-   
-   
-   set_bit(PORTC, PC3);
-   set_bit(PORTC, PC2);
-   set_bit(PORTC, PC1);
-   set_bit(PORTC, PC0);
-   
-   
-   
-   
-   
+
    
    //SRAM_test();
-   
+   //volatile char *ext_ram = (char *) 0x1000; // Start address for the SRAM 
    
    while (1){
+	printf("hei\r\n");
 	
-	   
-	   //set_bit(PORTA,PA7);
 	      
 	}
 	
