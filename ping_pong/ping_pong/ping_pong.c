@@ -37,8 +37,10 @@ int main(void)
 		}
 		
 		
-		printf("\nX = %d, Y = %d \n", joy_stick_read(4), joy_stick_read(5));
+		//printf("\nX = %d, Y = %d \n", joy_stick_read(4), joy_stick_read(5));
 		//printf("%d\n", slider_read(7));
+		printf("%d\n", buttons_read(1));
+		//buttons_read(1);
 	}
 
 	

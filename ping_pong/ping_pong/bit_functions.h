@@ -16,7 +16,7 @@
 (reg &= ~(1<< (pin)))
 
 #define test_bit(reg, pin)\
-(reg & (1<< (pin))
+(reg & (1<< (pin)))
 
 
 
