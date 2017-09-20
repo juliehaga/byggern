@@ -32,12 +32,14 @@ int main(void)
 
    
    while(1){
-		   if(JOY_STICK){
+		if(JOY_STICK){
 			   JOY_STICK = 0; 
-		   }
-
-		   printf("%d\n",ADC_read(7));
-	   }
+		}
+		
+		
+		printf("\nX = %d, Y = %d \n", joy_stick_read(4), joy_stick_read(5));
+		//printf("%d\n", slider_read(7));
+	}
 
 	
 	return 0; 
