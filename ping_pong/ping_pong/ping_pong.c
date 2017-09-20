@@ -9,28 +9,41 @@
 #include <avr/io.h>
 #include <stdio.h>
 #include <util/delay.h>
+#include <avr/interrupt.h>
 #include "driver_uart.h"
 #include "bit_functions.h"
 #include "register_init.h"
 #include "sram_test.h"
 
+
+volatile uint8_t JOY_STICK = 0;
+
 int main(void)
 {
+	// Disable global interrupts
+	cli();
 	
    UART_init(31);
    
    register_init();
-   
+  
+   // Enable global interrupts
+   sei(); 
 
    
-   //SRAM_test();
-   //volatile char *ext_ram = (char *) 0x1000; // Start address for the SRAM 
-   
-   while (1){
-	printf("hei\r\n");
-	
-	      
-	}
+   while(1){
+		   if(JOY_STICK){
+			   JOY_STICK = 0; 
+		   }
+
+		   printf("%d\n",ADC_read(7));
+	   }
+
 	
 	return 0; 
+}
+
+ISR(INT2_vect){
+	JOY_STICK = 1; 
+	//wake up the CPU
 }

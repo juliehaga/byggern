@@ -109,6 +109,12 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ADC_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ADC_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="bit_functions.h">
       <SubType>compile</SubType>
     </Compile>
