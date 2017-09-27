@@ -6,13 +6,16 @@
  */ 
 #include "OLED_driver.h"
 #include <avr/pgmspace.h>
+#include "fonts.h"
 
 
 
 volatile char* OLED_c = (char*) 0x1000; //Write to address OLED command
 volatile char* OLED_d = (char*) 0x1200; //Write to address OLED data
 
-uint8_t page, col;
+static uint8_t current_page, current_col;
+
+
 
 void oled_init(){
 	//  display  off
@@ -69,30 +72,38 @@ void oled_init(){
 	
 }
 
-
+void oled_reset(){
+	
+	for (uint8_t i = 0 ; i < 8; i++){
+		oled_pos(i, 0);
+		for (uint16_t i = 0 ; i < 128; i++){
+			*OLED_d = 0x00;
+		}
+	}
+}
 
 void oled_goto_page(int page){
 	*OLED_c = (page | 0xb0);
+	current_page = page;
+	printf("page = %d\n", current_page);
 }
 
 void oled_goto_column(int column){
 	*OLED_c = (column & 0x0f); //clearer de 4 første bitsene
 	*OLED_c = ((column & 0xf0) >> 4) | (0x10);
+	current_col = column;
+	printf("col= %d\n", current_col);
 }
 
 void oled_pos(int row,int column){
+	printf("new pos %d", row);
 	oled_goto_page(row);
 	oled_goto_column(column);
 }
-/*
-void oled_clear_line(int line){
-	
-	for (int i = 0; i < 128 ; i++){
-		*OLED_d = 0x00;
-	}
-}
-*/
+
+
 void oled_home(){
+	
 	oled_pos(0,0);
 }
 
@@ -100,6 +111,26 @@ void oled_home(){
 void oled_fill_page(uint8_t page){
 	oled_pos(page, 0);
 	for (uint16_t i = 0 ; i < 128; i++){
-		*OLED_d = 0xf;
+		*OLED_d = 0xff;
+	}
+}
+
+void oled_print_char(char c){
+	for (uint8_t i = 0 ; i < 8 ; i++){  //i < 8 fordi vi bruker font8
+		*OLED_d = pgm_read_byte(&(font8[c - ASCII_OFFSET][i]));
+	}
+}
+
+void oled_print_string(char* string){
+	
+	for(uint8_t i = 0 ; i < strlen(string) ; i++){
+		if (i == 16){
+			//16 char per column, linjeskift						
+			current_page = (current_page+1)%8;
+			current_col = 0; 
+			oled_pos(current_page,current_col);
+		}
+		oled_print_char(string[i]);
+		
 	}
 }

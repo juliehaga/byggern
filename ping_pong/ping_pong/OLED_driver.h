@@ -11,16 +11,19 @@
 #define OLED_DRIVER_H_
 #include "stdint.h"
 
+
+
+#define ASCII_OFFSET 32
+
 void oled_init();
 void oled_goto_page(int page);
 void oled_clear_line(int line);
 void oled_home();
-void oled_print(char* c);
+void oled_print_char(char c);
 void oled_pos(int row,int column);
 void oled_goto_column(int column);
-
 void oled_fill_page(uint8_t page);
-
+void oled_print_string(char* string);
 void oled_reset();
 
 

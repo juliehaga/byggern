@@ -17,13 +17,12 @@
 #include "bit_functions.h"
 #include "register_init.h"
 #include "sram_test.h"
-#include "oled_driver.h"
+#include "OLED_driver.h"
 
 
 volatile uint8_t JOY_STICK = 0;
 
-volatile char *oled_cmd = 0x1000;
-volatile char *oled_d = 0x1200;
+
 
 int main(void)
 {
@@ -42,18 +41,15 @@ int main(void)
 	
 	
 	
-	oled_fill_page(0);
-	oled_fill_page(1);
-	oled_fill_page(2);
-	oled_fill_page(3);
-	oled_fill_page(4);
-	oled_fill_page(5);
-	oled_fill_page(6);
-	oled_fill_page(7);
-	*oled_cmd = 1;
+	
+	oled_reset();
+	//oled_fill_page(0);
+	oled_home();
+	oled_print_string("bendik1111111112hei");
+	
 	while(1)
 	{
-	
+		printf("button=  %d\n", read_bit(PINB, PINB2));
 	}
 
 	return 0;

@@ -11,9 +11,11 @@
 void register_init(void);
 
 void register_init(void){
-	//enabler SRAM i MCU
+	//enabler externt minne i MCU
 	set_bit(MCUCR, SRE);
 	set_bit(SFIOR, XMM2);
+	
+	
 }
 
 
