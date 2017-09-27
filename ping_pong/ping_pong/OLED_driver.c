@@ -70,6 +70,7 @@ void oled_init(){
 }
 
 
+
 void oled_goto_page(int page){
 	*OLED_c = (page | 0xb0);
 }

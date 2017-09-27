@@ -127,16 +127,10 @@
     <Compile Include="fonts.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="oled1.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="OLED_driver.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="OLED_driver.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="OLED_driver_test.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="register_init.h">

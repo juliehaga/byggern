@@ -40,7 +40,6 @@ C_SRCS +=  \
 ../ADC_driver.c \
 ../driver_uart.c \
 ../OLED_driver.c \
-../OLED_driver_test.c \
 ../ping_pong.c \
 ../sram_test.c
 
@@ -55,7 +54,6 @@ OBJS +=  \
 ADC_driver.o \
 driver_uart.o \
 OLED_driver.o \
-OLED_driver_test.o \
 ping_pong.o \
 sram_test.o
 
@@ -63,7 +61,6 @@ OBJS_AS_ARGS +=  \
 ADC_driver.o \
 driver_uart.o \
 OLED_driver.o \
-OLED_driver_test.o \
 ping_pong.o \
 sram_test.o
 
@@ -71,7 +68,6 @@ C_DEPS +=  \
 ADC_driver.d \
 driver_uart.d \
 OLED_driver.d \
-OLED_driver_test.d \
 ping_pong.d \
 sram_test.d
 
@@ -79,7 +75,6 @@ C_DEPS_AS_ARGS +=  \
 ADC_driver.d \
 driver_uart.d \
 OLED_driver.d \
-OLED_driver_test.d \
 ping_pong.d \
 sram_test.d
 
@@ -97,8 +92,6 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
-
-
 
 
 

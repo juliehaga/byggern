@@ -17,12 +17,13 @@
 #include "bit_functions.h"
 #include "register_init.h"
 #include "sram_test.h"
-#include "oled1.h"
+#include "oled_driver.h"
 
 
 volatile uint8_t JOY_STICK = 0;
 
 volatile char *oled_cmd = 0x1000;
+volatile char *oled_d = 0x1200;
 
 int main(void)
 {
@@ -30,24 +31,31 @@ int main(void)
 	cli();
 	
 	UART_init(31);
-	
 	register_init();
+	
+	oled_init();
+
 	
 	// Enable global interrupts
 	sei();
-
 	
-	while(1){
-		if(JOY_STICK){
-			JOY_STICK = 0;
-		}
-		
-		
-		//printf("\nX = %d, Y = %d \n", joy_stick_read(4), joy_stick_read(5));
-		printf("%d\n", slider_read(7));
+	
+	
+	
+	oled_fill_page(0);
+	oled_fill_page(1);
+	oled_fill_page(2);
+	oled_fill_page(3);
+	oled_fill_page(4);
+	oled_fill_page(5);
+	oled_fill_page(6);
+	oled_fill_page(7);
+	*oled_cmd = 1;
+	while(1)
+	{
+	
 	}
 
-	
 	return 0;
 }
 
