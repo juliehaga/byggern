@@ -24,19 +24,20 @@
 volatile uint8_t JOY_STICK = 0;
 
 //deklarere alle structs
-const menu_struct red = {"Red", NULL};
-const menu_struct blue = {"Blue", NULL};
-const menu_struct green = {"Green", NULL};
-const menu_struct black= {"Black", NULL};
-const menu_struct white= {"White", NULL}; 
+
+menu_struct red = {"Red", NULL};
+menu_struct blue = {"Blue", NULL};
+menu_struct green = {"Green", NULL};
+menu_struct black= {"Black", NULL};
+menu_struct white= {"White", NULL}; 
 
 menu_struct sub_julie[3] = {red, green, blue};
 menu_struct sub_andrea[1] = {black};
 menu_struct sub_johanne[1] = {white};
 	
-menu_struct julie("Julie", sub_julie); 
-menu_struct johanne("Johanne", sub_johanne); 
-menu_struct andrea("Andrea", sub_andrea); 
+menu_struct julie("Julie"); 
+menu_struct johanne("Johanne");
+menu_struct andrea("Andrea"); 
 
 menu_struct sub_main_menu[3] = {julie, johanne, andrea};
 
