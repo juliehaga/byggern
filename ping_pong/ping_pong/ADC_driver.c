@@ -57,10 +57,12 @@ int joy_stick_read(int channel){
 	double pos = ADC_read(channel);
 
 	if (pos < 132){
-		return -(int)(100-pos/(132)*100);
+		double a = (100-pos/(132)*100);
+		return -(int)a;
 	}
 	else{
-		return (int)(pos-132)/(255-132)*100;
+		double a = (pos-132)/(255-132)*100;
+		return (int)a;
 	}
 }
 

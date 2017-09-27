@@ -29,25 +29,25 @@ int main(void)
 	// Disable global interrupts
 	cli();
 	
-   UART_init(31);
-   register_init();
-   
-   OLED_init();
+	UART_init(31);
+	
+	register_init();
+	
+	// Enable global interrupts
+	sei();
 
-  
-   // Enable global interrupts
-   sei(); 
-   OLED_reset();
 	
-	
-	OLED_print_str("dat ass");
-	*oled_cmd = 1;
-	while(1)
-	{	
+	while(1){
+		if(JOY_STICK){
+			JOY_STICK = 0;
+		}
 		
 		
+		//printf("\nX = %d, Y = %d \n", joy_stick_read(4), joy_stick_read(5));
+		printf("%d\n", slider_read(7));
 	}
 
+	
 	return 0;
 }
 
