@@ -6,6 +6,8 @@ ADC_driver.c
 
 driver_uart.c
 
+menu_framework.c
+
 OLED_driver.c
 
 ping_pong.c

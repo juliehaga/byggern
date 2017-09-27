@@ -127,6 +127,12 @@
     <Compile Include="fonts.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="menu_framework.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="menu_framework.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="OLED_driver.c">
       <SubType>compile</SubType>
     </Compile>

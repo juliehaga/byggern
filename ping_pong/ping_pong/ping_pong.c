@@ -18,11 +18,29 @@
 #include "register_init.h"
 #include "sram_test.h"
 #include "OLED_driver.h"
+#include "menu_framework.h"
 
 
 volatile uint8_t JOY_STICK = 0;
 
+//deklarere alle structs
+const menu_struct red = {"Red", NULL};
+const menu_struct blue = {"Blue", NULL};
+const menu_struct green = {"Green", NULL};
+const menu_struct black= {"Black", NULL};
+const menu_struct white= {"White", NULL}; 
 
+menu_struct sub_julie[3] = {red, green, blue};
+menu_struct sub_andrea[1] = {black};
+menu_struct sub_johanne[1] = {white};
+	
+menu_struct julie("Julie", sub_julie); 
+menu_struct johanne("Johanne", sub_johanne); 
+menu_struct andrea("Andrea", sub_andrea); 
+
+menu_struct sub_main_menu[3] = {julie, johanne, andrea};
+
+menu_struct main_menu("Main Menu", sub_main_menu);
 
 int main(void)
 {
@@ -45,11 +63,11 @@ int main(void)
 	oled_reset();
 	//oled_fill_page(0);
 	oled_home();
-	oled_print_string("bendik1111111112hei");
-	
+	print_menu_oled(main_menu);
+
 	while(1)
 	{
-		printf("button=  %d\n", read_bit(PINB, PINB2));
+		
 	}
 
 	return 0;

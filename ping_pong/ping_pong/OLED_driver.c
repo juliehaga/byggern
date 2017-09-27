@@ -85,18 +85,20 @@ void oled_reset(){
 void oled_goto_page(int page){
 	*OLED_c = (page | 0xb0);
 	current_page = page;
-	printf("page = %d\n", current_page);
 }
+
 
 void oled_goto_column(int column){
 	*OLED_c = (column & 0x0f); //clearer de 4 første bitsene
 	*OLED_c = ((column & 0xf0) >> 4) | (0x10);
 	current_col = column;
-	printf("col= %d\n", current_col);
+}
+
+int oled_return_page(void){
+	return current_page;
 }
 
 void oled_pos(int row,int column){
-	printf("new pos %d", row);
 	oled_goto_page(row);
 	oled_goto_column(column);
 }
