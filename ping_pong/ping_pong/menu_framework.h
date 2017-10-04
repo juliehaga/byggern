@@ -10,21 +10,21 @@
 
 
 
-typedef struct{
+typedef struct menu {
 	char* name;
-	struct menu** sub_menus;
-	struct menu* prev;
-	struct menu* next; 
-	int size_submenu;
-	int current_submenus; 
+	struct menu* next_sibling;
+	struct menu* prev_sibling;
+	struct menu* child;
+	struct menu* parent; 
+	int number_of_childs; 
 }menu;
 
 
 
 void print_menu_oled(menu* menu_print);
 
-menu* create_menu(char* new_name, int size_submenus);
-void create_submenu(menu* parent_menu, menu* sub_menu);
+menu* create_menu(char* new_name);
+menu* create_submenu(menu* parent_menu, menu* child_menu);
 
 
 

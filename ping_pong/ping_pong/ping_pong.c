@@ -38,22 +38,28 @@ int main(void) {
 	
 	
 	//deklarere alle structs
-	menu* main_menu = create_menu("Main Menu", 3);
-	menu* julie = create_menu("Julie", 2);
-	menu* andrea = create_menu("Andrea", 1);
-	menu* johanne = create_menu("Johanne", 2);
-	menu* red = create_menu("Red", 0);
-	menu* blue = create_menu("Blue", 0);
-	menu* green = create_menu("Green", 0);
-	menu* black = create_menu("Black", 0);
-	menu* white = create_menu("White", 0);
+	menu* main_menu = create_menu("Main Menu");
+	menu* julie = create_menu("Julie");
+	menu* andrea = create_menu("Andrea");
+	menu* johanne = create_menu("Johanne");
+	menu* red = create_menu("Red");
+	menu* blue = create_menu("Blue");
+	menu* green = create_menu("Green");
+	menu* black = create_menu("Black");
+	menu* white = create_menu("White");
 	
 	create_submenu(main_menu, julie);
 	create_submenu(main_menu, andrea);
+	create_submenu(main_menu, johanne);
+	create_submenu(julie, red);
+	printf("%s \n", main_menu->child->name);
+	printf("%s \n", julie->next_sibling->name);
+	printf("%s \n", andrea->next_sibling->name);
+	printf("%s \n", julie->child->name);
+	printf("%s \n", andrea->parent->name);
+	printf("%s \n", johanne->prev_sibling->name);
 	
-	
-	printf("%s \n", main_menu->sub_menus[0]->name);
-	
+	printf("%s \n", main_menu->child->name);
 	/*create_submenu(main_menu, andrea);
 	create_submenu(main_menu, johanne);
 
