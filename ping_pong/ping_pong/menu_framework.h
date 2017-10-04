@@ -10,16 +10,27 @@
 
 
 
-struct menu{
+typedef struct{
 	char* name;
-	struct menu* sub_menus;
+	struct menu** sub_menus;
 	struct menu* prev;
-	int size;
-	void *(*print_menu)(struct menu*);
-	
-};
+	struct menu* next; 
+	int size_submenu;
+	int current_submenus; 
+}menu;
 
-void print_menu_oled(menu_struct menu);
+
+
+void print_menu_oled(menu* menu_print);
+
+menu* create_menu(char* new_name, int size_submenus);
+void create_submenu(menu* parent_menu, menu* sub_menu);
+
+
+
+
+
+
 void menu_create_main(char* menu[], int size);
 void meny_create_sub(void);
 void menu_scroll_up(void);

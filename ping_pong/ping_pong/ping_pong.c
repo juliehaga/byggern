@@ -23,49 +23,55 @@
 
 volatile uint8_t JOY_STICK = 0;
 
-//deklarere alle structs
 
-menu_struct red = {"Red", NULL};
-menu_struct blue = {"Blue", NULL};
-menu_struct green = {"Green", NULL};
-menu_struct black= {"Black", NULL};
-menu_struct white= {"White", NULL}; 
 
-menu_struct sub_julie[3] = {red, green, blue};
-menu_struct sub_andrea[1] = {black};
-menu_struct sub_johanne[1] = {white};
-	
-menu_struct julie("Julie"); 
-menu_struct johanne("Johanne");
-menu_struct andrea("Andrea"); 
 
-menu_struct sub_main_menu[3] = {julie, johanne, andrea};
 
-menu_struct main_menu("Main Menu", sub_main_menu);
-
-int main(void)
-{
+int main(void) {
 	// Disable global interrupts
 	cli();
-	
 	UART_init(31);
 	register_init();
-	
 	oled_init();
-
-	
 	// Enable global interrupts
 	sei();
 	
 	
+	//deklarere alle structs
+	menu* main_menu = create_menu("Main Menu", 3);
+	menu* julie = create_menu("Julie", 2);
+	menu* andrea = create_menu("Andrea", 1);
+	menu* johanne = create_menu("Johanne", 2);
+	menu* red = create_menu("Red", 0);
+	menu* blue = create_menu("Blue", 0);
+	menu* green = create_menu("Green", 0);
+	menu* black = create_menu("Black", 0);
+	menu* white = create_menu("White", 0);
+	
+	create_submenu(main_menu, julie);
+	create_submenu(main_menu, andrea);
 	
 	
+	printf("%s \n", main_menu->sub_menus[0]->name);
 	
+	/*create_submenu(main_menu, andrea);
+	create_submenu(main_menu, johanne);
+
+	create_submenu(julie, red);
+	create_submenu(julie, blue);
+	create_submenu(andrea, green);
+	create_submenu(johanne, black);
+	create_submenu(johanne, white);
+	*/
+	
+
 	oled_reset();
 	//oled_fill_page(0);
 	oled_home();
-	print_menu_oled(main_menu);
 
+	//print_menu_oled(main_menu);
+	
+	
 	while(1)
 	{
 		
