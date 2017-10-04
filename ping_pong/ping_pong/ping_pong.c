@@ -18,10 +18,12 @@
 #include "register_init.h"
 #include "sram_test.h"
 #include "OLED_driver.h"
+#include "ADC_driver.h"
+#include "joystick.h"
 #include "menu_framework.h"
 
 
-volatile uint8_t JOY_STICK = 0;
+volatile uint8_t ADC_ready = 0;
 
 
 
@@ -60,33 +62,33 @@ int main(void) {
 	printf("%s \n", johanne->prev_sibling->name);
 	
 	printf("%s \n", main_menu->child->name);
-	/*create_submenu(main_menu, andrea);
-	create_submenu(main_menu, johanne);
 
-	create_submenu(julie, red);
-	create_submenu(julie, blue);
-	create_submenu(andrea, green);
-	create_submenu(johanne, black);
-	create_submenu(johanne, white);
-	*/
-	
 
 	oled_reset();
-	//oled_fill_page(0);
+
 	oled_home();
 
-	//print_menu_oled(main_menu);
+	print_menu_oled(main_menu);
+	oled_reset();
+	print_menu_oled(julie);
+	volatile uint8_t ADC_ready = 0;
 	
 	
 	while(1)
 	{
+		if(ADC_ready){
+			ADC_ready = 0;
+		}
 		
+		
+		printf("\nX = %d, Y = %d \n", joy_stick_read(4), joy_stick_read(5));
+		//printf("%d\n", slider_read(7));
 	}
 
 	return 0;
 }
 
 ISR(INT2_vect){
-	JOY_STICK = 1; 
+	ADC_ready = 1; 
 	//wake up the CPU
 }

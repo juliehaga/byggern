@@ -9,22 +9,21 @@
 #include "menu_framework.h"
 #include <stddef.h>
 
-/*
-
 void print_menu_oled(menu* menu_node){
 	oled_home();
 	oled_print_string(menu_node->name);
-	oled_goto_column(15);
-	menu* counter = menu_node->sub_menus;
 	
-	
-	for (int i = 1; i < menu_node->size_submenu+1; i++){
-		oled_goto_page(i);
-		oled_print_string(counter->name);
-		counter += 1;
+	menu* current = menu_node->child;
+	int page_count = 1; 
+	while(current != NULL){
+		oled_goto_page(page_count);
+		oled_goto_column(15);
+		oled_print_string(current->name);
+		current = current->next_sibling;
+		page_count++;
 	}
 }
-*/
+
 menu* create_menu(char* new_name){
 	menu* new_menu = (menu*)malloc(sizeof(menu));
 	
@@ -44,9 +43,6 @@ menu* create_menu(char* new_name){
 }
 
 menu* create_submenu(menu* parent_menu, menu* child_menu){ //tar inn liste av submenu struct
-	
-
-	
 	if (parent_menu->child == NULL){
 		//make new child
 		parent_menu->child = child_menu;
@@ -68,4 +64,6 @@ menu* create_submenu(menu* parent_menu, menu* child_menu){ //tar inn liste av su
 	
 	return parent_menu;
 }
+
+
 

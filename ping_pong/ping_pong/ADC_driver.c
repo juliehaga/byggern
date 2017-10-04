@@ -10,7 +10,7 @@
 #include <avr/interrupt.h>
 #include "bit_functions.h"
 
-extern volatile uint8_t JOY_STICK;
+extern volatile uint8_t ADC_ready;
 
 int ADC_init(void) {
 	// Interrupt on rising edge PE0
@@ -47,13 +47,13 @@ uint8_t ADC_read(uint8_t channel) {
 	//Choose channel in ADC
 	*adc = 0x04 | channel;
 	
-	while(JOY_STICK);
+	while(ADC_ready);
 	
 	return *adc;
 }
 
 
-
+/*
 
 int joy_stick_read(int channel){
 	double pos = ADC_read(channel);
@@ -84,3 +84,4 @@ int buttons_read(int button){
 	}
 	return -1;
 }
+*/

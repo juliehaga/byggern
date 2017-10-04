@@ -6,6 +6,8 @@ ADC_driver.c
 
 driver_uart.c
 
+joystick.c
+
 menu_framework.c
 
 OLED_driver.c

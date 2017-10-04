@@ -10,7 +10,7 @@
 
 
 
-typedef struct menu {
+typedef struct menu{
 	char* name;
 	struct menu* next_sibling;
 	struct menu* prev_sibling;
@@ -30,13 +30,6 @@ menu* create_submenu(menu* parent_menu, menu* child_menu);
 
 
 
-
-void menu_create_main(char* menu[], int size);
-void meny_create_sub(void);
-void menu_scroll_up(void);
-void menu_scroll_down(void);
-void menu_select(void);
-void update_menu(void);
 
 
 

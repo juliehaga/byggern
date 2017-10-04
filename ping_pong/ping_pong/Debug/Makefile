@@ -39,6 +39,7 @@ SUBDIRS :=
 C_SRCS +=  \
 ../ADC_driver.c \
 ../driver_uart.c \
+../joystick.c \
 ../menu_framework.c \
 ../OLED_driver.c \
 ../ping_pong.c \
@@ -54,6 +55,7 @@ ASM_SRCS +=
 OBJS +=  \
 ADC_driver.o \
 driver_uart.o \
+joystick.o \
 menu_framework.o \
 OLED_driver.o \
 ping_pong.o \
@@ -62,6 +64,7 @@ sram_test.o
 OBJS_AS_ARGS +=  \
 ADC_driver.o \
 driver_uart.o \
+joystick.o \
 menu_framework.o \
 OLED_driver.o \
 ping_pong.o \
@@ -70,6 +73,7 @@ sram_test.o
 C_DEPS +=  \
 ADC_driver.d \
 driver_uart.d \
+joystick.d \
 menu_framework.d \
 OLED_driver.d \
 ping_pong.d \
@@ -78,6 +82,7 @@ sram_test.d
 C_DEPS_AS_ARGS +=  \
 ADC_driver.d \
 driver_uart.d \
+joystick.d \
 menu_framework.d \
 OLED_driver.d \
 ping_pong.d \
@@ -97,6 +102,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 
