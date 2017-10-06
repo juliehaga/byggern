@@ -24,9 +24,14 @@
 
 
 volatile uint8_t ADC_ready = 0;
+<<<<<<< HEAD
 int current_page = 1; 
 menu* display_menu;
 joystick_dir last_joy_dir = CENTER; 
+=======
+
+volatile uint8_t* a = 0x1400;
+>>>>>>> d8fe2f8554f76637ee35c7a76ac53d0a72acce3e
 
 
 
@@ -36,6 +41,7 @@ int main(void) {
 	UART_init(31);
 	register_init();
 	oled_init();
+	ADC_init();
 	// Enable global interrupts
 	sei();
 	
@@ -56,6 +62,7 @@ int main(void) {
 	create_submenu(main_menu, andrea);
 	create_submenu(main_menu, johanne);
 	create_submenu(julie, red);
+<<<<<<< HEAD
 
 
 
@@ -64,18 +71,36 @@ int main(void) {
 	print_selection_sign(1);
 
 
+=======
+	printf("%s \n", main_menu->child->name);
+	printf("%s \n", julie->next_sibling->name);
+	printf("%s \n", andrea->next_sibling->name);
+	printf("%s \n", julie->child->name);
+	printf("%s \n", andrea->parent->name);
+	printf("%s \n", johanne->prev_sibling->name);
 	
+	printf("%s \n", main_menu->child->name);
+	oled_reset();
+	oled_home();
+	print_menu_oled(main_menu);
+	oled_reset();
+	print_menu_oled(julie);
+	volatile uint8_t ADC_ready = 0;
+>>>>>>> d8fe2f8554f76637ee35c7a76ac53d0a72acce3e
 	
-	while(1)
-	{
+	print_menu_page();
+	while(1){
+		
+		
 		if(ADC_ready){
-			ADC_ready = 0;
+			ADC_ready = 1;
 		}
 		
 		joystick_dir joy_dir = find_joystick_dir();
 		if(joy_dir != last_joy_dir){
 		
 		
+<<<<<<< HEAD
 			switch(joy_dir){
 				case UP:
 					if(current_page > 1){
@@ -110,6 +135,13 @@ int main(void) {
 			}
 			last_joy_dir = joy_dir;
 		}
+=======
+		printf("x = %d y = %d\n", joystick_read(4), joystick_read(5));
+		
+		
+		
+	}
+>>>>>>> d8fe2f8554f76637ee35c7a76ac53d0a72acce3e
 
 		
 	}

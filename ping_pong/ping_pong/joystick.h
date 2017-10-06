@@ -11,10 +11,18 @@
 
 typedef enum{UP, DOWN, RIGHT, LEFT, CENTER} joystick_dir;
 
-int joy_stick_read(int channel);
+typedef enum {UP, DOWN, LEFT, RIGHT, CENTER} joystick_dir;
+
+int joystick_read(int channel);
 int slider_read(int channel);
 int buttons_read(int button);
+<<<<<<< HEAD
 joystick_dir find_joystick_dir(void); 
+=======
+joystick_dir find_joystick_dir(void);
+
+
+>>>>>>> d8fe2f8554f76637ee35c7a76ac53d0a72acce3e
 
 
 #endif /* JOYSTICK_H_ */

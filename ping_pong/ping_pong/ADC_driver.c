@@ -46,10 +46,12 @@ uint8_t ADC_read(uint8_t channel) {
 	
 	//Choose channel in ADC
 	*adc = 0x04 | channel;
-	
-	while(ADC_ready);
-	
+	while(!ADC_ready);
+		
 	return *adc;
 }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> d8fe2f8554f76637ee35c7a76ac53d0a72acce3e
