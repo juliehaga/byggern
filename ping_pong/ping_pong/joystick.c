@@ -14,15 +14,15 @@
 
 int joy_stick_read(int channel){
 	double pos = ADC_read(channel);
-	printf("pos = %d \n", pos);
+
 	if (pos < 132){
 		double a = (100-(pos/(132)*100));
-		printf("-a = %d\n", a);
+	
 		return -(int)a;
 	}
 	else{
 		double a = (pos-132)/(255-132)*100;
-		printf("a = %d\n", a);
+
 		return (int)a;
 	}
 }

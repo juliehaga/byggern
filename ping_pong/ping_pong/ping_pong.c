@@ -25,7 +25,7 @@
 
 volatile uint8_t ADC_ready = 0;
 
-
+volatile uint8_t* a = 0x1400;
 
 
 
@@ -35,10 +35,11 @@ int main(void) {
 	UART_init(31);
 	register_init();
 	oled_init();
+	ADC_init();
 	// Enable global interrupts
 	sei();
 	
-	
+	/*
 	//deklarere alle structs
 	menu* main_menu = create_menu("Main Menu");
 	menu* julie = create_menu("Julie");
@@ -62,33 +63,34 @@ int main(void) {
 	printf("%s \n", johanne->prev_sibling->name);
 	
 	printf("%s \n", main_menu->child->name);
-
-
 	oled_reset();
-
 	oled_home();
-
 	print_menu_oled(main_menu);
 	oled_reset();
 	print_menu_oled(julie);
 	volatile uint8_t ADC_ready = 0;
+	*/
 	
-	
-	while(1)
-	{
+	*a = 4;
+	while(1){
+		
+		
 		if(ADC_ready){
-			ADC_ready = 0;
+			//printf("adc_ready =  1\n");
+			ADC_ready = 1;
 		}
 		
 		
-		printf("\nX = %d, Y = %d \n", joy_stick_read(4), joy_stick_read(5));
-		//printf("%d\n", slider_read(7));
+		
+		printf("%d\n", slider_read(7));
+		
 	}
 
 	return 0;
 }
 
 ISR(INT2_vect){
+	//printf("int. %d \n", ADC_ready);
 	ADC_ready = 1; 
 	//wake up the CPU
 }
