@@ -68,7 +68,7 @@ menu* create_submenu(menu* parent_menu, menu* child_menu){ //tar inn liste av su
 	return parent_menu;
 }
 
-<<<<<<< HEAD
+
 menu* update_display_menu(menu* current_menu, int page, joystick_dir dir){
 	menu* current = current_menu->child;
 	if(dir == RIGHT){
@@ -95,5 +95,3 @@ void print_selection_sign(int page){
 }
 
 
-=======
->>>>>>> d8fe2f8554f76637ee35c7a76ac53d0a72acce3e

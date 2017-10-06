@@ -21,13 +21,11 @@ typedef struct menu{
 
 
 
-<<<<<<< HEAD
 void print_menu_oled(menu* menu_print, int page);
 
-=======
-void print_menu_oled(menu* menu_print);
+
 void print_menu_page(void);
->>>>>>> d8fe2f8554f76637ee35c7a76ac53d0a72acce3e
+
 menu* create_menu(char* new_name);
 menu* create_submenu(menu* parent_menu, menu* child_menu);
 menu* update_display_menu(menu* current_menu, int page, joystick_dir dir);

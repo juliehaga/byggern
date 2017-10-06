@@ -50,8 +50,6 @@ uint8_t ADC_read(uint8_t channel) {
 		
 	return *adc;
 }
-<<<<<<< HEAD
 
 
-=======
->>>>>>> d8fe2f8554f76637ee35c7a76ac53d0a72acce3e
+
