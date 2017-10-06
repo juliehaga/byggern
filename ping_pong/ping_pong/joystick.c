@@ -12,7 +12,7 @@
 #include "bit_functions.h"
 
 
-int joy_stick_read(int channel){
+int joystick_read(int channel){
 	double pos = ADC_read(channel);
 
 	if (pos < 132){

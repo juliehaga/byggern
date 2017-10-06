@@ -39,7 +39,7 @@ int main(void) {
 	// Enable global interrupts
 	sei();
 	
-	/*
+	
 	//deklarere alle structs
 	menu* main_menu = create_menu("Main Menu");
 	menu* julie = create_menu("Julie");
@@ -69,20 +69,18 @@ int main(void) {
 	oled_reset();
 	print_menu_oled(julie);
 	volatile uint8_t ADC_ready = 0;
-	*/
 	
-	*a = 4;
+	
 	while(1){
 		
 		
 		if(ADC_ready){
-			//printf("adc_ready =  1\n");
 			ADC_ready = 1;
 		}
 		
 		
 		
-		printf("%d\n", slider_read(7));
+		printf("%d\n", joystick_read(5));
 		
 	}
 
@@ -90,7 +88,6 @@ int main(void) {
 }
 
 ISR(INT2_vect){
-	//printf("int. %d \n", ADC_ready);
 	ADC_ready = 1; 
 	//wake up the CPU
 }

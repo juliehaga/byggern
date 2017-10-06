@@ -10,7 +10,7 @@
 #define JOYSTICK_H_
 
 
-int joy_stick_read(int channel);
+int joystick_read(int channel);
 int slider_read(int channel);
 int buttons_read(int button);
 
