@@ -25,9 +25,11 @@ void oled_fill_page(uint8_t page);
 void oled_print_string(char* string);
 int oled_return_page(void);
 void oled_reset();
-void oled_invert_display(void);
-void oled_normal_display(void);
-
+void oled_update();
+void oled_sram_string(char* string, int page, int start_col);
+void oled_sram_char(char c, int page, int col);
+char oled_read_SRAM(int page, int col);
+void oled_sram_reset();
 
 
 #endif /* OLED_DRIVER_H_ */

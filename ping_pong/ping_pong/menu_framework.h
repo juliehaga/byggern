@@ -22,7 +22,7 @@ typedef struct menu{
 
 
 void print_menu_oled(menu* menu_print, int page);
-
+void menu_sram_update(menu* menu_node, int selector_pos);
 
 void print_menu_page(void);
 

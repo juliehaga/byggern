@@ -12,6 +12,9 @@
 
 volatile char* OLED_c = (char*) 0x1000; //Write to address OLED command
 volatile char* OLED_d = (char*) 0x1200; //Write to address OLED data
+volatile char* SRAM = (char*) 0x1800; 
+
+
 
 static uint8_t current_page, current_col;
 
@@ -65,13 +68,18 @@ void oled_init(){
 	*OLED_c = 0xa4;
 	*OLED_c = 0xa6;
 	
-
 	//  display  on
 	*OLED_c = 0xaf;
+	
+	
 
 	
 }
-
+void sram_reset(){
+	for(int i = 0; i < 128*8; i++){
+		SRAM[i] = ' ';
+	}
+}
 void oled_reset(){
 	
 	for (uint8_t i = 0 ; i < 8; i++){
@@ -105,7 +113,6 @@ void oled_pos(int row,int column){
 
 
 void oled_home(){
-	
 	oled_pos(0,0);
 }
 
@@ -123,24 +130,63 @@ void oled_print_char(char c){
 	}
 }
 
-void oled_print_string(char* string){
-	
-	for(uint8_t i = 0 ; i < strlen(string) ; i++){
-		if (i == 16){
-			//16 char per column, linjeskift						
-			current_page = (current_page+1)%8;
-			current_col = 0; 
-			oled_pos(current_page,current_col);
+
+void oled_update(){
+	oled_reset();
+	oled_home();
+	for(int i = 0; i<8; i++){
+		oled_pos(i,0);
+		for(int j = 0; j < 16; j++){
+			oled_print_char( oled_read_SRAM(i, j)); 
 		}
-		oled_print_char(string[i]);
-		
 	}
 }
 
-void oled_invert_display(void){
-	*OLED_c = 0xa7;
+void oled_sram_string(char* string, int page, int start_col){
+	int col = start_col;
+	
+	for(uint8_t i = 0 ; i < strlen(string) ; i++){
+		if (i+start_col == 16){
+			//16 char per column, linjeskift
+			page = (page+1)%8;
+			col = start_col;
+		}
+		oled_sram_char(string[i], page, col);
+		col++;
+	}
 }
 
-void oled_normal_display(void){
-	*OLED_c = 0xa6;
+
+void oled_sram_char(char c, int page, int col){
+	SRAM[128 * page + col] = c;
 }
+
+
+char oled_read_SRAM(int page, int col){
+	return SRAM[128 * page + col];
+}
+
+
+/*
+void oled_print_string(char* string){
+	int SRAM_col = 0;
+	
+	for(uint8_t i = 0 ; i < strlen(string) ; i++){
+		if (i == 16){
+			//16 char per column, linjeskift
+			current_page = (current_page+1)%8;
+			current_col = 0;
+			SRAM_col = 0;
+			oled_pos(current_page,current_col);
+		}
+		
+		oled_print_char(string[i]);
+		oled_sram_char(string[i], current_page, SRAM_col);
+		SRAM_col++;
+		
+	}
+	
+}
+
+
+*/

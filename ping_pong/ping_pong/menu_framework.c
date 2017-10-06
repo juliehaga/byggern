@@ -11,6 +11,7 @@
 #include <stddef.h>
 
 void print_menu_oled(menu* menu_node, int page){
+	
 	oled_reset();
 	oled_home();
 	oled_print_string(menu_node->name);
@@ -25,7 +26,29 @@ void print_menu_oled(menu* menu_node, int page){
 		page_count++;
 	}
 	print_selection_sign(page);
+	
 }
+
+void menu_sram_update(menu* menu_node, int selector_pos){
+	int col = 0; 
+	int page = 0; 
+	sram_reset();
+	
+	menu* current = menu_node->child;
+	
+	oled_sram_string(menu_node->name, page, col);
+	
+	page = 1;
+	col = 2;
+	while(current != NULL){
+		oled_sram_string(current->name, page, col);
+		current = current->next_sibling;
+		page++;
+	}
+	oled_sram_char('*', selector_pos, 0);
+	
+}
+
 
 menu* create_menu(char* new_name){
 	menu* new_menu = (menu*)malloc(sizeof(menu));

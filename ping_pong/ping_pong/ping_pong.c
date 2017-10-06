@@ -66,16 +66,22 @@ int main(void) {
 
 
 	oled_reset();
-	print_menu_oled(main_menu, current_page);
+	menu_sram_update(display_menu, current_page);
 
 
 
 	volatile uint8_t ADC_ready = 0;
+	for(int i = 0; i<8; i++){
+		for(int j = 0; j < 16; j++){
+			printf("%c", oled_read_SRAM(i, j));
+		}
+		printf("\n");
+	}
 
-	
+	oled_update();
 
 	while(1){
-	
+		
 		if(ADC_ready){
 			ADC_ready = 0;
 		}
@@ -83,33 +89,36 @@ int main(void) {
 		joystick_dir joy_dir = find_joystick_dir();
 		if(joy_dir != last_joy_dir){
 		
-		
-
+	
 			switch(joy_dir){
 				case UP:
 					if(current_page > 1){
 						current_page--;
 					}
-					print_menu_oled(display_menu, current_page);
+					menu_sram_update(display_menu, current_page);
+					oled_update();
 					printf("up\n");
 					break;
 				case DOWN:
 					if(current_page < display_menu->number_of_childs){
 						current_page++;
 					}
-					print_menu_oled(display_menu, current_page);
+					menu_sram_update(display_menu, current_page);
+					oled_update();
 					printf("down\n");
 					break;
 				case RIGHT:
 					display_menu = update_display_menu(display_menu, current_page, RIGHT);
 					current_page = 1;
-					print_menu_oled(display_menu, current_page);
+					menu_sram_update(display_menu, current_page);
+					oled_update();
 					printf("right\n");
 					break;
 				case LEFT:
 					display_menu = update_display_menu(display_menu, current_page, LEFT);
 					current_page = 1; 
-					print_menu_oled(display_menu, current_page);
+					menu_sram_update(display_menu, current_page);
+					oled_update();
 					printf("left\n");
 
 					break;
@@ -117,6 +126,7 @@ int main(void) {
 				default:
 					break;
 			}
+			
 			last_joy_dir = joy_dir;
 		}
 	}
