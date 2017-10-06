@@ -65,5 +65,10 @@ menu* create_submenu(menu* parent_menu, menu* child_menu){ //tar inn liste av su
 	return parent_menu;
 }
 
+void print_menu_page(){
+	oled_invert_display();
+	oled_goto_page(1);
+	oled_print_string("Red");
+}
 
 

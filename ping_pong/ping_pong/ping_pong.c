@@ -70,7 +70,7 @@ int main(void) {
 	print_menu_oled(julie);
 	volatile uint8_t ADC_ready = 0;
 	
-	
+	print_menu_page();
 	while(1){
 		
 		
@@ -80,7 +80,9 @@ int main(void) {
 		
 		
 		
-		printf("%d\n", joystick_read(5));
+		printf("x = %d y = %d\n", joystick_read(4), joystick_read(5));
+		
+		
 		
 	}
 

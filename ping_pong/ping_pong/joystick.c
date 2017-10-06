@@ -44,3 +44,19 @@ int buttons_read(int button){
 	return -1;
 }
 
+joystick_dir find_joystick_dir(void){
+	int joystick_x = joystick_read(5);
+	int joystick_y = joystick_read(4);
+	
+	if (joystick_y > 80){
+		return UP; 
+	} else if (joystick_y < -80){
+		return DOWN;
+	} else if(joystick_x >80){
+		return RIGHT;
+	} else if(joystick_x < 80){
+		return LEFT;
+	}else{
+		return CENTER;
+	}
+}
