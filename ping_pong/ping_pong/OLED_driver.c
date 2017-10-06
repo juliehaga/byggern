@@ -136,3 +136,11 @@ void oled_print_string(char* string){
 		
 	}
 }
+
+void oled_invert_display(void){
+	*OLED_c = 0xa7;
+}
+
+void oled_normal_display(void){
+	*OLED_c = 0xa6;
+}

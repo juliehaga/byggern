@@ -46,42 +46,7 @@ uint8_t ADC_read(uint8_t channel) {
 	
 	//Choose channel in ADC
 	*adc = 0x04 | channel;
-	
-	while(ADC_ready);
-	
+	while(!ADC_ready);
+		
 	return *adc;
 }
-
-
-/*
-
-int joy_stick_read(int channel){
-	double pos = ADC_read(channel);
-
-	if (pos < 132){
-		double a = (100-pos/(132)*100);
-		return -(int)a;
-	}
-	else{
-		double a = (pos-132)/(255-132)*100;
-		return (int)a;
-	}
-}
-
-
-int slider_read(int channel){
-	double pos = ADC_read(channel);
-	return pos/255*100;
-}
-
-
-int buttons_read(int button){
-
-	if (button == 1){
-		return (read_bit(PINB, PINB1));		//returns 2??	
-	}else if(button == 2){
-		return read_bit(PINB, PINB0);
-	}
-	return -1;
-}
-*/

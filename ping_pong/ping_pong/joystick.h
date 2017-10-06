@@ -10,9 +10,13 @@
 #define JOYSTICK_H_
 
 
-int joy_stick_read(int channel);
+typedef enum {UP, DOWN, LEFT, RIGHT, CENTER} joystick_dir;
+
+int joystick_read(int channel);
 int slider_read(int channel);
 int buttons_read(int button);
+joystick_dir find_joystick_dir(void);
+
 
 
 

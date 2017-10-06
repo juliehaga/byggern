@@ -65,5 +65,3 @@ menu* create_submenu(menu* parent_menu, menu* child_menu){ //tar inn liste av su
 	return parent_menu;
 }
 
-
-

@@ -22,7 +22,7 @@ typedef struct menu{
 
 
 void print_menu_oled(menu* menu_print);
-
+void print_menu_page(void);
 menu* create_menu(char* new_name);
 menu* create_submenu(menu* parent_menu, menu* child_menu);
 

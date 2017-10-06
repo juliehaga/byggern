@@ -25,6 +25,8 @@ void oled_fill_page(uint8_t page);
 void oled_print_string(char* string);
 int oled_return_page(void);
 void oled_reset();
+void oled_invert_display(void);
+void oled_normal_display(void);
 
 
 
