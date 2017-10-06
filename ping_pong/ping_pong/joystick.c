@@ -14,15 +14,12 @@
 
 int joy_stick_read(int channel){
 	double pos = ADC_read(channel);
-	printf("pos = %d \n", pos);
 	if (pos < 132){
 		double a = (100-(pos/(132)*100));
-		printf("-a = %d\n", a);
 		return -(int)a;
 	}
 	else{
 		double a = (pos-132)/(255-132)*100;
-		printf("a = %d\n", a);
 		return (int)a;
 	}
 }
@@ -44,3 +41,20 @@ int buttons_read(int button){
 	return -1;
 }
 
+
+joystick_dir find_joystick_dir(void){
+	int x_value = joy_stick_read(4);
+	//printf("x-value = %d\n", x_value); 
+	int y_value = joy_stick_read(5); 
+	if (y_value > 80){
+		return UP;
+	} else if (y_value < -80){
+		return DOWN;
+	} else if (x_value > 80){
+		return RIGHT;
+	} else if (x_value < -80){
+		return LEFT; 
+	} else {
+		return CENTER; 
+	}
+}

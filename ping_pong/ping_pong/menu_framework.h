@@ -7,8 +7,8 @@
 
 #ifndef MENU_FRAMEWORK_H_
 #define MENU_FRAMEWORK_H_
-
-
+ 
+#include "joystick.h"
 
 typedef struct menu{
 	char* name;
@@ -21,12 +21,13 @@ typedef struct menu{
 
 
 
-void print_menu_oled(menu* menu_print);
+void print_menu_oled(menu* menu_print, int page);
 
 menu* create_menu(char* new_name);
 menu* create_submenu(menu* parent_menu, menu* child_menu);
+menu* update_display_menu(menu* current_menu, int page, joystick_dir dir);
 
-
+void print_selection_sign(int page);
 
 
 

@@ -7,9 +7,11 @@
 
 #include "OLED_driver.h"
 #include "menu_framework.h"
+
 #include <stddef.h>
 
-void print_menu_oled(menu* menu_node){
+void print_menu_oled(menu* menu_node, int page){
+	oled_reset();
 	oled_home();
 	oled_print_string(menu_node->name);
 	
@@ -22,6 +24,7 @@ void print_menu_oled(menu* menu_node){
 		current = current->next_sibling;
 		page_count++;
 	}
+	print_selection_sign(page);
 }
 
 menu* create_menu(char* new_name){
@@ -65,5 +68,29 @@ menu* create_submenu(menu* parent_menu, menu* child_menu){ //tar inn liste av su
 	return parent_menu;
 }
 
+menu* update_display_menu(menu* current_menu, int page, joystick_dir dir){
+	menu* current = current_menu->child;
+	if(dir == RIGHT){
+		for(int i = 1; i < page; i++){
+				current = current->next_sibling;
+		}
+	}else{
+		current = current_menu->parent;
+	}
+	
+	
+	
+	if(current != NULL){
+		return current;
+	}
+	return current_menu;
+}
+
+
+void print_selection_sign(int page){
+	oled_goto_column(0);
+	oled_goto_page(page);
+	oled_print_string("*");
+}
 
 
