@@ -42,9 +42,9 @@ int slider_read(int channel){
 int buttons_read(int button){
 
 	if (button == 1){
-		return (read_bit(PINB, PINB1));		//returns 2??
+		return (test_bit(PINB, PINB1));		//returns 2??
 		}else if(button == 2){
-		return read_bit(PINB, PINB0);
+		return test_bit(PINB, PINB0);
 	}
 	return -1;
 }

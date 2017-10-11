@@ -118,6 +118,18 @@
     <Compile Include="bit_functions.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="CAN_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="CAN_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCP2515_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCP2515_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="driver_uart.h">
       <SubType>compile</SubType>
     </Compile>
@@ -133,6 +145,9 @@
     <Compile Include="joystick.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="MCP2515.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="menu_framework.c">
       <SubType>compile</SubType>
     </Compile>
@@ -146,6 +161,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="register_init.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SPI_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SPI_driver.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="sram_test.h">

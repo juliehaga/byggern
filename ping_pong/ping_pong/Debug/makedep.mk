@@ -4,6 +4,10 @@
 
 ADC_driver.c
 
+CAN_driver.c
+
+MCP2515_driver.c
+
 driver_uart.c
 
 joystick.c
@@ -11,6 +15,8 @@ joystick.c
 menu_framework.c
 
 OLED_driver.c
+
+SPI_driver.c
 
 ping_pong.c
 

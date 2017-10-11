@@ -46,13 +46,13 @@ int main(void) {
 	
 	
 	//deklarere alle structs
-	menu* main_menu = create_menu("Main Menu");
+	menu* main_menu = create_menu("How to steal");
 	display_menu = main_menu; 
-	menu* julie = create_menu("Julie");
-	menu* andrea = create_menu("Andrea");
-	menu* johanne = create_menu("Johanne");
-	menu* red = create_menu("Red");
-	menu* blue = create_menu("Blue");
+	menu* julie = create_menu("Gal");
+	menu* andrea = create_menu("Kode");
+	menu* johanne = create_menu("USB-board");
+	menu* red = create_menu("lur Bendik");
+	menu* blue = create_menu("facerape");
 	menu* green = create_menu("Green");
 	menu* black = create_menu("Black");
 	menu* white = create_menu("White");
@@ -61,6 +61,7 @@ int main(void) {
 	create_submenu(main_menu, andrea);
 	create_submenu(main_menu, johanne);
 	create_submenu(julie, red);
+	create_submenu(andrea, blue);
 
 
 

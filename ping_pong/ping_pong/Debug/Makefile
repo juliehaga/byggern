@@ -38,10 +38,13 @@ SUBDIRS :=
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../ADC_driver.c \
+../CAN_driver.c \
+../MCP2515_driver.c \
 ../driver_uart.c \
 ../joystick.c \
 ../menu_framework.c \
 ../OLED_driver.c \
+../SPI_driver.c \
 ../ping_pong.c \
 ../sram_test.c
 
@@ -54,37 +57,49 @@ ASM_SRCS +=
 
 OBJS +=  \
 ADC_driver.o \
+CAN_driver.o \
+MCP2515_driver.o \
 driver_uart.o \
 joystick.o \
 menu_framework.o \
 OLED_driver.o \
+SPI_driver.o \
 ping_pong.o \
 sram_test.o
 
 OBJS_AS_ARGS +=  \
 ADC_driver.o \
+CAN_driver.o \
+MCP2515_driver.o \
 driver_uart.o \
 joystick.o \
 menu_framework.o \
 OLED_driver.o \
+SPI_driver.o \
 ping_pong.o \
 sram_test.o
 
 C_DEPS +=  \
 ADC_driver.d \
+CAN_driver.d \
+MCP2515_driver.d \
 driver_uart.d \
 joystick.d \
 menu_framework.d \
 OLED_driver.d \
+SPI_driver.d \
 ping_pong.d \
 sram_test.d
 
 C_DEPS_AS_ARGS +=  \
 ADC_driver.d \
+CAN_driver.d \
+MCP2515_driver.d \
 driver_uart.d \
 joystick.d \
 menu_framework.d \
 OLED_driver.d \
+SPI_driver.d \
 ping_pong.d \
 sram_test.d
 
@@ -102,6 +117,12 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
+
+
+
+
 
 
 
