@@ -74,7 +74,7 @@ int main(void) {
 	oled_update();
 	
 	Message msg;
-	msg.data = "i";
+	msg.data = "x";
 	msg.length = 1;
 	msg.ID = 0; 
 
@@ -82,32 +82,28 @@ int main(void) {
 	CAN_send(&msg);
 
 	//uint8_t test; 
-
-	
-	
-	
-	
-	printf("hei\n");
 	
 	while(1){
-		
-		
 		
 		if(ADC_ready){
 			ADC_ready = 0;
 		}
 		
-		
 		if(rx_int_flag){
 			printf("flagget er satt til 1\n");
 			Message recieve_msg = CAN_recieve();
-			printf("Recieve %c", recieve_msg.data);
+			
+			for (int i = 0; i < recieve_msg.length; i ++){
+				printf("Recieve %c \n", recieve_msg.data[i]);
+			}
+			
+			
+			
 		}
 		
 		joystick_dir joy_dir = find_joystick_dir();
 		if(joy_dir != last_joy_dir){
-		
-	
+			
 			switch(joy_dir){
 				case UP:
 					if(current_page > 1){
@@ -138,9 +134,7 @@ int main(void) {
 					menu_sram_update(display_menu, current_page);
 					oled_update();
 					//printf("left\n");
-
 					break;
-			
 				default:
 					break;
 			}
@@ -148,8 +142,6 @@ int main(void) {
 			last_joy_dir = joy_dir;
 		}
 	}
-
-
 	return 0;
 }
 
