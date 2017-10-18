@@ -24,6 +24,7 @@
 #include "CAN_driver.h"
 #include "SPI_driver.h"
 #include "MCP2515_driver.h"
+#include "MCP2515.h"
 
 
 volatile uint8_t ADC_ready = 0;
@@ -44,12 +45,10 @@ int main(void) {
 	register_init();
 	oled_init();
 	ADC_init();
-	SPI_init();
-	MCP2515_init();
+	//SPI_init();
 	CAN_init();
-	// Enable global interrupts
+	//Enable global interrupts
 	sei();
-	
 	
 	//deklarere alle structs
 	menu* main_menu = create_menu("How to steal");
@@ -69,44 +68,33 @@ int main(void) {
 	create_submenu(julie, red);
 	create_submenu(andrea, blue);
 
-
-
-
 	oled_reset();
 	menu_sram_update(display_menu, current_page);
 	oled_update();
 	
 	Message msg;
-	msg.data = "abcdef";
-	msg.length = 6;
+	msg.data = "i";
+	msg.length = 1;
 	msg.ID = 0; 
+
+	/*
+	CAN_send(&msg);
+	printf("melding sent\n");
+	_delay_ms(1000);
+	uint8_t test; 
+	printf("TXB0CTRL %02x\n", MCP2515_read(MCP_TXB0CTRL));
+	printf("CANINTF %02x\n", MCP2515_read(MCP_CANINTF));
+	Message recieve_msg = CAN_recieve();
+	printf("Recieve %s", recieve_msg.data);
+	*/
 	
 	
-
 	
-
-
 	while(1){
 		
 		if(ADC_ready){
 			ADC_ready = 0;
 		}
-		/*
-		CAN_send(&msg);
-		
-		_delay_ms(1000);
-		Message recieve_msg = CAN_recieve();
-		printf("Recieve %s", recieve_msg.data);
-		*/
-		
-		uint8_t a = 0x01;
-		SPI_activate_SS();
-		SPI_read_write(a);
-		SPI_deactivate_SS();
-		
-		
-			
-		
 		
 		joystick_dir joy_dir = find_joystick_dir();
 		if(joy_dir != last_joy_dir){
@@ -119,7 +107,7 @@ int main(void) {
 					}
 					menu_sram_update(display_menu, current_page);
 					oled_update();
-					// printf("up\n");
+					//printf("up\n");
 					break;
 				case DOWN:
 					if(current_page < display_menu->number_of_childs){

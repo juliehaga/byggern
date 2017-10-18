@@ -14,7 +14,9 @@ void register_init(void){
 	//enabler externt minne i MCU
 	set_bit(MCUCR, SRE);
 	set_bit(SFIOR, XMM2);
+
 	
+	clr_bit(DDRD, DDD2);
 	
 }
 

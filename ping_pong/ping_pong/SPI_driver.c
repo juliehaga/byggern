@@ -14,7 +14,7 @@ void SPI_init(void){
 	//SPI enable
 	set_bit(SPCR, SPE);
 	//Data order MSB transmitted first
-	clr_bit(SPCR, DORD);
+	//clr_bit(SPCR, DORD);
 	//Set SPI to master mode
 	set_bit(SPCR, MSTR);
 	//set SPI clock rate = Fosc/16
@@ -24,6 +24,8 @@ void SPI_init(void){
 	set_bit(DDRB, MOSI);
 	set_bit(DDRB, SCK);
 	set_bit(DDRB, SS);
+	
+	SPI_deactivate_SS();
 
 }
 
@@ -31,14 +33,8 @@ uint8_t SPI_read_write(char cData){
 	/* Start transmission */
 	
 	SPDR = cData;
-
-
-	printf("Test bit %d\n",test_bit(SPSR, SPIF));
 	/* Wait for transmission complete */
-	
 	while(!(test_bit(SPSR, SPIF)));   //wait until SPIF-flag is set. 
-	printf("forbi while, yei");
-
 	return SPDR;
 }
 

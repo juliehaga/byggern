@@ -12,63 +12,52 @@
 
 void MCP2515_init(void){
 	SPI_init();
-	
 	//set MCP2515 in configuration mode
 	MCP2515_reset(); 
-	
 }
 
 void MCP2515_reset(void){
 	SPI_activate_SS();
-	
 	SPI_read_write(MCP_RESET);
-	
 	SPI_deactivate_SS();
 }
 
 uint8_t MCP2515_read(uint8_t address){
 	uint8_t data;
 	SPI_activate_SS();
-	
-	
-	data = SPI_read_write(MCP_READ);
-	
+	SPI_read_write(MCP_READ);
 	SPI_read_write(address);
-	
+	data = SPI_read_write(0x00);
 	SPI_deactivate_SS();
 	return data;
 }
-void MCP2515_write(uint8_t address, char* data){
+
+void MCP2515_write(uint8_t address, char data){
 	SPI_activate_SS();
-	
 	SPI_read_write(MCP_WRITE);
 	SPI_read_write(address);
-	for (int i = 0 ; i < strlen(data) ; i++){
-		SPI_read_write(data[i]);
-	}
-	
+	SPI_read_write(data);
 	SPI_deactivate_SS();
 }
 
  void MCP2515_request_to_send(uint8_t command){
 	SPI_activate_SS();
-	
 	if (command <= 7){
 		SPI_read_write(MCP_RTS | command);
 	}
 	else{
 		SPI_read_write(MCP_RTS);
 	}
-	
 	SPI_deactivate_SS();
 }
 
 uint8_t MCP2515_read_status(void){
 	uint8_t status;
 	SPI_activate_SS();
-	status = SPI_read_write(MCP_READ_STATUS);
-	SPI_deactivate_SS();
-	
+	SPI_read_write(MCP_READ_STATUS);
+	status = SPI_read_write(0xFF);
+	status = SPI_read_write(0xFF);		//send same data to times
+	SPI_deactivate_SS();	
 	return status;
 }
 
@@ -79,6 +68,5 @@ void MCP2515_bit_modify(uint8_t address, uint8_t mask_byte, uint8_t data_byte){
 	SPI_read_write(address);
 	SPI_read_write(mask_byte);
 	SPI_read_write(data_byte);
-	
 	SPI_deactivate_SS();
 }
