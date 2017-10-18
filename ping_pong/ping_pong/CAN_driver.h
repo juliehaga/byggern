@@ -16,7 +16,7 @@ typedef struct Message{
 	char* data;
 	}Message;
 
-void CAN_init();
+int CAN_init();
 void CAN_send(Message* msg);
 int CAN_transmit_complete();
 Message CAN_recieve(); 

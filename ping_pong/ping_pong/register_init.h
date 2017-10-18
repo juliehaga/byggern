@@ -15,6 +15,11 @@ void register_init(void){
 	set_bit(MCUCR, SRE);
 	set_bit(SFIOR, XMM2);
 
+	//enable interrupts in MCU
+	clr_bit(MCUCR,ISC00);
+	set_bit(MCUCR,ISC01);
+	set_bit(GICR,INT0);
+	
 	
 	clr_bit(DDRD, DDD2);
 	

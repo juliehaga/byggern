@@ -28,6 +28,7 @@
 
 
 volatile uint8_t ADC_ready = 0;
+volatile uint8_t rx_int_flag = 0;
 
 int current_page = 1; 
 menu* display_menu;
@@ -77,23 +78,30 @@ int main(void) {
 	msg.length = 1;
 	msg.ID = 0; 
 
-	/*
+	
 	CAN_send(&msg);
-	printf("melding sent\n");
-	_delay_ms(1000);
-	uint8_t test; 
-	printf("TXB0CTRL %02x\n", MCP2515_read(MCP_TXB0CTRL));
-	printf("CANINTF %02x\n", MCP2515_read(MCP_CANINTF));
-	Message recieve_msg = CAN_recieve();
-	printf("Recieve %s", recieve_msg.data);
-	*/
+
+	//uint8_t test; 
+
 	
 	
+	
+	
+	printf("hei\n");
 	
 	while(1){
 		
+		
+		
 		if(ADC_ready){
 			ADC_ready = 0;
+		}
+		
+		
+		if(rx_int_flag){
+			printf("flagget er satt til 1\n");
+			Message recieve_msg = CAN_recieve();
+			printf("Recieve %c", recieve_msg.data);
 		}
 		
 		joystick_dir joy_dir = find_joystick_dir();
