@@ -34,7 +34,8 @@ void CAN_init(){
 }
 
 void CAN_send(Message* msg){
-	if(CAN_transmit_complete()){	
+	if(CAN_transmit_complete()){
+		
 		//sending ID
 		MCP2515_write(MCP_TXB0SIDH, (uint8_t)msg->ID >> 3);
 		MCP2515_write(MCP_TXB0SIDL, (uint8_t)msg->ID << 5);
@@ -44,7 +45,7 @@ void CAN_send(Message* msg){
 	
 		//Sending data, max 8 bytes
 		for (int i = 0; i < msg->length; i++){
-			MCP2515_write(MCP_TXB0D0 + i, msg->data[i]);  
+			MCP2515_write(MCP_TXB0D0 + i, &msg->data[i]);  
 		}
 	
 		//initiate message transmission
@@ -53,6 +54,7 @@ void CAN_send(Message* msg){
 }
 
 int CAN_transmit_complete(){
+	
 	if ( test_bit(MCP2515_read(MCP_TXB0CTRL), 3)){
 		return 0;
 	}
@@ -60,7 +62,7 @@ int CAN_transmit_complete(){
 }
 
 Message CAN_recieve(){
-	Message msg; 
+	Message msg = {0,7,"no_data"}; 
 	
 	if(rx_int_flag){
 		msg.ID = (MCP2515_read(MCP_RXB0SIDH) << 3 | MCP2515_read(MCP_RXB0SIDL) >> 5);

@@ -14,7 +14,7 @@
 void MCP2515_init(void);
 void MCP2515_reset(void);
 uint8_t MCP2515_read(uint8_t address);
-void MCP2515_write(uint8_t address, char* data);
+void MCP2515_write(uint8_t address,char* data);
 
 
 void MCP2515_request_to_send(uint8_t command);

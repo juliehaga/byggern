@@ -23,14 +23,22 @@ void SPI_init(void){
 	//set MOSI and SCK to output, all others input
 	set_bit(DDRB, MOSI);
 	set_bit(DDRB, SCK);
-	
+	set_bit(DDRB, SS);
+
 }
 
 uint8_t SPI_read_write(char cData){
 	/* Start transmission */
+	
 	SPDR = cData;
+
+
+	printf("Test bit %d\n",test_bit(SPSR, SPIF));
 	/* Wait for transmission complete */
-	while(!(SPSR & (1<<SPIF)));
+	
+	while(!(test_bit(SPSR, SPIF)));   //wait until SPIF-flag is set. 
+	printf("forbi while, yei");
+
 	return SPDR;
 }
 

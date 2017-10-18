@@ -8,6 +8,7 @@
 #include "SPI_driver.h"
 #include "MCP2515.h"
 #include "MCP2515_driver.h"
+#include <string.h>
 
 void MCP2515_init(void){
 	SPI_init();
@@ -17,7 +18,7 @@ void MCP2515_init(void){
 	
 }
 
-MCP2515_reset(){
+void MCP2515_reset(void){
 	SPI_activate_SS();
 	
 	SPI_read_write(MCP_RESET);
@@ -29,7 +30,9 @@ uint8_t MCP2515_read(uint8_t address){
 	uint8_t data;
 	SPI_activate_SS();
 	
+	
 	data = SPI_read_write(MCP_READ);
+	
 	SPI_read_write(address);
 	
 	SPI_deactivate_SS();
