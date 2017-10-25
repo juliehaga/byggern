@@ -43,7 +43,7 @@ int CAN_init(){
 		printf("MCP2515 is NOT in loopback mode!\n");
 		return 1;
 	}
-	printf("Successfully initialize CAN\n");
+	
 	return 0;
 }
 
@@ -86,14 +86,12 @@ Message CAN_recieve(){
 	
 	msg.ID = (MCP2515_read(MCP_RXB0SIDH) << 3 | MCP2515_read(MCP_RXB0SIDL) >> 5);
 	msg.length = MCP2515_read(MCP_RXB0DLC) & 0x0F;
-	printf("length %d \n", msg.length);
 	if(msg.length > 8){
 		msg.length = 8;
 	}
 	for (int i = 0; i < msg.length ; i++){
 		msg.data[i] = MCP2515_read(MCP_RXB0DM + i);
-		printf("Leser %c\n", msg.data[i]);
-		printf("msg.data = %c \n", msg.data[1]);
+		//printf("Leser %c\n", msg.data[i]);
 	}
 	rx_int_flag = 0;
 	
@@ -115,11 +113,10 @@ void CAN_int_vect(){
 	//set transmit flag to 0 
 	MCP2515_bit_modify(MCP_CANINTF, 0x04, 0x00);
 	rx_int_flag = 1;
-	printf("rx flag satt til 1\n");
+	
 }
 
 ISR(INT0_vect){
-	printf("int vektor\n");
 	//RX0 interrupt flag set to 0
 	CAN_int_vect();
 }

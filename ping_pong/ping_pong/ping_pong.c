@@ -73,10 +73,10 @@ int main(void) {
 	menu_sram_update(display_menu, current_page);
 	oled_update();
 	
-	char* test = "x";
+	char* test = "heipådegja";
 	
 	Message msg;
-	msg.length = 1;
+	msg.length = 11;
 	for (int i = 0; i < msg.length; i++){
 		msg.data[i] = test[i];
 	}
@@ -95,11 +95,11 @@ int main(void) {
 		}
 		
 		if(rx_int_flag){
-			printf("flagget er satt til 1\n");
+			//printf("flagget er satt til 1\n");
 			Message recieve_msg = CAN_recieve();
 			
 			for (int i = 0; i < recieve_msg.length; i ++){
-				printf("Recieve %c \n", recieve_msg.data[i]);
+				printf("%c", recieve_msg.data[i]);
 			}
 			
 			
