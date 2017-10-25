@@ -75,7 +75,7 @@ void oled_init(){
 
 	
 }
-void sram_reset(){
+void oled_sram_reset(){
 	for(int i = 0; i < 128*8; i++){
 		SRAM[i] = ' ';
 	}

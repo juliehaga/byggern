@@ -10,11 +10,17 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "bit_functions.h"
+#include "CAN_driver.h"
+
+/*
+channel 4 = y
+channel 5 = x
+*/
 
 
 int joystick_read(int channel){
 	double pos = ADC_read(channel);
-
+	
 	if (pos < 132){
 		double a = (100-(pos/(132)*100));
 	}
@@ -68,9 +74,17 @@ joystick_dir find_joystick_dir(void){
 		return LEFT;
 	}
 	return CENTER;
-	
 }
 
-
+void send_joystick_pos(void){
+	joystick_dir joy_pos = find_joystick_dir();
+	Message msg;
+		
+	msg.length = 1;
+	msg.data[0] = (uint8_t)joy_pos;
+	msg.ID = 0;
+	
+	CAN_send(&msg);
+}
 
 

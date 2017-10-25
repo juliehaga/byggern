@@ -52,4 +52,7 @@ uint8_t ADC_read(uint8_t channel) {
 }
 
 
-
+ISR(INT2_vect){
+	ADC_ready = 1;
+	//wake up the CPU
+}

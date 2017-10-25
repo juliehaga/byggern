@@ -117,6 +117,18 @@ void CAN_int_vect(){
 	
 }
 
+Message create_msg(int ID, int length, char* data){
+	Message msg;
+	
+	msg.length = length;
+	for (int i = 0; i < msg.length; i++){
+		msg.data[i] = data[i];
+	}
+	msg.ID = ID;
+	
+	return msg;
+}
+
 ISR(INT0_vect){
 	//RX0 interrupt flag set to 0
 	CAN_int_vect();

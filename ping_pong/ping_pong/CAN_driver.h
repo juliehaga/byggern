@@ -23,7 +23,7 @@ Message CAN_recieve();
 int CAN_error(); 
 
 void CAN_int_vect();  
-
+Message create_msg(int ID, int length, char* data);
 
 
 #endif /* CAN_DRIVER_H_ */

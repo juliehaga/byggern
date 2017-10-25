@@ -20,16 +20,13 @@ typedef struct menu{
 }menu;
 
 
-
+void main_menu(void);
 void print_menu_oled(menu* menu_print, int page);
 void menu_sram_update(menu* menu_node, int selector_pos);
-
 void print_menu_page(void);
-
 menu* create_menu(char* new_name);
 menu* create_submenu(menu* parent_menu, menu* child_menu);
 menu* update_display_menu(menu* current_menu, int page, joystick_dir dir);
-
 void print_selection_sign(int page);
 
 

@@ -7,8 +7,18 @@
 
 #include "OLED_driver.h"
 #include "menu_framework.h"
+#include "driver_uart.h"
+
 
 #include <stddef.h>
+
+int current_page = 1;
+menu* display_menu;
+joystick_dir last_joy_dir = CENTER;
+
+
+
+
 
 void print_menu_oled(menu* menu_node, int page){
 	
@@ -32,7 +42,7 @@ void print_menu_oled(menu* menu_node, int page){
 void menu_sram_update(menu* menu_node, int selector_pos){
 	int col = 0; 
 	int page = 0; 
-	sram_reset();
+	oled_sram_reset();
 	
 	menu* current = menu_node->child;
 	
@@ -117,4 +127,68 @@ void print_selection_sign(int page){
 	oled_print_string("*");
 }
 
+/*
+void main_menu(void){
+	
+	oled_reset();
+	menu_sram_update(display_menu, current_page);
+	oled_update();
+	
+	menu* menu_front_page = create_menu("How to steal");
+	display_menu = menu_front_page;
+	menu* julie = create_menu("Gal");
+	menu* andrea = create_menu("Kode");
+	menu* johanne = create_menu("USB-board");
+	menu* red = create_menu("lur Bendik");
+	menu* blue = create_menu("facerape");
+	menu* green = create_menu("Green");
+	menu* black = create_menu("Black");
+	menu* white = create_menu("White");
 
+	create_submenu(menu_front_page, julie);
+	create_submenu(menu_front_page, andrea);
+	create_submenu(menu_front_page, johanne);
+	create_submenu(julie, red);
+	create_submenu(andrea, blue);
+
+	joystick_dir joy_dir = find_joystick_dir();
+	if(joy_dir != last_joy_dir){
+		switch(joy_dir){
+			case UP:
+				if(current_page > 1){
+					current_page--;
+				}
+				menu_sram_update(display_menu, current_page);
+				oled_update();
+				//printf("up\n");
+				break;
+			case DOWN:
+				if(current_page < display_menu->number_of_childs){
+					current_page++;
+				}
+				menu_sram_update(display_menu, current_page);
+				oled_update();
+				//printf("down\n");
+				break;
+			case RIGHT:
+				display_menu = update_display_menu(display_menu, current_page, RIGHT);
+				current_page = 1;
+				menu_sram_update(display_menu, current_page);
+				oled_update();
+				//printf("right\n");
+				break;
+			case LEFT:
+				display_menu = update_display_menu(display_menu, current_page, LEFT);
+				current_page = 1;
+				menu_sram_update(display_menu, current_page);
+				oled_update();
+				//printf("left\n");
+				break;
+			default:
+				break;
+		}
+	}
+	
+	last_joy_dir = joy_dir;
+}
+*/

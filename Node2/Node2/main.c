@@ -23,7 +23,7 @@ int main(void)
 	UART_init(MYUBRR);
 	CAN_init();
 	sei();
-	
+	/*
 	char* test = "Johanne\n";
 	
 	Message msg;
@@ -33,20 +33,21 @@ int main(void)
 	}
 	msg.ID = 0;
 	CAN_send(&msg);
-	
+	*/
     while(1)
     {
-		/*
+		
 		if(rx_int_flag){
 			//printf("flagget er satt til 1\n");
 			Message recieve_msg = CAN_recieve();
 			
 			for (int i = 0; i < recieve_msg.length; i ++){
-				printf("%c", recieve_msg.data[i]);
+				printf("%d", recieve_msg.data[i]);
+				printf("\n");
 			}
 			
 		}
-		*/
+		
 	}
 	return 0;
 }

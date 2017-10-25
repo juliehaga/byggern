@@ -30,13 +30,9 @@
 volatile uint8_t ADC_ready = 0;
 volatile uint8_t rx_int_flag = 0;
 
-int current_page = 1; 
-menu* display_menu;
-joystick_dir last_joy_dir = CENTER; 
+
 
 volatile uint8_t* a = 0x1400;
-
-
 
 
 int main(void) {
@@ -46,52 +42,19 @@ int main(void) {
 	register_init();
 	oled_init();
 	ADC_init();
-	//SPI_init();
+	
 	CAN_init();
 	//Enable global interrupts
 	sei();
-	
-	//deklarere alle structs
-	menu* main_menu = create_menu("How to steal");
-	display_menu = main_menu; 
-	menu* julie = create_menu("Gal");
-	menu* andrea = create_menu("Kode");
-	menu* johanne = create_menu("USB-board");
-	menu* red = create_menu("lur Bendik");
-	menu* blue = create_menu("facerape");
-	menu* green = create_menu("Green");
-	menu* black = create_menu("Black");
-	menu* white = create_menu("White");
-	
-	create_submenu(main_menu, julie);
-	create_submenu(main_menu, andrea);
-	create_submenu(main_menu, johanne);
-	create_submenu(julie, red);
-	create_submenu(andrea, blue);
 
-	oled_reset();
-	menu_sram_update(display_menu, current_page);
-	oled_update();
-	/*
-	char* test = "yod ude\n";
-	
-	Message msg;
-	msg.length = 8;
-	for (int i = 0; i < msg.length; i++){
-		msg.data[i] = test[i];
-	}
-	msg.ID = 0; 
-
-	
-	CAN_send(&msg);
-
-	*/
 	while(1){
+		send_joystick_pos();
+		_delay_ms(80);
 		
 		if(ADC_ready){
 			ADC_ready = 0;
 		}
-		
+		/*
 		if(rx_int_flag){
 			//printf("flagget er satt til 1\n");
 			Message recieve_msg = CAN_recieve();
@@ -99,55 +62,8 @@ int main(void) {
 			for (int i = 0; i < recieve_msg.length; i ++){
 				printf("%c", recieve_msg.data[i]);
 			}
-			
 		}
-		
-		
-		joystick_dir joy_dir = find_joystick_dir();
-		if(joy_dir != last_joy_dir){
-			
-			switch(joy_dir){
-				case UP:
-					if(current_page > 1){
-						current_page--;
-					}
-					menu_sram_update(display_menu, current_page);
-					oled_update();
-					//printf("up\n");
-					break;
-				case DOWN:
-					if(current_page < display_menu->number_of_childs){
-						current_page++;
-					}
-					menu_sram_update(display_menu, current_page);
-					oled_update();
-					//printf("down\n");
-					break;
-				case RIGHT:
-					display_menu = update_display_menu(display_menu, current_page, RIGHT);
-					current_page = 1;
-					menu_sram_update(display_menu, current_page);
-					oled_update();
-					//printf("right\n");
-					break;
-				case LEFT:
-					display_menu = update_display_menu(display_menu, current_page, LEFT);
-					current_page = 1; 
-					menu_sram_update(display_menu, current_page);
-					oled_update();
-					//printf("left\n");
-					break;
-				default:
-					break;
-			}
-			
-			last_joy_dir = joy_dir;
-		}
+		*/
 	}
 	return 0;
-}
-
-ISR(INT2_vect){
-	ADC_ready = 1; 
-	//wake up the CPU
 }
