@@ -1078,17 +1078,17 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x21ad
+.debug_info     0x00000000     0x21ac
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000       0xe6 ADC_driver.o
- .debug_info    0x000000e6      0x503 CAN_driver.o
- .debug_info    0x000005e9      0x3b3 MCP2515_driver.o
- .debug_info    0x0000099c      0x227 driver_uart.o
- .debug_info    0x00000bc3      0x219 joystick.o
- .debug_info    0x00000ddc      0x5c2 menu_framework.o
- .debug_info    0x0000139e      0x5dc OLED_driver.o
- .debug_info    0x0000197a       0xee SPI_driver.o
- .debug_info    0x00001a68      0x745 ping_pong.o
+ .debug_info    0x000000e6      0x502 CAN_driver.o
+ .debug_info    0x000005e8      0x3b3 MCP2515_driver.o
+ .debug_info    0x0000099b      0x227 driver_uart.o
+ .debug_info    0x00000bc2      0x219 joystick.o
+ .debug_info    0x00000ddb      0x5c2 menu_framework.o
+ .debug_info    0x0000139d      0x5dc OLED_driver.o
+ .debug_info    0x00001979       0xee SPI_driver.o
+ .debug_info    0x00001a67      0x745 ping_pong.o
 
 .debug_abbrev   0x00000000      0xcf1
  *(.debug_abbrev)

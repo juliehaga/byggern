@@ -14,6 +14,7 @@
 #include <util/delay.h>
 #include <stdio.h>
 
+
 extern volatile uint8_t rx_int_flag; 
 
 int CAN_init(){
@@ -37,8 +38,7 @@ int CAN_init(){
 	MCP2515_bit_modify(MCP_RXB0CTRL, 0x60, 0xFF);
 	
 	//Set loopback-mode
-	MCP2515_bit_modify(MCP_CANCTRL, MODE_MASK , MODE_NORMAL);
-	
+	MCP2515_bit_modify(MCP_CANCTRL, MODE_MASK , MODE_LOOPBACK);
 	value = MCP2515_read(MCP_CANSTAT);
 	if ((value & MODE_MASK) != MODE_LOOPBACK) {
 		printf("MCP2515 is NOT in loopback mode!\n");

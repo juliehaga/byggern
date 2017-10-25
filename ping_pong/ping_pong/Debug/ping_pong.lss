@@ -13,11 +13,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   4 .debug_aranges 00000270  00000000  00000000  00001e42  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   000021ad  00000000  00000000  000020b2  2**0
+  5 .debug_info   000021ac  00000000  00000000  000020b2  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000cf1  00000000  00000000  0000425f  2**0
+  6 .debug_abbrev 00000cf1  00000000  00000000  0000425e  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   00000c0f  00000000  00000000  00004f50  2**0
+  7 .debug_line   00000c0f  00000000  00000000  00004f4f  2**0
                   CONTENTS, READONLY, DEBUGGING
   8 .debug_frame  000005e4  00000000  00000000  00005b60  2**2
                   CONTENTS, READONLY, DEBUGGING
@@ -613,11 +613,12 @@ int CAN_init(){
      42a:	0e 94 71 03 	call	0x6e2	; 0x6e2 <MCP2515_bit_modify>
 	
 	//Set loopback-mode
-	MCP2515_bit_modify(MCP_CANCTRL, MODE_MASK , MODE_LOOPBACK);
-     42e:	40 e4       	ldi	r20, 0x40	; 64
+	MCP2515_bit_modify(MCP_CANCTRL, MODE_MASK , MODE_NORMAL);
+     42e:	40 e0       	ldi	r20, 0x00	; 0
      430:	60 ee       	ldi	r22, 0xE0	; 224
      432:	8f e0       	ldi	r24, 0x0F	; 15
      434:	0e 94 71 03 	call	0x6e2	; 0x6e2 <MCP2515_bit_modify>
+	
 	value = MCP2515_read(MCP_CANSTAT);
      438:	8e e0       	ldi	r24, 0x0E	; 14
      43a:	0e 94 38 03 	call	0x670	; 0x670 <MCP2515_read>
