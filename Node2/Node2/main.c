@@ -24,11 +24,19 @@ int main(void)
 	CAN_init();
 	sei();
 	
+	char* test = "Johanne\n";
+	
+	Message msg;
+	msg.length = 8;
+	for (int i = 0; i < msg.length; i++){
+		msg.data[i] = test[i];
+	}
+	msg.ID = 0;
+	CAN_send(&msg);
 	
     while(1)
     {
-		
-		
+		/*
 		if(rx_int_flag){
 			//printf("flagget er satt til 1\n");
 			Message recieve_msg = CAN_recieve();
@@ -38,17 +46,9 @@ int main(void)
 			}
 			
 		}
-		
+		*/
 	}
 	return 0;
 }
-/*
-	char* test = "Johanne\n";
-	Message msg;
-	msg.length = 8;
-	for (int i = 0; i < msg.length; i++){
-		msg.data[i] = test[i];
-	}
-	msg.ID = 0;
-	CAN_send(&msg);
-	*/
+
+	

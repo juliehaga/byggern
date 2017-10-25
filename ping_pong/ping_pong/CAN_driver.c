@@ -40,8 +40,8 @@ int CAN_init(){
 	MCP2515_bit_modify(MCP_CANCTRL, MODE_MASK , MODE_NORMAL);
 	
 	value = MCP2515_read(MCP_CANSTAT);
-	if ((value & MODE_MASK) != MODE_LOOPBACK) {
-		printf("MCP2515 is NOT in loopback mode!\n");
+	if ((value & MODE_MASK) != MODE_NORMAL) {
+		printf("MCP2515 is NOT in normal mode!\n");
 		return 1;
 	}
 	
