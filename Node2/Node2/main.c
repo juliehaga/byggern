@@ -18,22 +18,12 @@ volatile uint8_t rx_int_flag = 0;
 
 int main(void)
 {
+	
 	cli();
 	UART_init(MYUBRR);
 	CAN_init();
 	sei();
 	
-	char* test = "heipåde\n";
-	
-	Message msg;
-	msg.length = 8;
-	for (int i = 0; i < msg.length; i++){
-		msg.data[i] = test[i];
-	}
-	msg.ID = 0;
-
-	
-	CAN_send(&msg);
 	
     while(1)
     {
@@ -52,3 +42,13 @@ int main(void)
 	}
 	return 0;
 }
+/*
+	char* test = "Johanne\n";
+	Message msg;
+	msg.length = 8;
+	for (int i = 0; i < msg.length; i++){
+		msg.data[i] = test[i];
+	}
+	msg.ID = 0;
+	CAN_send(&msg);
+	*/

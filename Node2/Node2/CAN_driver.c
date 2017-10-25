@@ -9,6 +9,7 @@
 #include "MCP2515_driver.h"
 #include "CAN_driver.h"
 #include "bit_functions.h"
+#include "SPI_driver.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
@@ -19,15 +20,14 @@ extern volatile uint8_t rx_int_flag;
 
 int CAN_init(){
 	volatile uint8_t value;
-	
+	printf("can init start\n");
 	//config-mode
-	MCP2515_init();
+	SPI_init();
+	MCP2515_reset();
 	_delay_ms(1);
+	
 	//enable interrupts in MCP
 	//Interrupt when message received in RXB0
-		
-	
-	
 	value = MCP2515_read(MCP_CANSTAT);
 	if ((value & MODE_MASK) != MODE_CONFIG) {
 		printf("MCP2515 is NOT in config mode after reset!\n");
@@ -38,18 +38,25 @@ int CAN_init(){
 	MCP2515_bit_modify(MCP_RXB0CTRL, 0x60, 0xFF);
 	
 	//Set loopback-mode
-	MCP2515_bit_modify(MCP_CANCTRL, MODE_MASK , MODE_LOOPBACK);
+	MCP2515_bit_modify(MCP_CANCTRL, MODE_MASK , MODE_NORMAL);
 	value = MCP2515_read(MCP_CANSTAT);
-	if ((value & MODE_MASK) != MODE_LOOPBACK) {
-		printf("MCP2515 is NOT in loopback mode!\n");
+	if ((value & MODE_MASK) != MODE_NORMAL) {
+		printf("MCP2515 is NOT in normal mode!\n");
 		return 1;
 	}
 	
+	//Set interrupts in MCU
+	set_bit(PCMSK0, PCINT6);
+	set_bit(PCICR, PCIE0);
+	clr_bit(EICRA, ISC01);
+	clr_bit(EICRA, ISC00);
+		
 	return 0;
 }
 
 
 void CAN_send(Message* msg){
+	printf("Can send\n");
 	if(CAN_transmit_complete()){
 		
 		//sending ID
@@ -117,7 +124,8 @@ void CAN_int_vect(){
 	
 }
 
-ISR(INT0_vect){
+ISR(PCINT0_vect){
 	//RX0 interrupt flag set to 0
+	printf("i interrupt\n");
 	CAN_int_vect();
 }

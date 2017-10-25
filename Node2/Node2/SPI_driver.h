@@ -13,7 +13,7 @@
 #define SCK PB1
 #define MISO PB3
 #define MOSI PB2
-#define SS PB0
+#define SS PB7
 
 
 void SPI_init(void);
