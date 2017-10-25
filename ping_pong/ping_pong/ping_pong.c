@@ -73,13 +73,18 @@ int main(void) {
 	menu_sram_update(display_menu, current_page);
 	oled_update();
 	
+	char* test = "x";
+	
 	Message msg;
-	msg.data = "x";
 	msg.length = 1;
+	for (int i = 0; i < msg.length; i++){
+		msg.data[i] = test[i];
+	}
 	msg.ID = 0; 
 
 	
 	CAN_send(&msg);
+
 
 	//uint8_t test; 
 	

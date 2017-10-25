@@ -13,7 +13,7 @@
 typedef struct Message{
 	int ID;
 	int length;
-	char* data;
+	uint8_t data[8];			//One message is max 8 characters
 	}Message;
 
 int CAN_init();

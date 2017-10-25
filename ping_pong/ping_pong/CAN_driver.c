@@ -59,15 +59,17 @@ void CAN_send(Message* msg){
 		MCP2515_write(MCP_TXB0DLC, msg->length & 0x0F);
 	
 		//Sending data, max 8 bytes
+		if(msg->length > 8){
+			msg->length = 8;
+		}
 		for (int i = 0; i < msg->length; i++){
-			MCP2515_write(MCP_TXB0D0 + i, &msg->data[i]);  
+			MCP2515_write(MCP_TXB0D0 + i, msg->data[i]);  
 		}
 	
 		//initiate message transmission
 		
 		MCP2515_request_to_send(1);
-		printf("interrrr\n");
-		printf("TXB0CTRL %02x\n", MCP2515_read(MCP_TXB0CTRL));
+		
 	}
 }
 
@@ -81,18 +83,20 @@ int CAN_transmit_complete(){
 Message CAN_recieve(){
 	Message msg; 
 		
-	uint8_t status = MCP2515_read_status();
-	uint8_t b = 'b'; 
-	printf("Status: %2x\n", status);
 	
 	msg.ID = (MCP2515_read(MCP_RXB0SIDH) << 3 | MCP2515_read(MCP_RXB0SIDL) >> 5);
 	msg.length = MCP2515_read(MCP_RXB0DLC) & 0x0F;
 	printf("length %d \n", msg.length);
+	if(msg.length > 8){
+		msg.length = 8;
+	}
 	for (int i = 0; i < msg.length ; i++){
 		msg.data[i] = MCP2515_read(MCP_RXB0DM + i);
 		printf("Leser %c\n", msg.data[i]);
+		printf("msg.data = %c \n", msg.data[1]);
 	}
 	rx_int_flag = 0;
+	
 	return msg; 
 }
 
@@ -106,9 +110,6 @@ int CAN_error(){
 }
 
 void CAN_int_vect(){
-	uint8_t status = MCP2515_read_status();
-	printf("Status int_vect: %2x\n", status);
-	
 	//set recieve flag to 0
 	MCP2515_bit_modify(MCP_CANINTF, 0x01, 0x00);
 	//set transmit flag to 0 
