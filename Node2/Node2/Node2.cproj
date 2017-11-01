@@ -121,6 +121,18 @@
     <Compile Include="CAN_driver.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="driver_ADC.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="driver_ADC.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="driver_IR.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="driver_IR.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="driver_servo.c">
       <SubType>compile</SubType>
     </Compile>

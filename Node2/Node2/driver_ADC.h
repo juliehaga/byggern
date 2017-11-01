@@ -10,7 +10,7 @@
 #define DRIVER_ADC_H_
 
 
-
+void ADC_init(void); 
 
 
 #endif /* DRIVER_ADC_H_ */

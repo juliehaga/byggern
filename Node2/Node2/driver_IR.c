@@ -4,3 +4,8 @@
  * Created: 01.11.2017 17:24:10
  *  Author: julihag
  */ 
+
+
+void IR_init(){
+	
+}
