@@ -21,11 +21,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   8 .debug_frame  00000378  00000000  00000000  00003a64  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00000414  00000000  00000000  00003ddc  2**0
+  9 .debug_str    00000416  00000000  00000000  00003ddc  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000894  00000000  00000000  000041f0  2**0
+ 10 .debug_loc    00000894  00000000  00000000  000041f2  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000140  00000000  00000000  00004a84  2**0
+ 11 .debug_ranges 00000140  00000000  00000000  00004a86  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -692,8 +692,8 @@ int main(void)
      414:	74 df       	rcall	.-280    	; 0x2fe <servo_init>
 	sei();
      416:	78 94       	sei
+		
 		if(rx_int_flag){
-			//printf("flagget er satt til 1\n");
 			Message recieve_msg = CAN_recieve();
 			
 			for (int i = 0; i < recieve_msg.length; i ++){
@@ -713,7 +713,6 @@ int main(void)
      424:	80 91 6c 02 	lds	r24, 0x026C
      428:	88 23       	and	r24, r24
      42a:	09 f1       	breq	.+66     	; 0x46e <main+0x78>
-			//printf("flagget er satt til 1\n");
 			Message recieve_msg = CAN_recieve();
      42c:	ce 01       	movw	r24, r28
      42e:	01 96       	adiw	r24, 0x01	; 1
@@ -744,8 +743,8 @@ int main(void)
      458:	90 e0       	ldi	r25, 0x00	; 0
      45a:	8d d2       	rcall	.+1306   	; 0x976 <putchar>
 		
+		
 		if(rx_int_flag){
-			//printf("flagget er satt til 1\n");
 			Message recieve_msg = CAN_recieve();
 			
 			for (int i = 0; i < recieve_msg.length; i ++){
@@ -759,8 +758,8 @@ int main(void)
 				printf("%d", recieve_msg.data[i]);
 				printf("\n");
 			}
-			uint8_t slider_pos = recieve_msg.data[0];
-			servo_set_pos(slider_pos);
+			uint8_t joystick_pos = recieve_msg.data[0];
+			servo_set_pos(joystick_pos);
      46a:	8d 81       	ldd	r24, Y+5	; 0x05
      46c:	4f df       	rcall	.-354    	; 0x30c <servo_set_pos>
 	#else

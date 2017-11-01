@@ -13,19 +13,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   4 .debug_aranges 00000240  00000000  00000000  00000d42  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00001875  00000000  00000000  00000f82  2**0
+  5 .debug_info   0000184a  00000000  00000000  00000f82  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000b77  00000000  00000000  000027f7  2**0
+  6 .debug_abbrev 00000b41  00000000  00000000  000027cc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   00000b5d  00000000  00000000  0000336e  2**0
+  7 .debug_line   00000b4e  00000000  00000000  0000330d  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000568  00000000  00000000  00003ecc  2**2
+  8 .debug_frame  00000548  00000000  00000000  00003e5c  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    000005b7  00000000  00000000  00004434  2**0
+  9 .debug_str    000005b7  00000000  00000000  000043a4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000f5d  00000000  00000000  000049eb  2**0
+ 10 .debug_loc    00000e3d  00000000  00000000  0000495b  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 000001c0  00000000  00000000  00005948  2**0
+ 11 .debug_ranges 000001c0  00000000  00000000  00005798  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -709,12 +709,12 @@ Enable receiver and transmitter
  38a:	90 e0       	ldi	r25, 0x00	; 0
  38c:	08 95       	ret
 
-0000038e <slider_read>:
-	}
-}
+0000038e <joystick_read>:
+channel 5 = x
+*/
 
 
-int slider_read(int channel){
+int joystick_read(int channel){
 	double pos = ADC_read(channel);
  38e:	0e 94 6b 00 	call	0xd6	; 0xd6 <ADC_read>
  392:	68 2f       	mov	r22, r24
@@ -738,13 +738,13 @@ int slider_read(int channel){
  3ba:	cb 01       	movw	r24, r22
  3bc:	08 95       	ret
 
-000003be <send_slider_pos>:
-	msg.ID = 0;
-	
-	CAN_send(&msg);
+000003be <send_joystick_dir>:
+		return LEFT;
+	}
+	return CENTER;
 }
 
-void send_slider_pos(void){
+void send_joystick_dir(void){
  3be:	cf 93       	push	r28
  3c0:	df 93       	push	r29
  3c2:	cd b7       	in	r28, 0x3d	; 61
@@ -755,19 +755,28 @@ void send_slider_pos(void){
  3cc:	de bf       	out	0x3e, r29	; 62
  3ce:	0f be       	out	0x3f, r0	; 63
  3d0:	cd bf       	out	0x3d, r28	; 61
-	int joy_pos = slider_read(6);
- 3d2:	86 e0       	ldi	r24, 0x06	; 6
+	joystick_dir joy_pos = joystick_read(4);
+ 3d2:	84 e0       	ldi	r24, 0x04	; 4
  3d4:	90 e0       	ldi	r25, 0x00	; 0
- 3d6:	0e 94 c7 01 	call	0x38e	; 0x38e <slider_read>
+ 3d6:	0e 94 c7 01 	call	0x38e	; 0x38e <joystick_read>
 	Message msg;
-	
+		
 	msg.length = 1;
  3da:	21 e0       	ldi	r18, 0x01	; 1
  3dc:	30 e0       	ldi	r19, 0x00	; 0
  3de:	3c 83       	std	Y+4, r19	; 0x04
  3e0:	2b 83       	std	Y+3, r18	; 0x03
-	msg.data[0] = (uint8_t)joy_pos;
+	}
+	return CENTER;
+}
+
+void send_joystick_dir(void){
+	joystick_dir joy_pos = joystick_read(4);
  3e2:	8d 83       	std	Y+5, r24	; 0x05
+	Message msg;
+		
+	msg.length = 1;
+	msg.data[0] = (uint8_t)joy_pos;
 	msg.ID = 0;
  3e4:	1a 82       	std	Y+2, r1	; 0x02
  3e6:	19 82       	std	Y+1, r1	; 0x01
@@ -1052,18 +1061,18 @@ int main(void) {
  56a:	78 94       	sei
 
 	while(1){
-		send_slider_pos();
- 56c:	0e 94 df 01 	call	0x3be	; 0x3be <send_slider_pos>
- 570:	2f ef       	ldi	r18, 0xFF	; 255
- 572:	8f ef       	ldi	r24, 0xFF	; 255
- 574:	9e e0       	ldi	r25, 0x0E	; 14
+		send_joystick_dir();
+ 56c:	0e 94 df 01 	call	0x3be	; 0x3be <send_joystick_dir>
+ 570:	22 e3       	ldi	r18, 0x32	; 50
+ 572:	83 e3       	ldi	r24, 0x33	; 51
+ 574:	91 e0       	ldi	r25, 0x01	; 1
  576:	21 50       	subi	r18, 0x01	; 1
  578:	80 40       	sbci	r24, 0x00	; 0
  57a:	90 40       	sbci	r25, 0x00	; 0
  57c:	e1 f7       	brne	.-8      	; 0x576 <main+0x26>
  57e:	00 c0       	rjmp	.+0      	; 0x580 <main+0x30>
- 580:	00 00       	nop
-		_delay_ms(1000);
+ 580:	00 c0       	rjmp	.+0      	; 0x582 <main+0x32>
+		_delay_ms(80);
 		
 		if(ADC_ready){
  582:	80 91 53 01 	lds	r24, 0x0153

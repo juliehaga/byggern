@@ -49,8 +49,8 @@ int main(void) {
 	sei();
 
 	while(1){
-		send_slider_pos();
-		_delay_ms(1000);
+		send_joystick_dir();
+		_delay_ms(80);
 		
 		if(ADC_ready){
 			ADC_ready = 0;

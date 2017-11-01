@@ -20,22 +20,7 @@ channel 5 = x
 
 int joystick_read(int channel){
 	double pos = ADC_read(channel);
-	
-	if (pos < 132){
-		double a = (100-(pos/(132)*100));
-	}
-
-	if (pos < 132){
-		double a = (100-(pos/(132)*100));
-	
-
-		return -(int)a;
-	}
-	else{
-		double a = (pos-132)/(255-132)*100;
-
-		return (int)a;
-	}
+	return pos/255*100;
 }
 
 
@@ -61,23 +46,23 @@ joystick_dir find_joystick_dir(void){
 	//printf("x = %d\n", joystick_x); 
 	//printf("y = %d\n", joystick_y); 
 	
-	if (joystick_y > 80){
+	if (joystick_y > 127){
 		return UP;
 	}
-	else if (joystick_y < -80){
+	else if (joystick_y < 128){
 		return DOWN;
 	}
-	else if(joystick_x > 80){
+	else if(joystick_x > 127){
 		return RIGHT;
 	}
-	else if(joystick_x < -80){
+	else if(joystick_x < 128){
 		return LEFT;
 	}
 	return CENTER;
 }
 
 void send_joystick_dir(void){
-	joystick_dir joy_pos = find_joystick_dir();
+	joystick_dir joy_pos = joystick_read(4);
 	Message msg;
 		
 	msg.length = 1;

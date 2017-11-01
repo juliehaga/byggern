@@ -44,15 +44,14 @@ int main(void)
 		
 		
 		if(rx_int_flag){
-			//printf("flagget er satt til 1\n");
 			Message recieve_msg = CAN_recieve();
 			
 			for (int i = 0; i < recieve_msg.length; i ++){
 				printf("%d", recieve_msg.data[i]);
 				printf("\n");
 			}
-			uint8_t slider_pos = recieve_msg.data[0];
-			servo_set_pos(slider_pos);
+			uint8_t joystick_pos = recieve_msg.data[0];
+			servo_set_pos(joystick_pos);
 			
 			
 		}
@@ -60,7 +59,6 @@ int main(void)
 		
 		
 		
-				
 		_delay_ms(1);
 		
 		
