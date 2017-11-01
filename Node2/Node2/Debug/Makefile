@@ -38,10 +38,12 @@ SUBDIRS :=
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../CAN_driver.c \
+../driver_servo.c \
 ../driver_uart.c \
 ../MCP2515_driver.c \
 ../main.c \
-../SPI_driver.c
+../SPI_driver.c \
+../driver_pwm.c
 
 
 PREPROCESSING_SRCS += 
@@ -52,31 +54,39 @@ ASM_SRCS +=
 
 OBJS +=  \
 CAN_driver.o \
+driver_servo.o \
 driver_uart.o \
 MCP2515_driver.o \
 main.o \
-SPI_driver.o
+SPI_driver.o \
+driver_pwm.o
 
 OBJS_AS_ARGS +=  \
 CAN_driver.o \
+driver_servo.o \
 driver_uart.o \
 MCP2515_driver.o \
 main.o \
-SPI_driver.o
+SPI_driver.o \
+driver_pwm.o
 
 C_DEPS +=  \
 CAN_driver.d \
+driver_servo.d \
 driver_uart.d \
 MCP2515_driver.d \
 main.d \
-SPI_driver.d
+SPI_driver.d \
+driver_pwm.d
 
 C_DEPS_AS_ARGS +=  \
 CAN_driver.d \
+driver_servo.d \
 driver_uart.d \
 MCP2515_driver.d \
 main.d \
-SPI_driver.d
+SPI_driver.d \
+driver_pwm.d
 
 OUTPUT_FILE_PATH +=Node2.elf
 
@@ -92,6 +102,10 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
+
+
 
 
 

@@ -76,7 +76,7 @@ joystick_dir find_joystick_dir(void){
 	return CENTER;
 }
 
-void send_joystick_pos(void){
+void send_joystick_dir(void){
 	joystick_dir joy_pos = find_joystick_dir();
 	Message msg;
 		
@@ -87,4 +87,13 @@ void send_joystick_pos(void){
 	CAN_send(&msg);
 }
 
-
+void send_slider_pos(void){
+	int joy_pos = slider_read(6);
+	Message msg;
+	
+	msg.length = 1;
+	msg.data[0] = (uint8_t)joy_pos;
+	msg.ID = 0;
+	
+	CAN_send(&msg);
+}

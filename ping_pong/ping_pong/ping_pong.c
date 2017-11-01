@@ -5,6 +5,7 @@
  *  Author: julihag
  */ 
 
+#define F_CPU 4915200
 
 #include <avr/io.h>
 #include <stdio.h>
@@ -48,8 +49,8 @@ int main(void) {
 	sei();
 
 	while(1){
-		send_joystick_pos();
-		_delay_ms(80);
+		send_slider_pos();
+		_delay_ms(1000);
 		
 		if(ADC_ready){
 			ADC_ready = 0;

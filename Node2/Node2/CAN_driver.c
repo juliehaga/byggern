@@ -5,6 +5,8 @@
  *  Author: andrholt
  */ 
 
+#define F_CPU 16000000
+
 #include "MCP2515.h"
 #include "MCP2515_driver.h"
 #include "CAN_driver.h"

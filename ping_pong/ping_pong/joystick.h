@@ -14,7 +14,8 @@ typedef enum{UP, DOWN, RIGHT, LEFT, CENTER} joystick_dir;
 int joystick_read(int channel);
 int slider_read(int channel);
 int buttons_read(int button);
-void send_joystick_pos(void);
+void send_joystick_dir(void);
+void send_slider_pos(void);
 
 joystick_dir find_joystick_dir(void); 
 
