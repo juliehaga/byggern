@@ -17,6 +17,7 @@
 #include "driver_servo.h"
 #include "driver_pwm.h"
 #include "driver_ADC.h"
+#include "driver_IR.h"
 
 volatile uint8_t rx_int_flag = 0;
 
@@ -60,8 +61,10 @@ int main(void)
 		}*/
 		
 	
-		uint16_t data = ADC_read(); 
-		printf("DATA: %d\n", data);
+		if(IR_game_over()){
+			printf("Digital filter: %d \n", IR_digital_filter());
+			printf("you loose \n");
+		}
 
 		
 		

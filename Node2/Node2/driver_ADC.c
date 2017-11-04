@@ -43,9 +43,7 @@ uint16_t ADC_read(void){
 	//start conversion, when done automatically set to 0
 	set_bit(ADCSRA, ADSC);
 	
-	while(!ADC_ready){
-		printf("I while\n");
-	}
+	while(!ADC_ready);
 	ADC_ready = 0;
 	uint16_t data = ADCL | ADCH << 8;
 	uint8_t data_l = ADCL; 

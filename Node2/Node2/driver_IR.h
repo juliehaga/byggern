@@ -10,7 +10,9 @@
 #define DRIVER_IR_H_
 
 
-void IR_init();
+
+int IR_digital_filter(void);
+int IR_game_over(void);
 
 
 #endif /* DRIVER_IR_H_ */
