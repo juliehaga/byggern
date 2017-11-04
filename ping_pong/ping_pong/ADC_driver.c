@@ -10,6 +10,8 @@
 #include <avr/interrupt.h>
 #include "bit_functions.h"
 
+
+
 extern volatile uint8_t ADC_ready;
 
 int ADC_init(void) {

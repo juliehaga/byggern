@@ -127,10 +127,22 @@
     <Compile Include="driver_ADC.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="driver_DAC.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="driver_DAC.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="driver_IR.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="driver_IR.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="driver_motor.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="driver_motor.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="driver_servo.c">
@@ -167,6 +179,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="driver_pwm.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="TWI_Master.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="TWI_Master.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

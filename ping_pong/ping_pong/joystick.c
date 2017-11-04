@@ -11,6 +11,9 @@
 #include <avr/interrupt.h>
 #include "bit_functions.h"
 #include "CAN_driver.h"
+#include <stdlib.h>
+
+joystick_dir last_joy_pos = 0;
 
 /*
 channel 4 = y
@@ -62,14 +65,18 @@ joystick_dir find_joystick_dir(void){
 }
 
 void send_joystick_dir(void){
-	joystick_dir joy_pos = joystick_read(4);
-	Message msg;
-		
-	msg.length = 1;
-	msg.data[0] = (uint8_t)joy_pos;
-	msg.ID = 0;
 	
-	CAN_send(&msg);
+	joystick_dir joy_pos = joystick_read(5);
+	
+	if (abs(last_joy_pos - joy_pos) > 3){
+		printf("Sending CAN message\n");
+		Message msg;
+		msg.length = 1;
+		msg.data[0] = (uint8_t)joy_pos;
+		msg.ID = 0;
+		CAN_send(&msg);
+	}	
+	last_joy_pos = joy_pos;
 }
 
 void send_slider_pos(void){

@@ -18,6 +18,7 @@
 #include "driver_pwm.h"
 #include "driver_ADC.h"
 #include "driver_IR.h"
+#include "TWI_Master.h"
 
 volatile uint8_t rx_int_flag = 0;
 
@@ -29,6 +30,7 @@ int main(void)
 	CAN_init();
 	servo_init();
 	ADC_init();
+	TWI_Master_Initialise();
 	sei();			//global interrupt enable
 	/*
 	char* test = "Johanne\n";
@@ -46,7 +48,7 @@ int main(void)
     while(1)
     {
 		
-		/*
+		
 		if(rx_int_flag){
 			Message recieve_msg = CAN_recieve();
 			
@@ -58,14 +60,14 @@ int main(void)
 			servo_set_pos(joystick_pos);
 			
 			
-		}*/
+		}
 		
-	
+	/*
 		if(IR_game_over()){
 			printf("Digital filter: %d \n", IR_digital_filter());
 			printf("you loose \n");
 		}
-
+*/
 		
 		
 		_delay_ms(1);

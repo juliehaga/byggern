@@ -45,7 +45,8 @@ C_SRCS +=  \
 ../MCP2515_driver.c \
 ../main.c \
 ../SPI_driver.c \
-../driver_pwm.c
+../driver_pwm.c \
+../TWI_Master.c
 
 
 PREPROCESSING_SRCS += 
@@ -63,7 +64,8 @@ driver_uart.o \
 MCP2515_driver.o \
 main.o \
 SPI_driver.o \
-driver_pwm.o
+driver_pwm.o \
+TWI_Master.o
 
 OBJS_AS_ARGS +=  \
 CAN_driver.o \
@@ -74,7 +76,8 @@ driver_uart.o \
 MCP2515_driver.o \
 main.o \
 SPI_driver.o \
-driver_pwm.o
+driver_pwm.o \
+TWI_Master.o
 
 C_DEPS +=  \
 CAN_driver.d \
@@ -85,7 +88,8 @@ driver_uart.d \
 MCP2515_driver.d \
 main.d \
 SPI_driver.d \
-driver_pwm.d
+driver_pwm.d \
+TWI_Master.d
 
 C_DEPS_AS_ARGS +=  \
 CAN_driver.d \
@@ -96,7 +100,8 @@ driver_uart.d \
 MCP2515_driver.d \
 main.d \
 SPI_driver.d \
-driver_pwm.d
+driver_pwm.d \
+TWI_Master.d
 
 OUTPUT_FILE_PATH +=Node2.elf
 
@@ -112,6 +117,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 
