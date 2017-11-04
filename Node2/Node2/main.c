@@ -16,6 +16,7 @@
 #include "CAN_driver.h"
 #include "driver_servo.h"
 #include "driver_pwm.h"
+#include "driver_ADC.h"
 
 volatile uint8_t rx_int_flag = 0;
 
@@ -26,7 +27,8 @@ int main(void)
 	UART_init(MYUBRR);
 	CAN_init();
 	servo_init();
-	sei();
+	ADC_init();
+	sei();			//global interrupt enable
 	/*
 	char* test = "Johanne\n";
 	
@@ -39,10 +41,11 @@ int main(void)
 	CAN_send(&msg);
 	*/
 	//pwm_set_pulse_width(0.015);
+	
     while(1)
     {
 		
-		
+		/*
 		if(rx_int_flag){
 			Message recieve_msg = CAN_recieve();
 			
@@ -54,9 +57,12 @@ int main(void)
 			servo_set_pos(joystick_pos);
 			
 			
-		}
+		}*/
 		
-		
+	
+		uint16_t data = ADC_read(); 
+		printf("DATA: %d\n", data);
+
 		
 		
 		_delay_ms(1);

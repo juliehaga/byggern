@@ -4,6 +4,10 @@
 
 CAN_driver.c
 
+driver_ADC.c
+
+driver_IR.c
+
 driver_servo.c
 
 driver_uart.c

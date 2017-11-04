@@ -28,7 +28,6 @@ Enable receiver and transmitter
 	uart = fdevopen(&UART_transmit, &UART_receive);
 	
 	
-	
 	return 0; 
 }
 
