@@ -16,10 +16,7 @@ void motor_init(void){
 	set_bit(DDRH, PH5);				//EN as output
 	set_bit(DDRH, PH6);				//DIR as output
 	
-	//prescale SCK to f_osc/64
-	set_bit(TWSR, TWPS1); 
-	set_bit(TWSR, TWPS0);
-	
+
 	//enable motor
 	set_bit(PORTH, PH5);			
 	

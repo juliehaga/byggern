@@ -32,23 +32,15 @@ int main(void)
 	servo_init();
 	ADC_init();
 	motor_init();
-	sei();			//global interrupt enable
 	DAC_init();
-	/*
-	char* test = "Johanne\n";
+	sei();			//global interrupt enable
+
 	
-	Message msg;
-	msg.length = 8;
-	for (int i = 0; i < msg.length; i++){
-	msg.data[i] = test[i];
-	}
-	msg.ID = 0;
-	CAN_send(&msg);
-	*/
-	//pwm_set_pulse_width(0.015);
+	
+
 	
 	while(1)
-	{
+	{	
 		if(rx_int_flag){
 			Message recieve_msg = CAN_recieve();
 			
@@ -64,15 +56,14 @@ int main(void)
 			motor_drive(joystick_pos_x);
 			
 		}
-		//motor_drive(255);
+
 		/*
 		if(IR_game_over()){
 		printf("Digital filter: %d \n", IR_digital_filter());
 		printf("you loose \n");
-		}
-
+		}*/
 		
-		*/
+
 		_delay_ms(1);
 		
 		

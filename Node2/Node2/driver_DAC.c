@@ -15,6 +15,12 @@ void DAC_init(void){
 	
 	TWI_Master_Initialise();
 	
+	//prescale SCK to f_osc/64
+	
+	//set_bit(TWSR, TWPS1); 
+	//set_bit(TWSR, TWPS0);
+	
+	
 	//Set SDA og SCK til output
 	set_bit(DDRD, PD0);
 	set_bit(DDRD, PD1);
