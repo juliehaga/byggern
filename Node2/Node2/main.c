@@ -58,8 +58,10 @@ int main(void)
 			}
 			uint8_t joystick_pos_x = recieve_msg.data[0];
 			uint8_t joystick_pos_y = recieve_msg.data[1];
-			servo_set_pos(joystick_pos_x);
-			motor_drive(joystick_pos_y);
+			//printf("X = %d \t", recieve_msg.data[0]);
+			//printf("y = %d \n", recieve_msg.data[1]);
+			servo_set_pos(joystick_pos_y);
+			motor_drive(joystick_pos_x);
 			
 		}
 		//motor_drive(255);

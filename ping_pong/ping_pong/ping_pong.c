@@ -33,7 +33,9 @@ volatile uint8_t rx_int_flag = 0;
 
 
 
-volatile uint8_t* a = 0x1400;
+
+
+//volatile uint8_t* a = 0x1400;
 
 
 int main(void) {
@@ -47,15 +49,23 @@ int main(void) {
 	CAN_init();
 	//Enable global interrupts
 	sei();
+	
 
+	
 	while(1){
+		
 		send_joystick_dir();
-		_delay_ms(20);
+		_delay_ms(50);
+		//printf("Y %d \t", ADC_read(CHANNEL_X));
+		//printf("X %d\n", ADC_read(CHANNEL_Y));
 		
 		
+		
+		/*
 		if(ADC_ready){
 			ADC_ready = 0;
-		}
+		}*/
+		
 		/*
 		if(rx_int_flag){
 			//printf("flagget er satt til 1\n");

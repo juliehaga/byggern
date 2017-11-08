@@ -11,9 +11,15 @@
 #include <avr/interrupt.h>
 #include "bit_functions.h"
 #include "CAN_driver.h"
+#include "driver_uart.h"
 #include <stdlib.h>
 
+#include <util/delay.h>
+
 joystick_dir last_joy_pos = 0;
+
+uint8_t last_joystick_pos_x = 0;
+uint8_t last_joystick_pos_y = 0;
 
 /*
 channel 4 = y
@@ -44,8 +50,9 @@ int buttons_read(int button){
 }
 
 joystick_dir find_joystick_dir(void){
-	int joystick_x = joystick_read(4);
-	int joystick_y = joystick_read(5);
+	int joystick_x = joystick_read(5);
+	int joystick_y = joystick_read(4);
+	
 	//printf("x = %d\n", joystick_x); 
 	//printf("y = %d\n", joystick_y); 
 	
@@ -65,17 +72,25 @@ joystick_dir find_joystick_dir(void){
 }
 
 void send_joystick_dir(void){
-	joystick_dir joy_pos_x = joystick_read(CHANNEL_X);
-	joystick_dir joy_pos_y = joystick_read(CHANNEL_Y);
+	uint8_t joy_pos_x = ADC_read(CHANNEL_X);
 	
-	Message msg;
+	uint8_t joy_pos_y = ADC_read(CHANNEL_Y);
 	
-	msg.length = 2;
-	msg.data[0] = (uint8_t)joy_pos_x;
-	msg.data[1] = (uint8_t)joy_pos_y;
-	msg.ID = 0;
+	printf("joy x= %d \t", ADC_read(CHANNEL_X));
+	printf("joy y= %d \n",  ADC_read(CHANNEL_Y));
 	
-	CAN_send(&msg);
+	if(abs(joy_pos_x - last_joystick_pos_x) > 10 || abs(joy_pos_y - last_joystick_pos_y) > 10){
+		Message msg;
+		
+		msg.length = 2;
+		msg.data[0] = joy_pos_x;
+		msg.data[1] = joy_pos_y;
+		msg.ID = 0;
+		
+		CAN_send(&msg);
+		last_joystick_pos_x = joy_pos_x;
+		last_joystick_pos_y = joy_pos_y;
+	}
 }
 
 void send_slider_pos(void){

@@ -1085,12 +1085,14 @@ int main(void)
 				//printf("\n");
 			}
 			uint8_t joystick_pos_x = recieve_msg.data[0];
+     64c:	1d 81       	ldd	r17, Y+5	; 0x05
 			uint8_t joystick_pos_y = recieve_msg.data[1];
-     64c:	1e 81       	ldd	r17, Y+6	; 0x06
-			servo_set_pos(joystick_pos_x);
-     64e:	8d 81       	ldd	r24, Y+5	; 0x05
+			//printf("X = %d \t", recieve_msg.data[0]);
+			//printf("y = %d \n", recieve_msg.data[1]);
+			servo_set_pos(joystick_pos_y);
+     64e:	8e 81       	ldd	r24, Y+6	; 0x06
      650:	5b df       	rcall	.-330    	; 0x508 <servo_set_pos>
-			motor_drive(joystick_pos_y);
+			motor_drive(joystick_pos_x);
      652:	81 2f       	mov	r24, r17
      654:	90 e0       	ldi	r25, 0x00	; 0
      656:	1a df       	rcall	.-460    	; 0x48c <motor_drive>

@@ -11,9 +11,9 @@
 
 #include <avr/io.h>
 #include "sram_test.h"
+#include "driver_uart.h"
 
 void SRAM_test(void) {
-	printf("here");
 	volatile char *ext_ram = (char *) 0x1800; // Start address for the SRAM 
 	uint16_t ext_ram_size = 0x800; 
 	uint16_t write_errors = 0; 

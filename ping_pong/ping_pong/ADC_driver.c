@@ -9,6 +9,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "bit_functions.h"
+#include <util/delay.h>
 
 
 
@@ -45,11 +46,11 @@ int ADC_init(void) {
 uint8_t ADC_read(uint8_t channel) {
 	//Address for the ADC
 	volatile char *adc = (char *) 0x1400;
-	
+	_delay_ms(2);
 	//Choose channel in ADC
 	*adc = 0x04 | channel;
 	while(!ADC_ready);
-		
+	ADC_ready = 0; 
 	return *adc;
 }
 
