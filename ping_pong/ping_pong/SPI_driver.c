@@ -18,8 +18,9 @@ void SPI_init(void){
 	//Set SPI to master mode
 	set_bit(SPCR, MSTR);
 	
-	//set SPI clock rate = Fosc/16
-	set_bit(SPCR, SPR0);
+	//set SPI clock rate = Fosc/2
+	set_bit(SPSR, SPI2X);
+	
 	
 	//set MOSI and SCK to output, all others input
 	set_bit(DDRB, MOSI);

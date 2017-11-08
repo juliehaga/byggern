@@ -6,7 +6,11 @@ CAN_driver.c
 
 driver_ADC.c
 
+driver_DAC.c
+
 driver_IR.c
+
+driver_motor.c
 
 driver_servo.c
 

@@ -22,14 +22,14 @@ channel 5 = x
 
 
 int joystick_read(int channel){
-	double pos = ADC_read(channel);
-	return pos/255*100;
+	//Return 0-255
+	return ADC_read(channel);
 }
 
 
 int slider_read(int channel){
-	double pos = ADC_read(channel);
-	return pos/255*100;
+	//Return 0-255
+	return ADC_read(channel);
 }
 
 
@@ -49,34 +49,30 @@ joystick_dir find_joystick_dir(void){
 	//printf("x = %d\n", joystick_x); 
 	//printf("y = %d\n", joystick_y); 
 	
-	if (joystick_y > 127){
+	if (joystick_y > 135){
 		return UP;
 	}
-	else if (joystick_y < 128){
+	else if (joystick_y < 130){
 		return DOWN;
 	}
-	else if(joystick_x > 127){
+	else if(joystick_x > 135){
 		return RIGHT;
 	}
-	else if(joystick_x < 128){
+	else if(joystick_x < 130){
 		return LEFT;
 	}
 	return CENTER;
 }
 
 void send_joystick_dir(void){
+	joystick_dir joy_pos = joystick_read(4);
+	Message msg;
 	
-	joystick_dir joy_pos = joystick_read(5);
+	msg.length = 1;
+	msg.data[0] = (uint8_t)joy_pos;
+	msg.ID = 0;
 	
-	if (abs(last_joy_pos - joy_pos) > 3){
-		printf("Sending CAN message\n");
-		Message msg;
-		msg.length = 1;
-		msg.data[0] = (uint8_t)joy_pos;
-		msg.ID = 0;
-		CAN_send(&msg);
-	}	
-	last_joy_pos = joy_pos;
+	CAN_send(&msg);
 }
 
 void send_slider_pos(void){

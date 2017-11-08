@@ -21,11 +21,11 @@ void servo_init(void){
 void servo_set_pos(uint8_t dir){
 	
 
-	if(dir > 55){					//dir is scaled from 0 to 100
-		pwm_set_pulse_width(0.0015 + (dir-50)*0.000012);
+	if(dir > 135){					//dir is scaled from 0 to 100
+		pwm_set_pulse_width(0.0015 + (dir-132)*0.000004);
 	}
-	else if (dir < 45){
-		pwm_set_pulse_width(dir*0.00003);
+	else if (dir < 130){
+		pwm_set_pulse_width(0.0009 + dir*0.000004);
 	}
 	else{
 		pwm_set_pulse_width(0.0015);

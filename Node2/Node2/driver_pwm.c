@@ -49,7 +49,6 @@ void pwm_set_pulse_width(float sec){
 	if ((sec < 0.0021) & (sec > 0.0009)){
 		
 		uint16_t pulse = PWM_FREQ*sec -0.5;
-
 		OCR1A = pulse;
 	}
 

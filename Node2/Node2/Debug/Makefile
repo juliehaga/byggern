@@ -39,7 +39,9 @@ SUBDIRS :=
 C_SRCS +=  \
 ../CAN_driver.c \
 ../driver_ADC.c \
+../driver_DAC.c \
 ../driver_IR.c \
+../driver_motor.c \
 ../driver_servo.c \
 ../driver_uart.c \
 ../MCP2515_driver.c \
@@ -58,7 +60,9 @@ ASM_SRCS +=
 OBJS +=  \
 CAN_driver.o \
 driver_ADC.o \
+driver_DAC.o \
 driver_IR.o \
+driver_motor.o \
 driver_servo.o \
 driver_uart.o \
 MCP2515_driver.o \
@@ -70,7 +74,9 @@ TWI_Master.o
 OBJS_AS_ARGS +=  \
 CAN_driver.o \
 driver_ADC.o \
+driver_DAC.o \
 driver_IR.o \
+driver_motor.o \
 driver_servo.o \
 driver_uart.o \
 MCP2515_driver.o \
@@ -82,7 +88,9 @@ TWI_Master.o
 C_DEPS +=  \
 CAN_driver.d \
 driver_ADC.d \
+driver_DAC.d \
 driver_IR.d \
+driver_motor.d \
 driver_servo.d \
 driver_uart.d \
 MCP2515_driver.d \
@@ -94,7 +102,9 @@ TWI_Master.d
 C_DEPS_AS_ARGS +=  \
 CAN_driver.d \
 driver_ADC.d \
+driver_DAC.d \
 driver_IR.d \
+driver_motor.d \
 driver_servo.d \
 driver_uart.d \
 MCP2515_driver.d \
@@ -117,6 +127,10 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
+
+
 
 
 

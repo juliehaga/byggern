@@ -9,7 +9,11 @@
 #ifndef DRIVER_DAC_H_
 #define DRIVER_DAC_H_
 
+#include <stdint.h>
+
+
 void DAC_send_data(uint8_t data);
+void DAC_init(void);
 
 
 

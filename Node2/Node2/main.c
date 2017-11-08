@@ -18,7 +18,8 @@
 #include "driver_pwm.h"
 #include "driver_ADC.h"
 #include "driver_IR.h"
-#include "TWI_Master.h"
+#include "driver_motor.h"
+#include "driver_DAC.h"
 
 volatile uint8_t rx_int_flag = 0;
 
@@ -30,8 +31,9 @@ int main(void)
 	CAN_init();
 	servo_init();
 	ADC_init();
-	TWI_Master_Initialise();
+	motor_init();
 	sei();			//global interrupt enable
+	DAC_init();
 	/*
 	char* test = "Johanne\n";
 	
@@ -46,8 +48,10 @@ int main(void)
 	//pwm_set_pulse_width(0.015);
 	
     while(1)
-    {
+    { 
 		
+		
+		motor_drive(200);
 		
 		if(rx_int_flag){
 			Message recieve_msg = CAN_recieve();
@@ -60,6 +64,7 @@ int main(void)
 			servo_set_pos(joystick_pos);
 			
 			
+			
 		}
 		
 	/*
@@ -67,9 +72,9 @@ int main(void)
 			printf("Digital filter: %d \n", IR_digital_filter());
 			printf("you loose \n");
 		}
-*/
+
 		
-		
+		*/
 		_delay_ms(1);
 		
 		
