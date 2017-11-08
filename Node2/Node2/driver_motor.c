@@ -27,11 +27,20 @@ void motor_init(void){
 
 
 //Get joystick input 0-50: Left, 50-100: Right
-void motor_drive(int data){
+void motor_drive(int joystick_value){
 	
-	motor_set_dir(data);
+	motor_set_dir(joystick_value);
 	
-	DAC_send_data(data);
+	if(joystick_value > 135){
+		DAC_send_data((int)(joystick_value-135)*2.125); //Scaling
+	}
+	else if(joystick_value < 130){
+		DAC_send_data((int)(130-joystick_value)*(double)255/130);
+	}
+	else{
+		DAC_send_data(0);
+	}
+	
 }
 
 void motor_set_dir(int dir){

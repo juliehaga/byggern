@@ -52,6 +52,7 @@ int main(void) {
 		send_joystick_dir();
 		_delay_ms(20);
 		
+		
 		if(ADC_ready){
 			ADC_ready = 0;
 		}

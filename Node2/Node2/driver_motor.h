@@ -11,7 +11,7 @@
 
 
 void motor_init(void); 
-void motor_drive(int data);
+void motor_drive(int joystick_value);
 void motor_set_dir(int dir);
 
 

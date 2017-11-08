@@ -1,9 +1,9 @@
 /*
- * Node2.c
- *
- * Created: 25.10.2017 11:49:48
- *  Author: andrholt
- */ 
+* Node2.c
+*
+* Created: 25.10.2017 11:49:48
+*  Author: andrholt
+*/
 #define F_CPU 16000000
 #include <util/delay.h>
 
@@ -40,37 +40,33 @@ int main(void)
 	Message msg;
 	msg.length = 8;
 	for (int i = 0; i < msg.length; i++){
-		msg.data[i] = test[i];
+	msg.data[i] = test[i];
 	}
 	msg.ID = 0;
 	CAN_send(&msg);
 	*/
 	//pwm_set_pulse_width(0.015);
 	
-    while(1)
-    { 
-		
-		
-		motor_drive(200);
-		
+	while(1)
+	{
 		if(rx_int_flag){
 			Message recieve_msg = CAN_recieve();
 			
 			for (int i = 0; i < recieve_msg.length; i ++){
-				printf("%d", recieve_msg.data[i]);
-				printf("\n");
+				//printf("%d", recieve_msg.data[i]);
+				//printf("\n");
 			}
-			uint8_t joystick_pos = recieve_msg.data[0];
-			servo_set_pos(joystick_pos);
-			
-			
+			uint8_t joystick_pos_x = recieve_msg.data[0];
+			uint8_t joystick_pos_y = recieve_msg.data[1];
+			servo_set_pos(joystick_pos_x);
+			motor_drive(joystick_pos_y);
 			
 		}
-		
-	/*
+		//motor_drive(255);
+		/*
 		if(IR_game_over()){
-			printf("Digital filter: %d \n", IR_digital_filter());
-			printf("you loose \n");
+		printf("Digital filter: %d \n", IR_digital_filter());
+		printf("you loose \n");
 		}
 
 		
@@ -82,4 +78,3 @@ int main(void)
 	return 0;
 }
 
-	

@@ -65,11 +65,14 @@ joystick_dir find_joystick_dir(void){
 }
 
 void send_joystick_dir(void){
-	joystick_dir joy_pos = joystick_read(4);
+	joystick_dir joy_pos_x = joystick_read(CHANNEL_X);
+	joystick_dir joy_pos_y = joystick_read(CHANNEL_Y);
+	
 	Message msg;
 	
-	msg.length = 1;
-	msg.data[0] = (uint8_t)joy_pos;
+	msg.length = 2;
+	msg.data[0] = (uint8_t)joy_pos_x;
+	msg.data[1] = (uint8_t)joy_pos_y;
 	msg.ID = 0;
 	
 	CAN_send(&msg);

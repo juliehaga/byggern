@@ -8,7 +8,8 @@
 
 #ifndef JOYSTICK_H_
 #define JOYSTICK_H_
-
+#define CHANNEL_Y 4
+#define CHANNEL_X 5
 typedef enum{UP, DOWN, RIGHT, LEFT, CENTER} joystick_dir;
 
 int joystick_read(int channel);
