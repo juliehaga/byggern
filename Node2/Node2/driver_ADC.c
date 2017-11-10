@@ -46,8 +46,6 @@ uint16_t ADC_read(void){
 	while(!ADC_ready);
 	ADC_ready = 0;
 	uint16_t data = ADCL | ADCH << 8;
-	uint8_t data_l = ADCL; 
-	uint8_t data_h = ADCH; 
 
 	return data;
 }

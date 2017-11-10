@@ -31,16 +31,15 @@ int main(void)
 	CAN_init();
 	servo_init();
 	ADC_init();
-	motor_init();
 	DAC_init();
+	motor_init();
 	sei();			//global interrupt enable
-
 	
-	
-
+	motor_calibration();
 	
 	while(1)
 	{	
+		
 		if(rx_int_flag){
 			Message recieve_msg = CAN_recieve();
 			
@@ -56,6 +55,9 @@ int main(void)
 			motor_drive(joystick_pos_x);
 			
 		}
+		
+		//printf("%d\n",motor_read_encoder());
+		
 
 		/*
 		if(IR_game_over()){

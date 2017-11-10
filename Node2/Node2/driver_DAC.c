@@ -12,9 +12,9 @@
 #include <avr/interrupt.h>
 
 void DAC_init(void){
-	
+	sei();
 	TWI_Master_Initialise();
-	
+	cli();
 	//prescale SCK to f_osc/64
 	
 	//set_bit(TWSR, TWPS1); 
@@ -33,6 +33,5 @@ void DAC_send_data(uint8_t data){
 	uint8_t command = 0b00000000;		  //command choose DAC0
 	
 	uint8_t msg[3] = {address, command, data};
-	printf("data = %d \n", data);
 	TWI_Start_Transceiver_With_Data(msg, 3);
 }

@@ -22,7 +22,7 @@ extern volatile uint8_t rx_int_flag;
 
 int CAN_init(){
 	volatile uint8_t value;
-	printf("can init start\n");
+
 	//config-mode
 	SPI_init();
 	MCP2515_reset();
