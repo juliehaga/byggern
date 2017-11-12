@@ -18,12 +18,14 @@
 #define MAX 255
 #define MIN 0
 
+int left_pos = 0;
+int right_pos;
 
-#define Kp 0.1
-#define Ki 0.005
+#define Kp 1
+#define Ki 0.1
 
-float top_speed;
-int prev_encoder = 0; 
+motor_dir dir = STOP; 
+
  
 
 void motor_init(void){
@@ -36,8 +38,8 @@ void motor_init(void){
 	set_bit(DDRH, PH3);				//SEL as output
 	set_bit(DDRH, PH6);				//!RST as output
 	
-	set_bit(PORTH, PH5);
-	set_bit(PORTH, PH6);
+	set_bit(PORTH, PH5);			//Output enables
+	set_bit(PORTH, PH6);			//set restart to pin
 	
 	
 	
@@ -48,10 +50,11 @@ void motor_init(void){
 
 //Get joystick input 0-130: Left, 135-255: Right
 void motor_drive(int motor_input){
-	
-	motor_set_dir(motor_input);
-	
-	if(motor_input > 135){
+	motor_set_dir();
+	DAC_send_data(motor_input);
+
+	/*
+	if(motor_input> 130){
 		DAC_send_data((int)(motor_input-135)*2.125); //Scaling
 	}
 	else if(motor_input < 130){
@@ -59,12 +62,12 @@ void motor_drive(int motor_input){
 	}
 	else{
 		DAC_send_data(0);
-	}
+	}*/
 	
 }
 
-void motor_set_dir(int dir){
-	if (dir < 132){
+void motor_set_dir(void){
+	if (dir == LEFT){
 		clr_bit(PORTH, PH1);
 	}
 	else{
@@ -91,45 +94,60 @@ int16_t motor_read_encoder(void){
 	data = PINK | data;
 	//motor_reset_encoder();
 	set_bit(PORTH, PH5);		//!OE high
-	return data;
+	
+	return data*(-0.027);
 }
 
-int motor_velocity(void){
-	int encoder_value = motor_read_encoder();
-	float velocity = (encoder_value - prev_encoder)/ST;
-	return 0;
-}
+
 
 void motor_calibration(void){
+	//drive to left corner
+	dir = LEFT;
 	motor_drive(255);
+	_delay_ms(500);
 	
-	_delay_ms(200);
-	motor_drive(132);
+	//choose zero-position
 	motor_reset_encoder();
 	printf("encoder value %d\n", motor_read_encoder());
+	
+	dir = RIGHT;
+	motor_drive(255);
+	_delay_ms(500);
+	right_pos = motor_read_encoder();
 	motor_drive(0);
-	_delay_ms(100);
-	motor_drive(132);
-	top_speed = motor_read_encoder()/0.2;
-	printf("top %d\n", top_speed);
+	printf("top %d\n", right_pos);
 }
 
 
-void motor_PI(int joystick_value){
+void motor_PI(int slider_value){
 	static float integral = 0; 
-	int error = joystick_value - motor_velocity(); 
+	printf("Slider: %d \t", slider_value);
+	int encoder = motor_read_encoder();
+	printf("encoder: %d \n", encoder);
+	int error = slider_value - encoder; 
+	if (error > 0){
+		dir = RIGHT;
+	} else{
+		dir = LEFT; 
+	}
+	
 	
 	//in case of error ti small, stop integration
 	if(abs(error) > epsilon){
+		printf("error %d \n", error);
 		integral = integral + error*ST;
 	} 
-	int output = Kp*error + Ki*integral;
+	
+	int output = Kp*abs(error) + Ki*integral;
 	
 	if (output > MAX) {
 		output = MAX;
 	} else if (output < MIN){
 		output = MIN;
 	} 
+	
+	printf("output %d \n", output);
+	
 	motor_drive(output);
 }
 

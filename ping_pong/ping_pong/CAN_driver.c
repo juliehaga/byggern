@@ -9,12 +9,16 @@
 #include "MCP2515_driver.h"
 #include "CAN_driver.h"
 #include "bit_functions.h"
+#include "joystick.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include <stdio.h>
 
 extern volatile uint8_t rx_int_flag; 
+
+uint8_t last_joystick_pos_x = 0;
+uint8_t last_slider_pos_r = 0;
 
 int CAN_init(){
 	volatile uint8_t value;
@@ -127,6 +131,32 @@ Message create_msg(int ID, int length, char* data){
 	msg.ID = ID;
 	
 	return msg;
+}
+
+
+void send_CAN_msg(void){
+	uint8_t joy_pos_x = joystick_read(CHANNEL_X);
+	
+	uint8_t joy_pos_y = joystick_read(CHANNEL_Y);
+	uint8_t slider_pos_r = slider_read(SLIDER_R);
+	uint8_t slider_pos_l = slider_read(SLIDER_L);
+	
+	printf("x_pos %d \t ", joy_pos_x);
+	printf("y_pos %d \t ", joy_pos_y);
+	printf("slider_l_pos %d \t ", slider_pos_l);
+	printf("slider %d \n", slider_pos_r);
+	if(abs(joy_pos_x - last_joystick_pos_x) > 10 || abs(slider_pos_r - last_slider_pos_r) > 10){
+		Message msg;
+		
+		msg.length = 3;
+		msg.data[0] = joy_pos_x;
+		msg.data[1] = slider_pos_r;
+		msg.ID = 0;
+		
+		CAN_send(&msg);
+		last_joystick_pos_x = joy_pos_x;
+		last_slider_pos_r = slider_pos_r;
+	}
 }
 
 ISR(INT0_vect){

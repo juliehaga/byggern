@@ -36,10 +36,10 @@ int main(void)
 	sei();			//global interrupt enable
 	
 	motor_calibration();
-	
+
 	while(1)
 	{	
-		
+		//printf("ENCODER: %d\n",motor_read_encoder());
 		if(rx_int_flag){
 			Message recieve_msg = CAN_recieve();
 			
@@ -47,14 +47,18 @@ int main(void)
 				//printf("%d", recieve_msg.data[i]);
 				//printf("\n");
 			}
-			uint8_t joystick_pos_x = recieve_msg.data[0];
-			uint8_t joystick_pos_y = recieve_msg.data[1];
-			//printf("X = %d \t", recieve_msg.data[0]);
-			//printf("y = %d \n", recieve_msg.data[1]);
-			servo_set_pos(joystick_pos_y);
-			motor_drive(joystick_pos_x);
+			uint8_t joystick_pos_x = recieve_msg.data[1];
+			uint8_t slider_pos_r = recieve_msg.data[0];
+			//printf("servo = %d \t", recieve_msg.data[1]);
+			//printf("slider = %d \n", recieve_msg.data[0]);
+			servo_set_pos(joystick_pos_x);
+			motor_PI(slider_pos_r);
+			
 			
 		}
+		
+		
+		
 		
 		//printf("%d\n",motor_read_encoder());
 		

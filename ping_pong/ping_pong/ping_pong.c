@@ -54,17 +54,17 @@ int main(void) {
 	
 	while(1){
 		
-		send_joystick_dir();
+		send_CAN_msg();
 		_delay_ms(50);
 		//printf("Y %d \t", ADC_read(CHANNEL_X));
 		//printf("X %d\n", ADC_read(CHANNEL_Y));
 		
 		
 		
-		/*
+		
 		if(ADC_ready){
 			ADC_ready = 0;
-		}*/
+		}
 		
 		/*
 		if(rx_int_flag){

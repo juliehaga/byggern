@@ -50,7 +50,7 @@ uint8_t ADC_read(uint8_t channel) {
 	//Choose channel in ADC
 	*adc = 0x04 | channel;
 	while(!ADC_ready);
-	ADC_ready = 0; 
+	//ADC_ready = 0; 
 	return *adc;
 }
 
