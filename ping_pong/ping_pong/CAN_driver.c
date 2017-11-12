@@ -18,7 +18,7 @@
 extern volatile uint8_t rx_int_flag; 
 
 uint8_t last_joystick_pos_x = 0;
-uint8_t last_slider_pos_r = 0;
+uint8_t last_slider_pos_l = 0;
 uint8_t last_button_l = 0;
 
 Message msg;
@@ -139,18 +139,18 @@ void CAN_send_msg(void){
 	printf("Button %d \t ", button_l);
 	printf("slider %d \n", slider_pos_r);
 	
-	if(abs(joy_pos_x - last_joystick_pos_x) > 10 || abs(slider_pos_r - last_slider_pos_r) > 10 || (button_l != last_button_l)){
+	if(abs(joy_pos_x - last_joystick_pos_x) > 10 || abs(slider_pos_l - last_slider_pos_l) > 10 || (button_l != last_button_l)){
 		Message msg;
 		
 		msg.length = 3;
 		msg.data[0] = joy_pos_x;
-		msg.data[1] = slider_pos_r;
+		msg.data[1] = slider_pos_l;
 		msg.data[2] = button_l;
 		msg.ID = 0;
 		
 		CAN_send(&msg);
 		last_joystick_pos_x = joy_pos_x;
-		last_slider_pos_r = slider_pos_r;
+		last_slider_pos_l = slider_pos_l;
 		last_button_l = button_l;
 		
 	}

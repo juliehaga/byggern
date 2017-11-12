@@ -50,30 +50,20 @@ int main(void) {
 	sei();
 	
 	
-	
+	menu_setup();
 
 	
 	while(1){
 		
-		CAN_send_msg();
-		
-		//printf("Y %d \t", ADC_read(CHANNEL_X));
-		//printf("X %d\n", ADC_read(CHANNEL_Y));
+		//CAN_send_msg();
+		main_menu();
+			
+	
 	
 		if(ADC_ready){
 			ADC_ready = 0;
 		}
 		
-		/*
-		if(rx_int_flag){
-			//printf("flagget er satt til 1\n");
-			Message recieve_msg = CAN_recieve();
-			
-			for (int i = 0; i < recieve_msg.length; i ++){
-				printf("%c", recieve_msg.data[i]);
-			}
-		}
-		*/
 	}
 	return 0;
 }

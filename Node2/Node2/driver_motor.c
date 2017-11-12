@@ -117,7 +117,7 @@ void motor_calibration(void){
 	
 	//drive to left corner
 	dir = LEFT;
-	motor_drive(FULL_SPEED);
+	motor_drive(180);
 	_delay_ms(500);
 	
 	//choose zero-position
@@ -125,7 +125,7 @@ void motor_calibration(void){
 	printf("encoder value %d\n", motor_read_encoder());
 	
 	dir = RIGHT;
-	motor_drive(FULL_SPEED);
+	motor_drive(180);
 	_delay_ms(500);
 	right_pos = motor_read_encoder();
 	motor_drive(STOP);

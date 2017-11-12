@@ -42,22 +42,23 @@ int main(void)
 	while(1)
 	{	
 		
-	
+	/*
 		//printf("ENCODER: %d\n",motor_read_encoder());
 		if(rx_int_flag){
 			printf("can received \n");
 			
 			Message recieve_msg = CAN_recieve();
 			
-			slider_pos_r = recieve_msg.data[0];
-			uint8_t joystick_pos_x = recieve_msg.data[1];
+			slider_pos_r = recieve_msg.data[1];
+			uint8_t joystick_pos_x = recieve_msg.data[0];
 			int solenoid_button = recieve_msg.data[2];
 			
-			printf("x_pos %d \t ", joystick_pos_x);
-			printf("Button %d \t ", solenoid_button);
-			printf("slider r %d \n", slider_pos_r);
-			servo_set_pos(joystick_pos_x);
+			printf("joy_pos_x %d \t ", joystick_pos_x);
+			printf("slider l %d \t", slider_pos_r);
+			printf("Button %d \n ", solenoid_button);
 			
+			servo_set_pos(joystick_pos_x);
+			/*
 			if (solenoid_button == 2){
 				printf("shoot\n");
 				solenoid_shoot();

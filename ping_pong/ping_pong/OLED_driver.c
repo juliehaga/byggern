@@ -137,7 +137,7 @@ void oled_update(){
 	for(int i = 0; i<8; i++){
 		oled_pos(i,0);
 		for(int j = 0; j < 16; j++){
-			oled_print_char( oled_read_SRAM(i, j)); 
+			oled_print_char(oled_read_SRAM(i, j)); 
 		}
 	}
 }

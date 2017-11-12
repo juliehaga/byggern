@@ -48,22 +48,22 @@ int button_read(int button){
 }
 
 joystick_dir find_joystick_dir(void){
-	int joystick_x = joystick_read(5);
-	int joystick_y = joystick_read(4);
+	int joystick_x = joystick_read(CHANNEL_X);
+	int joystick_y = joystick_read(CHANNEL_Y);
 	
 	//printf("x = %d\n", joystick_x); 
 	//printf("y = %d\n", joystick_y); 
 	
-	if (joystick_y > 135){
+	if (joystick_y > 150){
 		return UP;
 	}
-	else if (joystick_y < 130){
+	else if (joystick_y < 110){
 		return DOWN;
 	}
-	else if(joystick_x > 135){
+	else if(joystick_x > 150){
 		return RIGHT;
 	}
-	else if(joystick_x < 130){
+	else if(joystick_x < 110){
 		return LEFT;
 	}
 	return CENTER;
