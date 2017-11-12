@@ -13,6 +13,7 @@
 #include "CAN_driver.h"
 #include "driver_uart.h"
 #include <stdlib.h>
+#include "bit_functions.h"
 
 #include <util/delay.h>
 
@@ -79,4 +80,8 @@ void send_slider_pos(void){
 	msg.ID = 0;
 	
 	CAN_send(&msg);
+}
+
+int read_joystick_button(void){
+	return test_bit(PINB, PINB2);
 }

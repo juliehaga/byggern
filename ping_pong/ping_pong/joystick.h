@@ -30,6 +30,7 @@ int joystick_read(int channel);
 int slider_read(int channel);
 int button_read(int button);
 void send_slider_pos(void);
+int read_joystick_button(void); 
 
 joystick_dir find_joystick_dir(void); 
 

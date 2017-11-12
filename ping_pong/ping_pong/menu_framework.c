@@ -9,12 +9,14 @@
 #include "menu_framework.h"
 #include "driver_uart.h"
 #include <stdlib.h>
+#include <string.h>
 
 
 #include <stddef.h>
 
 int current_page = 1;
 menu* display_menu;
+static menu* current_menu;
 joystick_dir last_joy_dir = CENTER;
 
 
@@ -23,34 +25,31 @@ joystick_dir last_joy_dir = CENTER;
 void menu_setup(void){
 	menu* menu_front_page = create_menu("How to steal");
 	display_menu = menu_front_page;
-	menu* sub1 = create_menu("Gal");
+
+	menu* sub1 = create_menu("Play game");
 	menu* sub2 = create_menu("Kode");
 	menu* sub3 = create_menu("USB-board");
-	menu* subsub1 = create_menu("lur Bendik");
-	menu* subsub2 = create_menu("facerape");
+	menu* subsub2 = create_menu("Highscore");
 
 	create_submenu(menu_front_page, sub1);
 	create_submenu(menu_front_page, sub2);
 	create_submenu(menu_front_page, sub3);
-	create_submenu(sub1, subsub1);
 	create_submenu(sub2, subsub2);
 	
 	oled_reset();
 	menu_sram_update(display_menu, current_page);
 	oled_update();
+	current_menu = display_menu->child;
 }
 
 
 
 
-
+/*
 void print_menu_oled(menu* menu_node, int page){
 	oled_reset();
 	oled_home();
 	oled_print_string(menu_node->name);
-	
-	menu* current = menu_node->child;
-	int page_count = 1; 
 	while(current != NULL){
 		oled_goto_page(page_count);
 		oled_goto_column(15);
@@ -60,7 +59,7 @@ void print_menu_oled(menu* menu_node, int page){
 	}
 	print_selection_sign(page);
 	
-}
+}*/
 
 void menu_sram_update(menu* menu_node, int selector_pos){
 	int col = 0; 
@@ -152,14 +151,14 @@ void print_selection_sign(int page){
 
 
 
-void main_menu(void){
+menu_options main_menu(void){
 	
 	joystick_dir joy_dir = find_joystick_dir();
-	printf("joystick dir %d \n", joy_dir);
 	if(joy_dir != last_joy_dir){
 		switch(joy_dir){
 			case UP:
 				if(current_page > 1){
+					current_menu = current_menu->prev_sibling;
 					current_page--;
 				}
 				menu_sram_update(display_menu, current_page);
@@ -167,27 +166,49 @@ void main_menu(void){
 				break;
 			case DOWN:
 				if(current_page < display_menu->number_of_childs){
+					current_menu = current_menu ->next_sibling;
 					current_page++;
 				}
 				menu_sram_update(display_menu, current_page);
 				oled_update();
 				break;
 			case RIGHT:
-				display_menu = update_display_menu(display_menu, current_page, RIGHT);
-				current_page = 1;
-				menu_sram_update(display_menu, current_page);
-				oled_update();
+				if(current_menu->child != NULL){
+					display_menu = update_display_menu(display_menu, current_page, RIGHT);
+					current_page = 1;
+					menu_sram_update(display_menu, current_page);
+					oled_update();
+					current_menu = current_menu->child;
+				}
 				break;
 			case LEFT:
-				display_menu = update_display_menu(display_menu, current_page, LEFT);
-				current_page = 1;
-				menu_sram_update(display_menu, current_page);
-				oled_update();
+				if(current_menu->parent->parent != NULL){
+					display_menu = update_display_menu(display_menu, current_page, LEFT);
+					current_page = 1;
+					menu_sram_update(display_menu, current_page);
+					oled_update();
+					current_menu = current_menu->parent->parent->child;
+				}
 				break;
 			default:
 				break;
 		}
+		
 	}
 	
 	last_joy_dir = joy_dir;
+	for(int i = 0 ; i <3 ; i++){
+		printf("%c", current_menu->name[i]);
+	}
+	printf("\n");
+	
+	if(read_joystick_button() ==0){
+		if (current_menu->name == "Play game"){
+			return PLAY_GAME;
+		} else if (current_menu->name == "Highscore"){
+			return HIGHSCORE;
+		}
+		
+	}
+	return NO_MENU;
 }

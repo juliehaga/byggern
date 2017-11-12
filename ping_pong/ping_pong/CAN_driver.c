@@ -14,6 +14,7 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 extern volatile uint8_t rx_int_flag; 
 

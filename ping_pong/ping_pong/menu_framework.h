@@ -20,7 +20,11 @@ typedef struct menu{
 }menu;
 
 
-void main_menu(void);
+
+typedef enum{PLAY_GAME, HIGHSCORE, NO_MENU} menu_options;
+
+
+menu_options main_menu(void);
 void menu_setup(void);
 void print_menu_oled(menu* menu_print, int page);
 void menu_sram_update(menu* menu_node, int selector_pos);

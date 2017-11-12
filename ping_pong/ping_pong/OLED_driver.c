@@ -7,6 +7,7 @@
 #include "OLED_driver.h"
 #include <avr/pgmspace.h>
 #include "fonts.h"
+#include <string.h>
 
 
 

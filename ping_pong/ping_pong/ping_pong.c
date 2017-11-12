@@ -31,7 +31,7 @@
 volatile uint8_t ADC_ready = 0;
 volatile uint8_t rx_int_flag = 0;
 
-
+int button_pushed = 0;
 
 
 
@@ -54,12 +54,15 @@ int main(void) {
 
 	
 	while(1){
-		
+		printf("MENU: %d\n", main_menu());
+
 		//CAN_send_msg();
-		main_menu();
-			
+		
+		
 	
-	
+		
+		
+		
 		if(ADC_ready){
 			ADC_ready = 0;
 		}
