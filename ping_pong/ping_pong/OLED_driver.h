@@ -31,6 +31,7 @@ void oled_sram_char(char c, int page, int col);
 char oled_read_SRAM(int page, int col);
 void oled_sram_reset();
 char* oled_type_in_name(char* score);
+void read_highscore_list(void);
 
 
 #endif /* OLED_DRIVER_H_ */

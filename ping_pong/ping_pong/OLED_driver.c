@@ -9,6 +9,7 @@
 #include "fonts.h"
 #include "joystick.h"
 #include <string.h>
+#include <stdio.h>
 
 
 
@@ -236,6 +237,21 @@ char* oled_type_in_name(char* score){
 	}
 	return name;
 }
+
+void read_highscore_list(void){
+	FILE *fp; 
+	fp = fopen("highscore.txt","a");
+	char read_string[255];
+	fgets(read_string, 255, (FILE*)fp);
+	for(int i = 0; i < 30; i++){
+		printf("bokstav: %c", read_string[i]);
+	}
+	
+	
+	fclose(fp);
+	
+}
+
 
 /*
 void oled_print_string(char* string){

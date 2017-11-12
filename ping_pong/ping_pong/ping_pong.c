@@ -52,9 +52,10 @@ int main(void) {
 	
 	//menu_setup();
 	
+	read_highscore_list();
 	
 	while(1){
-		oled_type_in_name("271");
+		//oled_type_in_name("271");
 		/*
 		switch(main_menu()){
 			case PLAY_GAME:
