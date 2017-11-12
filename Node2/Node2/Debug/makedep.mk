@@ -14,6 +14,8 @@ driver_motor.c
 
 driver_servo.c
 
+driver_solenoid.c
+
 driver_uart.c
 
 MCP2515_driver.c

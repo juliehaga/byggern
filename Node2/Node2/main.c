@@ -20,6 +20,7 @@
 #include "driver_IR.h"
 #include "driver_motor.h"
 #include "driver_DAC.h"
+#include "driver_solenoid.h"
 
 volatile uint8_t rx_int_flag = 0;
 uint8_t slider_pos_r = 132;
@@ -35,28 +36,34 @@ int main(void)
 	servo_init();
 	ADC_init();
 	motor_init();
-	
+	solenoid_init();
 	sei();			//global interrupt enable
 
 	while(1)
 	{	
 		
-		
+	
 		//printf("ENCODER: %d\n",motor_read_encoder());
 		if(rx_int_flag){
-			//printf("can received \n");
+			printf("can received \n");
+			
 			Message recieve_msg = CAN_recieve();
 			
-			for (int i = 0; i < recieve_msg.length; i ++){
-				//printf("%d", recieve_msg.data[i]);
-				//printf("\n");
-			}
-			uint8_t joystick_pos_x = recieve_msg.data[1];
 			slider_pos_r = recieve_msg.data[0];
-			//printf("servo = %d \t", recieve_msg.data[1]);
-			//printf("slider = %d \n", recieve_msg.data[0]);
+			uint8_t joystick_pos_x = recieve_msg.data[1];
+			int solenoid_button = recieve_msg.data[2];
+			
+			printf("x_pos %d \t ", joystick_pos_x);
+			printf("Button %d \t ", solenoid_button);
+			printf("slider r %d \n", slider_pos_r);
 			servo_set_pos(joystick_pos_x);
-			//motor_PI(slider_pos_r);
+			
+			if (solenoid_button == 2){
+				printf("shoot\n");
+				solenoid_shoot();
+				solenoid_button = 0;
+			}
+			
 			
 			
 		}
@@ -68,7 +75,7 @@ int main(void)
 		
 		
 		
-		printf("%d\n",motor_read_encoder());
+		
 		
 
 		/*
@@ -85,5 +92,6 @@ int main(void)
 }
 
 ISR(TIMER3_OVF_vect){
+
 	flag = 1;
 }

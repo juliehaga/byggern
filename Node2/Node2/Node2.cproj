@@ -151,6 +151,12 @@
     <Compile Include="driver_servo.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="driver_solenoid.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="driver_solenoid.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="driver_uart.c">
       <SubType>compile</SubType>
     </Compile>

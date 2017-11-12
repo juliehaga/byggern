@@ -22,8 +22,7 @@ void register_init(void){
 	
 	
 	clr_bit(DDRD, DDD2);
-	
-	
+
 }
 
 

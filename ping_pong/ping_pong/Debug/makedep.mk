@@ -6,6 +6,8 @@ ADC_driver.c
 
 CAN_driver.c
 
+driver_shooter.c
+
 MCP2515_driver.c
 
 driver_uart.c

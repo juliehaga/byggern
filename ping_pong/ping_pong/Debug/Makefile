@@ -39,6 +39,7 @@ SUBDIRS :=
 C_SRCS +=  \
 ../ADC_driver.c \
 ../CAN_driver.c \
+../driver_shooter.c \
 ../MCP2515_driver.c \
 ../driver_uart.c \
 ../joystick.c \
@@ -58,6 +59,7 @@ ASM_SRCS +=
 OBJS +=  \
 ADC_driver.o \
 CAN_driver.o \
+driver_shooter.o \
 MCP2515_driver.o \
 driver_uart.o \
 joystick.o \
@@ -70,6 +72,7 @@ sram_test.o
 OBJS_AS_ARGS +=  \
 ADC_driver.o \
 CAN_driver.o \
+driver_shooter.o \
 MCP2515_driver.o \
 driver_uart.o \
 joystick.o \
@@ -82,6 +85,7 @@ sram_test.o
 C_DEPS +=  \
 ADC_driver.d \
 CAN_driver.d \
+driver_shooter.d \
 MCP2515_driver.d \
 driver_uart.d \
 joystick.d \
@@ -94,6 +98,7 @@ sram_test.d
 C_DEPS_AS_ARGS +=  \
 ADC_driver.d \
 CAN_driver.d \
+driver_shooter.d \
 MCP2515_driver.d \
 driver_uart.d \
 joystick.d \
@@ -117,6 +122,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

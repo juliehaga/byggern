@@ -54,6 +54,7 @@ int main(void) {
 
 	
 	while(1){
+		
 		CAN_send_msg();
 		
 		//printf("Y %d \t", ADC_read(CHANNEL_X));

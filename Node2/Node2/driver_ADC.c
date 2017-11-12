@@ -28,10 +28,6 @@ void ADC_init(void){
 	set_bit(ADCSRA, ADPS1);
 	set_bit(ADCSRA, ADPS0);
 	
-	//Internal voltage ref 2.56 at AREF pin
-	set_bit(ADMUX, REFS1); 
-	set_bit(ADMUX, REFS0); 
-	
 	//enable interrupt
 	set_bit(ADCSRA, ADIE); 
 	

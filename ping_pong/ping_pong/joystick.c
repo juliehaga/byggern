@@ -33,7 +33,12 @@ int slider_read(int channel){
 }
 
 
-int buttons_read(int button){
+int button_read(int button){
+	/*
+	Left button = 1
+	Right button = 2
+	*/
+	
 	if (button == 1){
 		return (test_bit(PINB, PINB1));		//returns 2??
 		}else if(button == 2){

@@ -43,6 +43,7 @@ C_SRCS +=  \
 ../driver_IR.c \
 ../driver_motor.c \
 ../driver_servo.c \
+../driver_solenoid.c \
 ../driver_uart.c \
 ../MCP2515_driver.c \
 ../main.c \
@@ -64,6 +65,7 @@ driver_DAC.o \
 driver_IR.o \
 driver_motor.o \
 driver_servo.o \
+driver_solenoid.o \
 driver_uart.o \
 MCP2515_driver.o \
 main.o \
@@ -78,6 +80,7 @@ driver_DAC.o \
 driver_IR.o \
 driver_motor.o \
 driver_servo.o \
+driver_solenoid.o \
 driver_uart.o \
 MCP2515_driver.o \
 main.o \
@@ -92,6 +95,7 @@ driver_DAC.d \
 driver_IR.d \
 driver_motor.d \
 driver_servo.d \
+driver_solenoid.d \
 driver_uart.d \
 MCP2515_driver.d \
 main.d \
@@ -106,6 +110,7 @@ driver_DAC.d \
 driver_IR.d \
 driver_motor.d \
 driver_servo.d \
+driver_solenoid.d \
 driver_uart.d \
 MCP2515_driver.d \
 main.d \
@@ -127,6 +132,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 
