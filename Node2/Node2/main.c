@@ -22,6 +22,9 @@
 #include "driver_DAC.h"
 
 volatile uint8_t rx_int_flag = 0;
+uint8_t slider_pos_r = 132;
+int output = 0;
+int flag = 0;
 
 int main(void)
 {
@@ -31,17 +34,17 @@ int main(void)
 	CAN_init();
 	servo_init();
 	ADC_init();
-	DAC_init();
 	motor_init();
-	sei();			//global interrupt enable
 	
-	motor_calibration();
+	sei();			//global interrupt enable
 
 	while(1)
 	{	
+		
+		
 		//printf("ENCODER: %d\n",motor_read_encoder());
 		if(rx_int_flag){
-			printf("can received \n");
+			//printf("can received \n");
 			Message recieve_msg = CAN_recieve();
 			
 			for (int i = 0; i < recieve_msg.length; i ++){
@@ -49,19 +52,23 @@ int main(void)
 				//printf("\n");
 			}
 			uint8_t joystick_pos_x = recieve_msg.data[1];
-			uint8_t slider_pos_r = recieve_msg.data[0];
+			slider_pos_r = recieve_msg.data[0];
 			//printf("servo = %d \t", recieve_msg.data[1]);
 			//printf("slider = %d \n", recieve_msg.data[0]);
 			servo_set_pos(joystick_pos_x);
-			motor_PI(slider_pos_r);
+			//motor_PI(slider_pos_r);
 			
 			
 		}
 		
+		if(flag == 1){
+			motor_drive(motor_PI(slider_pos_r));
+			flag = 0;
+		}
 		
 		
 		
-		//printf("%d\n",motor_read_encoder());
+		printf("%d\n",motor_read_encoder());
 		
 
 		/*
@@ -73,8 +80,10 @@ int main(void)
 
 		_delay_ms(1);
 		
-		
 	}
 	return 0;
 }
 
+ISR(TIMER3_OVF_vect){
+	flag = 1;
+}

@@ -12,23 +12,28 @@
 #include <util/delay.h>
 #include <avr/io.h>
 #include <stdlib.h>
+#include <avr/interrupt.h>
 
 #define epsilon 2
-#define ST 0.01
+#define dt 0.032
 #define MAX 255
 #define MIN 0
+#define STOP 0
+#define FULL_SPEED 255
 
 int left_pos = 0;
 int right_pos;
+motor_dir dir;
 
 #define Kp 1
-#define Ki 0.1
-
-motor_dir dir = STOP; 
+#define Ki 0.01
+#define Kd 0.1
+int prev_error = 0; 
 
  
 
 void motor_init(void){
+	DAC_init();
 	//declare output pins
 	set_bit(DDRH, PH4);				//EN as output
 	//enable motor
@@ -45,6 +50,26 @@ void motor_init(void){
 	
 	DDRK = 0x00;
 	motor_reset_encoder();
+	
+	sei();
+	motor_calibration();
+	cli();
+		
+	//Set timer/counter0 interrupt
+	//Normal mode
+	clr_bit(TCCR3A, WGM31);
+	clr_bit(TCCR3A, WGM30);
+	
+	//Prescaler Fosc/8
+	set_bit(TCCR3B, CS31);
+	
+	
+	
+	
+	//Interrupt enable overflow
+	set_bit(TIMSK3, TOIE3);
+	
+
 }
 
 
@@ -52,18 +77,6 @@ void motor_init(void){
 void motor_drive(int motor_input){
 	motor_set_dir();
 	DAC_send_data(motor_input);
-
-	/*
-	if(motor_input> 130){
-		DAC_send_data((int)(motor_input-135)*2.125); //Scaling
-	}
-	else if(motor_input < 130){
-		DAC_send_data((int)(130-motor_input)*(double)255/130);
-	}
-	else{
-		DAC_send_data(0);
-	}*/
-	
 }
 
 void motor_set_dir(void){
@@ -101,9 +114,10 @@ int16_t motor_read_encoder(void){
 
 
 void motor_calibration(void){
+	
 	//drive to left corner
 	dir = LEFT;
-	motor_drive(255);
+	motor_drive(FULL_SPEED);
 	_delay_ms(500);
 	
 	//choose zero-position
@@ -111,44 +125,36 @@ void motor_calibration(void){
 	printf("encoder value %d\n", motor_read_encoder());
 	
 	dir = RIGHT;
-	motor_drive(255);
+	motor_drive(FULL_SPEED);
 	_delay_ms(500);
 	right_pos = motor_read_encoder();
-	motor_drive(0);
+	motor_drive(STOP);
 	printf("top %d\n", right_pos);
 }
 
 
-void motor_PI(int slider_value){
+int motor_PI(int slider_value){
 	static float integral = 0; 
-	printf("Slider: %d \t", slider_value);
-	int encoder = motor_read_encoder();
-	printf("encoder: %d \n", encoder);
-	int error = slider_value - encoder; 
+	int error = slider_value - motor_read_encoder(); 
 	if (error > 0){
 		dir = RIGHT;
 	} else{
 		dir = LEFT; 
 	}
 	
-	
 	//in case of error ti small, stop integration
 	if(abs(error) > epsilon){
-		printf("error %d \n", error);
-		integral = integral + error*ST;
+		integral = integral + error*dt;
 	} 
-	
-	int output = Kp*abs(error) + Ki*integral;
-	
+	float derivate = (error - prev_error)/dt;
+	int output = Kp*abs(error) + Ki*integral + Kd*derivate;
 	if (output > MAX) {
 		output = MAX;
 	} else if (output < MIN){
 		output = MIN;
 	} 
-	
-	printf("output %d \n", output);
-	
-	motor_drive(output);
+	prev_error = error;
+	return output;
 }
 
 

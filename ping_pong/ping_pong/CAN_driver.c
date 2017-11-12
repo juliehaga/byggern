@@ -124,23 +124,30 @@ void CAN_int_vect(){
 }
 
 
-void CAN_create_msg(void){
+void CAN_send_msg(void){
 	
 	uint8_t joy_pos_x = joystick_read(CHANNEL_X);
 	uint8_t joy_pos_y = joystick_read(CHANNEL_Y);
 	uint8_t slider_pos_r = slider_read(SLIDER_R);
 	uint8_t slider_pos_l = slider_read(SLIDER_L);
-	
+	/*
 	printf("x_pos %d \t ", joy_pos_x);
 	printf("y_pos %d \t ", joy_pos_y);
 	printf("slider_l_pos %d \t ", slider_pos_l);
 	printf("slider %d \n", slider_pos_r);
-	
-	msg.length = 3;
-	msg.data[0] = joy_pos_x;
-	msg.data[1] = slider_pos_r;
-	msg.ID = 0;
-	
+	*/
+	if(abs(joy_pos_x - last_joystick_pos_x) > 10 || abs(slider_pos_r - last_slider_pos_r) > 10){
+		Message msg;
+		
+		msg.length = 3;
+		msg.data[0] = joy_pos_x;
+		msg.data[1] = slider_pos_r;
+		msg.ID = 0;
+		
+		CAN_send(&msg);
+		last_joystick_pos_x = joy_pos_x;
+		last_slider_pos_r = slider_pos_r;
+	}
 }
 
 ISR(INT0_vect){
@@ -148,7 +155,3 @@ ISR(INT0_vect){
 	CAN_int_vect();
 }
 
-ISR(TIMER0_OVF_vect){
-	CAN_send(&msg);
-	printf("can message sent\n");
-}
