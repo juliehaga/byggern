@@ -50,11 +50,20 @@ int main(void) {
 	sei();
 	
 	
-	menu_setup();
-
+	//menu_setup();
+	
 	
 	while(1){
-		printf("MENU: %d\n", main_menu());
+		oled_type_in_name("271");
+		/*
+		switch(main_menu()){
+			case PLAY_GAME:
+				break;
+			case HIGHSCORE:
+				break;
+			default:
+				break;
+		}*/
 
 		//CAN_send_msg();
 		

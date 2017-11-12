@@ -7,6 +7,7 @@
 #include "OLED_driver.h"
 #include <avr/pgmspace.h>
 #include "fonts.h"
+#include "joystick.h"
 #include <string.h>
 
 
@@ -16,7 +17,7 @@ volatile char* OLED_d = (char*) 0x1200; //Write to address OLED data
 volatile char* SRAM = (char*) 0x1800; 
 
 
-
+joystick_dir prev_joy_dir = CENTER;
 static uint8_t current_page, current_col;
 
 
@@ -167,6 +168,74 @@ char oled_read_SRAM(int page, int col){
 	return SRAM[128 * page + col];
 }
 
+char* oled_type_in_name(char* score){
+	char* name = "AAA";
+	oled_sram_reset();
+	oled_sram_string("NEW HIGHSCORE", 0, 0);
+	oled_sram_string("^", 3, 0);
+	oled_sram_string(name, 4, 0);
+	oled_sram_string("v", 5, 0);
+	oled_sram_string(score, 4, 10);
+	oled_update();
+	int i = 0;
+	char current_letter = 'A';
+
+	while (i < 3){
+		joystick_dir joy_dir = find_joystick_dir();
+		printf("%d\n",joy_dir);
+		if(prev_joy_dir != joy_dir){
+			
+			switch(joy_dir){
+				case UP:
+					if(current_letter == 'A'){
+						current_letter = 'Z';
+					}else{
+					current_letter--;
+					}
+					break;
+				case DOWN:
+					if(current_letter == 'Z'){
+						current_letter = 'A';
+						}else{
+						current_letter++;
+						printf("current letter %c\n", current_letter);
+						break;
+					}
+				case RIGHT:
+					if(i < 2){
+						current_letter = 'A';
+						i++;
+						oled_sram_string("^", 3, i);
+						oled_sram_string("v", 5, i);
+						oled_sram_string(" ", 3, i-1);
+						oled_sram_string(" ", 5, i-1);
+						
+					}
+					
+					break;
+				case LEFT:
+					if(i>0){
+						current_letter = name[i-1];
+						i--;
+						oled_sram_string("^", 3, i);
+						oled_sram_string("v", 5, i);
+						oled_sram_string(" ", 3, i+1);
+						oled_sram_string(" ", 5, i+1);
+						
+					}
+					
+					break;
+				default:
+				break;
+			}
+			prev_joy_dir = joy_dir;
+			name[i] = current_letter;
+			oled_sram_string(name, 4, 0);
+			oled_update();
+		}		
+	}
+	return name;
+}
 
 /*
 void oled_print_string(char* string){
