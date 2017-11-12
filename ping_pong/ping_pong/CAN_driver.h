@@ -21,11 +21,8 @@ void CAN_send(Message* msg);
 int CAN_transmit_complete();
 Message CAN_recieve(); 
 int CAN_error(); 
-
 void CAN_int_vect();  
-Message create_msg(int ID, int length, char* data);
-
-void send_CAN_msg(void);
+void CAN_create_msg(void);
 
 
 #endif /* CAN_DRIVER_H_ */

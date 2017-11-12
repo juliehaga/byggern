@@ -20,6 +20,8 @@ extern volatile uint8_t rx_int_flag;
 uint8_t last_joystick_pos_x = 0;
 uint8_t last_slider_pos_r = 0;
 
+Message msg;
+
 int CAN_init(){
 	volatile uint8_t value;
 	
@@ -86,21 +88,21 @@ int CAN_transmit_complete(){
 }
 
 Message CAN_recieve(){
-	Message msg; 
+	Message receive_msg; 
 		
 	
-	msg.ID = (MCP2515_read(MCP_RXB0SIDH) << 3 | MCP2515_read(MCP_RXB0SIDL) >> 5);
-	msg.length = MCP2515_read(MCP_RXB0DLC) & 0x0F;
-	if(msg.length > 8){
-		msg.length = 8;
+	receive_msg.ID = (MCP2515_read(MCP_RXB0SIDH) << 3 | MCP2515_read(MCP_RXB0SIDL) >> 5);
+	receive_msg.length = MCP2515_read(MCP_RXB0DLC) & 0x0F;
+	if(receive_msg.length > 8){
+		receive_msg.length = 8;
 	}
-	for (int i = 0; i < msg.length ; i++){
-		msg.data[i] = MCP2515_read(MCP_RXB0DM + i);
+	for (int i = 0; i < receive_msg.length ; i++){
+		receive_msg.data[i] = MCP2515_read(MCP_RXB0DM + i);
 		//printf("Leser %c\n", msg.data[i]);
 	}
 	rx_int_flag = 0;
 	
-	return msg; 
+	return receive_msg; 
 }
 
 int CAN_error(){
@@ -121,22 +123,10 @@ void CAN_int_vect(){
 	
 }
 
-Message create_msg(int ID, int length, char* data){
-	Message msg;
-	
-	msg.length = length;
-	for (int i = 0; i < msg.length; i++){
-		msg.data[i] = data[i];
-	}
-	msg.ID = ID;
-	
-	return msg;
-}
 
-
-void send_CAN_msg(void){
+void CAN_create_msg(void){
+	
 	uint8_t joy_pos_x = joystick_read(CHANNEL_X);
-	
 	uint8_t joy_pos_y = joystick_read(CHANNEL_Y);
 	uint8_t slider_pos_r = slider_read(SLIDER_R);
 	uint8_t slider_pos_l = slider_read(SLIDER_L);
@@ -145,21 +135,20 @@ void send_CAN_msg(void){
 	printf("y_pos %d \t ", joy_pos_y);
 	printf("slider_l_pos %d \t ", slider_pos_l);
 	printf("slider %d \n", slider_pos_r);
-	if(abs(joy_pos_x - last_joystick_pos_x) > 10 || abs(slider_pos_r - last_slider_pos_r) > 10){
-		Message msg;
-		
-		msg.length = 3;
-		msg.data[0] = joy_pos_x;
-		msg.data[1] = slider_pos_r;
-		msg.ID = 0;
-		
-		CAN_send(&msg);
-		last_joystick_pos_x = joy_pos_x;
-		last_slider_pos_r = slider_pos_r;
-	}
+	
+	msg.length = 3;
+	msg.data[0] = joy_pos_x;
+	msg.data[1] = slider_pos_r;
+	msg.ID = 0;
+	
 }
 
 ISR(INT0_vect){
 	//RX0 interrupt flag set to 0
 	CAN_int_vect();
+}
+
+ISR(TIMER0_OVF_vect){
+	CAN_send(&msg);
+	printf("can message sent\n");
 }

@@ -41,6 +41,7 @@ int main(void)
 	{	
 		//printf("ENCODER: %d\n",motor_read_encoder());
 		if(rx_int_flag){
+			printf("can received \n");
 			Message recieve_msg = CAN_recieve();
 			
 			for (int i = 0; i < recieve_msg.length; i ++){

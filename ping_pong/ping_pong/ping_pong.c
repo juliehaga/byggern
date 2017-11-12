@@ -45,23 +45,20 @@ int main(void) {
 	register_init();
 	oled_init();
 	ADC_init();
-	
 	CAN_init();
 	//Enable global interrupts
 	sei();
 	
+	
+	
 
 	
 	while(1){
+		CAN_create_msg();
 		
-		send_CAN_msg();
-		_delay_ms(50);
 		//printf("Y %d \t", ADC_read(CHANNEL_X));
 		//printf("X %d\n", ADC_read(CHANNEL_Y));
-		
-		
-		
-		
+	
 		if(ADC_ready){
 			ADC_ready = 0;
 		}
@@ -79,3 +76,4 @@ int main(void) {
 	}
 	return 0;
 }
+

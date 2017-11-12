@@ -23,6 +23,17 @@ void register_init(void){
 	
 	clr_bit(DDRD, DDD2);
 	
+	//Set timer/counter0 interrupt
+	//Normal mode
+	clr_bit(TCCR0, WGM01);
+	clr_bit(TCCR0, WGM00);
+	
+	//Prescaler Fosc/1024
+	set_bit(TCCR0, CS02);
+	set_bit(TCCR0, CS00);
+	
+	//Interrupt enable overflow
+	set_bit(TIMSK, TOIE0);
 }
 
 
