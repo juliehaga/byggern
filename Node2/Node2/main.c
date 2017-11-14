@@ -24,8 +24,11 @@
 
 volatile uint8_t rx_int_flag = 0;
 uint8_t slider_pos_r = 132;
+uint8_t joystick_pos_x;
 int output = 0;
-int flag = 0;
+int timer_flag = 0;
+int IR_value = 0; 
+int last_IR_value = 0; 
 
 int main(void)
 {
@@ -35,22 +38,24 @@ int main(void)
 	CAN_init();
 	servo_init();
 	ADC_init();
-	motor_init();
 	solenoid_init();
-	sei();			//global interrupt enable
+	motor_init();
+	sei();
+	
+	
 
+	
+	printf("forbi init\n");
 	while(1)
 	{	
 		
-	/*
-		//printf("ENCODER: %d\n",motor_read_encoder());
 		if(rx_int_flag){
 			printf("can received \n");
 			
 			Message recieve_msg = CAN_recieve();
 			
-			slider_pos_r = recieve_msg.data[1];
-			uint8_t joystick_pos_x = recieve_msg.data[0];
+			joystick_pos_x = recieve_msg.data[1];
+			slider_pos_r = recieve_msg.data[0];
 			int solenoid_button = recieve_msg.data[2];
 			
 			printf("joy_pos_x %d \t ", joystick_pos_x);
@@ -58,32 +63,31 @@ int main(void)
 			printf("Button %d \n ", solenoid_button);
 			
 			servo_set_pos(joystick_pos_x);
-			/*
+			
 			if (solenoid_button == 2){
 				printf("shoot\n");
 				solenoid_shoot();
 				solenoid_button = 0;
 			}
-			
-			
-			
+			rx_int_flag = 0; 
 		}
 		
-		if(flag == 1){
-			motor_drive(motor_PI(slider_pos_r));
-			flag = 0;
+		if(timer_flag == 1){
+			motor_drive(motor_PID(slider_pos_r));
+			timer_flag = 0;
 		}
+		IR_value = IR_game_over();
 		
-		
-		
-		
-		
-
-		/*
-		if(IR_game_over()){
-		printf("Digital filter: %d \n", IR_digital_filter());
-		printf("you loose \n");
-		}*/
+		if(IR_value == 1 & last_IR_value==0){
+			printf("Can melding \n");
+			Message msg; 
+			msg.length = 1;
+			msg.data[0] = 1;
+			msg.ID = 0;
+			CAN_send(&msg);
+			IR_value = 0;
+			last_IR_value = IR_value; 
+		}
 		
 
 		_delay_ms(1);
@@ -92,7 +96,7 @@ int main(void)
 	return 0;
 }
 
-ISR(TIMER3_OVF_vect){
 
-	flag = 1;
+ISR(TIMER3_OVF_vect){
+	timer_flag = 1;
 }

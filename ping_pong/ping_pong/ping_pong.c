@@ -26,13 +26,11 @@
 #include "SPI_driver.h"
 #include "MCP2515_driver.h"
 #include "MCP2515.h"
+#include "fsm.h"
+#include "game.h"
 
 
-volatile uint8_t ADC_ready = 0;
-volatile uint8_t rx_int_flag = 0;
-
-int button_pushed = 0;
-
+states current_state = IDLE;
 
 
 //volatile uint8_t* a = 0x1400;
@@ -50,34 +48,30 @@ int main(void) {
 	sei();
 	
 	
-	//menu_setup();
+	menu_setup();
 	
-	read_highscore_list();
-	
+
 	while(1){
-		//oled_type_in_name("271");
-		/*
-		switch(main_menu()){
+		
+		
+		switch(current_state){
+			case IDLE:
+				main_menu();
+				break;
 			case PLAY_GAME:
+				play_game();
 				break;
 			case HIGHSCORE:
+				if(find_joystick_dir() == LEFT){
+					current_state = IDLE; 
+				}
+				oled_print_highscore();
 				break;
 			default:
 				break;
-		}*/
-
-		//CAN_send_msg();
-		
-		
-	
-		
-		
-		
-		if(ADC_ready){
-			ADC_ready = 0;
 		}
-		
 	}
+	
 	return 0;
 }
 

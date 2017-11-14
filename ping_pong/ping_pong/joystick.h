@@ -10,19 +10,22 @@
 #define JOYSTICK_H_
 
 
-/*
+
 //ifølge hardware
 #define CHANNEL_Y 4	
 #define CHANNEL_X 5		
 #define SLIDER_L 6
 #define SLIDER_R 7
-*/
+
+#define LEFT_BUTTON 1
+#define RIGHT_BUTTON 2
 
 
+/*
 #define CHANNEL_X 4
 #define CHANNEL_Y 5
 #define SLIDER_L 7
-#define SLIDER_R 6
+#define SLIDER_R 6*/
 
 typedef enum{UP, DOWN, RIGHT, LEFT, CENTER} joystick_dir;
 

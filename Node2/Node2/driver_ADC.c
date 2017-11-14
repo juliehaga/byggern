@@ -19,17 +19,17 @@ volatile int ADC_ready;
 void ADC_init(void){
 	//Set PF0 to input
 	clr_bit(DDRF, PF0);
-	
-	//enable ADC 
-	set_bit(ADCSRA, ADEN); 
-	
+	//enable ADC
+	set_bit(ADCSRA, ADEN);
 	//set prescaler to 128
 	set_bit(ADCSRA, ADPS2);
 	set_bit(ADCSRA, ADPS1);
 	set_bit(ADCSRA, ADPS0);
-	
+
+	set_bit(ADMUX, REFS1);
+	set_bit(ADMUX, REFS0);
 	//enable interrupt
-	set_bit(ADCSRA, ADIE); 
+	set_bit(ADCSRA, ADIE);
 	
 	
 }

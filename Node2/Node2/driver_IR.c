@@ -21,7 +21,6 @@ int IR_digital_filter(void){
 }
 
 int IR_game_over(){
-	
 	if(IR_digital_filter() < 250){
 		return 1;
 	}

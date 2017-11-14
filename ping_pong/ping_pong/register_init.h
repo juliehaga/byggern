@@ -22,6 +22,18 @@ void register_init(void){
 	
 	
 	clr_bit(DDRD, DDD2);
+	
+	//Set timer/counter1 interrupt
+	//Normal mode
+	clr_bit(TCCR1A, WGM11);
+	clr_bit(TCCR1A, WGM10);
+	
+	//Prescaler Fosc/1024
+	set_bit(TCCR1B, CS11);
+	set_bit(TCCR1B, CS10);
+	
+	//Interrupt enable overflow
+	set_bit(TIMSK, TOIE1);
 
 }
 

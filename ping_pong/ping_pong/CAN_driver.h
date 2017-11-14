@@ -22,7 +22,8 @@ int CAN_transmit_complete();
 Message CAN_recieve(); 
 int CAN_error(); 
 void CAN_int_vect();  
-void CAN_send_msg(void);
+void CAN_send_controllers(void);
+void CAN_send_start(void);
 
 
 #endif /* CAN_DRIVER_H_ */

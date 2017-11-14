@@ -21,7 +21,7 @@
 #define STOP 0
 #define FULL_SPEED 255
 
-int left_pos = 0;
+int left_pos;
 int right_pos;
 motor_dir dir;
 
@@ -54,7 +54,9 @@ void motor_init(void){
 	sei();
 	motor_calibration();
 	cli();
-		
+	
+	
+	
 	//Set timer/counter0 interrupt
 	//Normal mode
 	clr_bit(TCCR3A, WGM31);
@@ -68,8 +70,6 @@ void motor_init(void){
 	
 	//Interrupt enable overflow
 	set_bit(TIMSK3, TOIE3);
-	
-
 }
 
 
@@ -95,10 +95,11 @@ void motor_reset_encoder(void){
 	//Reset
 }
 
-int16_t motor_read_encoder(void){
+
+int16_t motor_read_encoder_unscaled(void){
 	clr_bit(PORTH, PH5);		//!OE low
 	clr_bit(PORTH, PH3);		//SEL low
-	_delay_ms(20); 
+	_delay_ms(20);
 	int16_t data = PINK << 8;	//Read MSB
 	set_bit(PORTH, PH3);		//SEL high
 	_delay_ms(20);
@@ -108,7 +109,12 @@ int16_t motor_read_encoder(void){
 	//motor_reset_encoder();
 	set_bit(PORTH, PH5);		//!OE high
 	
-	return data*(-0.027);
+	return data;
+}
+
+int16_t motor_read_encoder(void){
+	int data = motor_read_encoder_unscaled();
+	return -((double)(255)/(left_pos-right_pos))*data;
 }
 
 
@@ -122,35 +128,38 @@ void motor_calibration(void){
 	
 	//choose zero-position
 	motor_reset_encoder();
-	printf("encoder value %d\n", motor_read_encoder());
+	left_pos = motor_read_encoder_unscaled();
+	printf("encoder value %d\n", motor_read_encoder_unscaled());
 	
 	dir = RIGHT;
 	motor_drive(180);
 	_delay_ms(500);
-	right_pos = motor_read_encoder();
+	right_pos = motor_read_encoder_unscaled();
 	motor_drive(STOP);
 	printf("top %d\n", right_pos);
 }
 
 
-int motor_PI(int slider_value){
+int motor_PID(int slider_value){
 	static float integral = 0; 
 	int error = slider_value - motor_read_encoder(); 
 	if (error > 0){
 		dir = RIGHT;
-	} else{
+	} 
+	else{
 		dir = LEFT; 
 	}
-	
 	//in case of error ti small, stop integration
 	if(abs(error) > epsilon){
 		integral = integral + error*dt;
 	} 
 	float derivate = (error - prev_error)/dt;
 	int output = Kp*abs(error) + Ki*integral + Kd*derivate;
+	
 	if (output > MAX) {
 		output = MAX;
-	} else if (output < MIN){
+	} 
+	else if (output < MIN){
 		output = MIN;
 	} 
 	prev_error = error;

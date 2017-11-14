@@ -58,7 +58,6 @@ int CAN_init(){
 
 
 void CAN_send(Message* msg){
-	printf("Can send\n");
 	if(CAN_transmit_complete()){
 		
 		//sending ID

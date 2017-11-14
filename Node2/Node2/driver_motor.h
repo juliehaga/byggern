@@ -16,8 +16,9 @@ void motor_drive(int joystick_value);
 void motor_set_dir(void);
 void motor_reset_encoder(void);
 int16_t motor_read_encoder(void); 
+int16_t motor_read_encoder_unscaled(void);
 
-int motor_PI(int joystick_value);
+int motor_PID(int joystick_value);
 void motor_calibration(void);
 
 typedef enum{RIGHT, LEFT} motor_dir;

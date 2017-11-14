@@ -8,6 +8,7 @@
 #include "OLED_driver.h"
 #include "menu_framework.h"
 #include "driver_uart.h"
+#include "fsm.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -19,7 +20,7 @@ menu* display_menu;
 static menu* current_menu;
 joystick_dir last_joy_dir = CENTER;
 
-
+states current_state; 
 
 
 void menu_setup(void){
@@ -27,9 +28,9 @@ void menu_setup(void){
 	display_menu = menu_front_page;
 
 	menu* sub1 = create_menu("Play game");
-	menu* sub2 = create_menu("Kode");
+	menu* sub2 = create_menu("Highscore");
 	menu* sub3 = create_menu("USB-board");
-	menu* subsub2 = create_menu("Highscore");
+	menu* subsub2 = create_menu("Test");
 
 	create_submenu(menu_front_page, sub1);
 	create_submenu(menu_front_page, sub2);
@@ -86,7 +87,7 @@ menu* create_menu(char* new_name){
 	menu* new_menu = (menu*)malloc(sizeof(menu));
 	
 	if(new_menu == NULL){
-		printf("Out of memory! Failed to create menu");
+		printf("Out of mem\n");
 		exit(1);
 	}
 	
@@ -150,8 +151,7 @@ void print_selection_sign(int page){
 }
 
 
-
-menu_options main_menu(void){
+void main_menu(void){
 	
 	joystick_dir joy_dir = find_joystick_dir();
 	if(joy_dir != last_joy_dir){
@@ -197,18 +197,14 @@ menu_options main_menu(void){
 	}
 	
 	last_joy_dir = joy_dir;
-	for(int i = 0 ; i <3 ; i++){
-		printf("%c", current_menu->name[i]);
-	}
-	printf("\n");
+
 	
 	if(read_joystick_button() ==0){
 		if (current_menu->name == "Play game"){
-			return PLAY_GAME;
+			current_state = PLAY_GAME;
 		} else if (current_menu->name == "Highscore"){
-			return HIGHSCORE;
+			current_state = HIGHSCORE;
 		}
 		
 	}
-	return NO_MENU;
 }

@@ -126,20 +126,15 @@ void CAN_int_vect(){
 }
 
 
-void CAN_send_msg(void){
+void CAN_send_controllers(void){
 	
 	uint8_t joy_pos_x = joystick_read(CHANNEL_X);
-	uint8_t joy_pos_y = joystick_read(CHANNEL_Y);
-	uint8_t slider_pos_r = slider_read(SLIDER_R);
+	//uint8_t joy_pos_y = joystick_read(CHANNEL_Y);
+	//uint8_t slider_pos_r = slider_read(SLIDER_R);
 	uint8_t slider_pos_l = slider_read(SLIDER_L);
+	
 	int button_l = button_read(1);
-	
-	printf("x_pos %d \t ", joy_pos_x);
-	printf("y_pos %d \t ", joy_pos_y);
-	printf("slider_l_pos %d \t ", slider_pos_l);
-	printf("Button %d \t ", button_l);
-	printf("slider %d \n", slider_pos_r);
-	
+
 	if(abs(joy_pos_x - last_joystick_pos_x) > 10 || abs(slider_pos_l - last_slider_pos_l) > 10 || (button_l != last_button_l)){
 		Message msg;
 		
@@ -155,6 +150,15 @@ void CAN_send_msg(void){
 		last_button_l = button_l;
 		
 	}
+}
+
+void CAN_send_start(void){
+	Message msg;
+	msg.length = 1;
+	msg.data[0] = 1;
+	msg.ID = 0;
+	
+	CAN_send(&msg);
 }
 
 ISR(INT0_vect){
