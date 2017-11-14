@@ -136,7 +136,6 @@ void motor_calibration(void){
 	_delay_ms(500);
 	right_pos = motor_read_encoder_unscaled();
 	motor_drive(STOP);
-	printf("top %d\n", right_pos);
 }
 
 

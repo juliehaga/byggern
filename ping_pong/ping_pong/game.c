@@ -67,7 +67,9 @@ void play_game(void){
 			oled_reset();
 			rx_int_flag = 0; 	
 			}
-		
+			
+	check_highscore(highest_score);
+	state = HIGHSCORE;
 	}
 	//current_state = IDLE; 
 }

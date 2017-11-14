@@ -42,15 +42,10 @@ int main(void)
 	motor_init();
 	sei();
 	
-	
-
-	
-	printf("forbi init\n");
 	while(1)
 	{	
 		
 		if(rx_int_flag){
-			printf("can received \n");
 			
 			Message recieve_msg = CAN_recieve();
 			
@@ -88,7 +83,6 @@ int main(void)
 			IR_value = 0;
 			last_IR_value = IR_value; 
 		}
-		
 
 		_delay_ms(1);
 		
