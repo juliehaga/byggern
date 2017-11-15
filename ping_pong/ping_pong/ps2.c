@@ -108,11 +108,11 @@ void ps2_init()
     _delay_ms(250);
     ps2_analogmode();
     _delay_ms(250);
-    //ps2_setupmotor();
+    ps2_setupmotor();
     _delay_ms(250);
-    //ps2_returnpres();
+    ps2_returnpres();
     _delay_ms(250);
-    //ps2_exitconfig();
+    ps2_exitconfig();
 
 }
 
