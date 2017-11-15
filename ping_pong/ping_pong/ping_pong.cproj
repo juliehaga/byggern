@@ -130,6 +130,12 @@
     <Compile Include="game.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="highscore.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="highscore.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="MCP2515_driver.c">
       <SubType>compile</SubType>
     </Compile>

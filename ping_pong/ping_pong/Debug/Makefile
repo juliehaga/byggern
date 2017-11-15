@@ -40,6 +40,7 @@ C_SRCS +=  \
 ../ADC_driver.c \
 ../CAN_driver.c \
 ../game.c \
+../highscore.c \
 ../MCP2515_driver.c \
 ../driver_uart.c \
 ../joystick.c \
@@ -60,6 +61,7 @@ OBJS +=  \
 ADC_driver.o \
 CAN_driver.o \
 game.o \
+highscore.o \
 MCP2515_driver.o \
 driver_uart.o \
 joystick.o \
@@ -73,6 +75,7 @@ OBJS_AS_ARGS +=  \
 ADC_driver.o \
 CAN_driver.o \
 game.o \
+highscore.o \
 MCP2515_driver.o \
 driver_uart.o \
 joystick.o \
@@ -86,6 +89,7 @@ C_DEPS +=  \
 ADC_driver.d \
 CAN_driver.d \
 game.d \
+highscore.d \
 MCP2515_driver.d \
 driver_uart.d \
 joystick.d \
@@ -99,6 +103,7 @@ C_DEPS_AS_ARGS +=  \
 ADC_driver.d \
 CAN_driver.d \
 game.d \
+highscore.d \
 MCP2515_driver.d \
 driver_uart.d \
 joystick.d \
@@ -122,6 +127,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

@@ -25,9 +25,7 @@ int left_pos;
 int right_pos;
 motor_dir dir;
 
-#define Kp 0.9
-#define Ki 0.01
-#define Kd 0.07
+
 int prev_error = 0; 
 
  
@@ -139,7 +137,7 @@ void motor_calibration(void){
 }
 
 
-int motor_PID(int slider_value){
+int motor_PID(int slider_value, float Kp, float Ki, float Kd){
 	
 	static float integral = 0; 
 	int data = motor_read_encoder();

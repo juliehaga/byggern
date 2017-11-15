@@ -8,7 +8,7 @@
 #include "OLED_driver.h"
 #include "menu_framework.h"
 #include "driver_uart.h"
-#include "fsm.h"
+#include "game.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -21,7 +21,7 @@ static menu* current_menu;
 joystick_dir last_joy_dir = CENTER;
 
 
-enum states current_state; 
+extern states current_state; 
 
 
 void menu_setup(void){
@@ -30,13 +30,15 @@ void menu_setup(void){
 
 	menu* sub1 = create_menu("Play game");
 	menu* sub2 = create_menu("Highscore");
-	menu* sub3 = create_menu("USB-board");
-	menu* subsub2 = create_menu("Test");
+	menu* subsub1 = create_menu("Easy");
+	menu* subsub2 = create_menu("Medium");
+	menu* subsub3 = create_menu("Hard");
 
 	create_submenu(menu_front_page, sub1);
 	create_submenu(menu_front_page, sub2);
-	create_submenu(menu_front_page, sub3);
-	create_submenu(sub2, subsub2);
+	create_submenu(sub1, subsub1);
+	create_submenu(sub1, subsub2);
+	create_submenu(sub1, subsub3);
 	
 	oled_reset();
 	menu_sram_update(display_menu, current_page);
@@ -200,12 +202,16 @@ void main_menu(void){
 	last_joy_dir = joy_dir;
 
 	
-	if(read_joystick_button() ==0){
-		if (current_menu->name == "Play game"){
-			current_state = PLAY_GAME;
-		} else if (current_menu->name == "Highscore"){
+	if(read_joystick_button() == 0){
+		if (current_menu->name == "Easy"){
+			current_state = EASY;
+		}else if (current_menu->name == "Medium"){
+		current_state = MEDIUM;
+		}else if (current_menu->name == "Hard"){
+		current_state = HARD;
+		}
+		else if (current_menu->name == "Highscore"){
 			current_state = HIGHSCORE;
 		}
-		
 	}
 }

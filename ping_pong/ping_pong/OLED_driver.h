@@ -34,9 +34,8 @@ char* oled_type_in_name(char* score);
 void oled_play_game(int life, int score); 
 void oled_game_over(void); 
 void oled_play_again(void);
-void oled_print_highscore(void);
+
 char* int_to_str(int data);
 
-void read_highscore_list(void);
 
 #endif /* OLED_DRIVER_H_ */

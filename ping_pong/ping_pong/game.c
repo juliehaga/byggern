@@ -15,13 +15,10 @@
 #include "OLED_driver.h"
 #include "joystick.h"
 #include "bit_functions.h"
+#include "highscore.h"
 
 
 
-
-
-extern char* highscore_names[5] = {"AAA"};
-extern int highscore_scores[5] = {0};
 
 int score = 0; 
 int highest_score = 0;  
@@ -32,16 +29,18 @@ volatile uint8_t rx_int_flag = 0;		//automatically set when
 states current_state;
 
 
-void play_game(void){
-	
+void play_game(states state){
+	// Send state to node2 
+	Message msg = {0, 4, {0,0,0,state}};
+	printf("har sendt state %d\n", state);	
+	CAN_send(&msg);
 	
 	int game_over = 0;
 	life = 3;
 	score = 0;  
 	highest_score = 0; 
 	oled_reset();
-	CAN_send_start();
-	printf("har sendt start\n");
+	
 	
 	while(!game_over){
 		
@@ -58,8 +57,6 @@ void play_game(void){
 			send_can_flag = 0;
 			set_bit(ETIMSK, TOIE3);
 		}
-		
-		
 		
 		
 		if(rx_int_flag){							
@@ -86,7 +83,7 @@ void play_game(void){
 					game_over = 1;
 				}else{
 					//If yes - Send play game signal to node 2
-					Message new_game = {0, 1, {0}};
+					Message new_game = {0, 4, {0, 0, 0, state}};
 					CAN_send(&new_game);
 					score = 0;
 					}
@@ -96,27 +93,45 @@ void play_game(void){
 			}
 		}
 	//If highscore, add to list and display highscore-list
-	check_highscore(highest_score);
-	current_state = HIGHSCORE;
+	/*
+	int place = check_highscore(highest_score); 
+	printf("Place %d \n", highest_score);
+	if(place > -1){
+		
+		char* typed_name = oled_type_in_name(int_to_str(highest_score));
+		printf("Typed name %s \n ", typed_name);
+		insert_highscore(place, highest_score, "HEI");
+	}
+	*/
+	current_state = IDLE;
 }
 
+
+
+
+/*
 
 int check_highscore(int score){
 	char* name;
 	for (int i = 0; i < 5 ; i++ ){
 		if(score > highscore_scores[i]){
-			name  = oled_type_in_name(int_to_str(score));
-			for(int j = 5 ; j == i+1 ; j--){
+			name  =	"AAA";//oled_type_in_name(int_to_str(score));
+			for(int j = 4 ; j >= i+1 ; j--){
 				highscore_scores[j] = highscore_scores[j-1];
-				highscore_names[j] = highscore_names[j-1];
+				highscore_names[j] =  highscore_names[j-1];
 			}
 			highscore_names[i] = name;
 			highscore_scores[i] = score;
+			update_highscore_list();		//Update EEPROM highscore list
+			for(int i = 0; i <5; i++){
+				printf("name %s\n",highscore_names[i]);
+			}
 			return 1;
 		}
 	}
 	return 0;
-}
+}*/
+
 
 
 

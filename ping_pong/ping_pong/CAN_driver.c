@@ -136,14 +136,7 @@ void CAN_send_controllers(void){
 		
 }
 
-void CAN_send_start(void){
-	Message msg;
-	msg.length = 1;
-	msg.data[0] = 1;
-	msg.ID = 0;
-	
-	CAN_send(&msg);
-}
+
 
 ISR(INT0_vect){
 	//RX0 interrupt flag set to 0

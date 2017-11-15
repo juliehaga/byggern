@@ -8,6 +8,8 @@ CAN_driver.c
 
 game.c
 
+highscore.c
+
 MCP2515_driver.c
 
 driver_uart.c

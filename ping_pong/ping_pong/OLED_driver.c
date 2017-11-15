@@ -172,23 +172,18 @@ char oled_read_SRAM(int page, int col){
 }
 
 char* oled_type_in_name(char* score){
-	char* name = "AAA";
-	//char* score_send = "";
-	//itoa(score, score_send, 10);
+	char* letters = "AAA";
 	oled_sram_reset();
 	oled_sram_string("NEW HIGHSCORE", 0, 0);
 	oled_sram_string("^", 3, 0);
-	oled_sram_string(name, 4, 0);
+	oled_sram_string("AAA", 4, 0);
 	oled_sram_string("v", 5, 0);
 	oled_sram_string(score, 4, 10);
 	oled_update();
 	int i = 0;
 	char current_letter = 'A';
 
-	while (i < 3){
-		if(button_read(RIGHT_BUTTON)){
-			break;
-		}
+	while (!button_read(LEFT_BUTTON)){
 		joystick_dir joy_dir = find_joystick_dir();
 		if(prev_joy_dir != joy_dir){
 			
@@ -209,7 +204,7 @@ char* oled_type_in_name(char* score){
 					}
 				case RIGHT:
 					if(i < 2){
-						current_letter = 'A';
+						current_letter = letters[i+1];
 						i++;
 						oled_sram_string("^", 3, i);
 						oled_sram_string("v", 5, i);
@@ -219,7 +214,7 @@ char* oled_type_in_name(char* score){
 					break;
 				case LEFT:
 					if(i>0){
-						current_letter = name[i-1];
+						current_letter = letters[i-1];
 						i--;
 						oled_sram_string("^", 3, i);
 						oled_sram_string("v", 5, i);
@@ -229,17 +224,16 @@ char* oled_type_in_name(char* score){
 					break;
 				default:
 					break;
-				
-	
-				
+
 			}
 			prev_joy_dir = joy_dir;
-			name[i] = current_letter;
-			oled_sram_string(name, 4, 0);
+			letters[i] = current_letter;
+			oled_sram_string(letters, 4, 0);
 			oled_update();
 		}		
 	}
-	return name;
+	printf("Ut av while\n");
+	return letters;
 }
 
 void oled_play_game(int life, int score){
@@ -268,17 +262,7 @@ void oled_play_again(){
 	oled_update();
 }
 
-void oled_print_highscore(){
-	oled_sram_reset();
-	oled_sram_string("HIGHSCORE", 0, 3);
-	for(int i = 0; i < 5 ; i++){
-		oled_sram_string(int_to_str(i+1),i+1, 0);
-		oled_sram_string(".", i+1, 1);
-		oled_sram_string(highscore_names[i], i+1, 3);
-		oled_sram_string(int_to_str(highscore_scores[i]), i+1, 10);
-	}
-	oled_update();
-}
+
 
 char* int_to_str(int data){
 	char* data_str = "";
@@ -286,18 +270,3 @@ char* int_to_str(int data){
 	return data_str;
 }
 
-/*
-void read_highscore_list(void){
-	FILE *fp; 
-	fp = fopen("highscore.txt","a");
-	char read_string[255];
-	fgets(read_string, 255, (FILE*)fp);
-	for(int i = 0; i < 30; i++){
-		printf("bokstav: %c", read_string[i]);
-	}
-	
-	
-	fclose(fp);
-	
-}
-*/

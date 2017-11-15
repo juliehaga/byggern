@@ -26,13 +26,12 @@
 #include "SPI_driver.h"
 #include "MCP2515_driver.h"
 #include "MCP2515.h"
-#include "fsm.h"
+#include "highscore.h"
 #include "game.h"
 
 
 states current_state = IDLE;
 int oled_flag = 0;
-
 
 
 
@@ -49,16 +48,25 @@ int main(void) {
 	
 	
 	menu_setup();
+	//update_highscore_list();
+	//insert_highscore(1, 5, "HEI");
+	//insert_highscore(1, 10, "YOO");
+	//oled_print_highscore();
 	
-
 	while(1){
 		
 		switch(current_state){
 			case IDLE:
 				main_menu();
 				break;
-			case PLAY_GAME:
-				play_game();
+			case EASY:
+				play_game(EASY);
+				break;
+			case MEDIUM:
+				play_game(MEDIUM);
+				break;
+			case HARD:
+				play_game(HARD);
 				break;
 			case HIGHSCORE:
 				if(find_joystick_dir() == LEFT){
