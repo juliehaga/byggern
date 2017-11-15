@@ -68,7 +68,7 @@ int main(void)
 		if(timer_flag == 1){
 			clr_bit(TIMSK3, TOIE3);
 			//printf("PI input %d \t", slider_pos_r);
-			//printf("Encoder %d \n", motor_read_encoder());
+			printf("Encoder %d \n", motor_read_encoder());
 			
 			motor_drive(motor_PID(slider_pos_r));
 			set_bit(TIMSK3, TOIE3);
@@ -78,7 +78,7 @@ int main(void)
 		
 		if(IR_value == 1){
 			printf("Can melding, spill over\n");
-			Message msg = {1, 1, 0};
+			Message msg = {0, 1, 0};
 			CAN_send(&msg);
 			while(!rx_int_flag);			//waiting for message about new game
 			rx_int_flag = 0; 

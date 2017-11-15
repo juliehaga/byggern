@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <avr/interrupt.h>
 
-#define epsilon 2
+#define epsilon 1
 #define dt 0.032
 #define MAX 255
 #define MIN 0
@@ -25,9 +25,9 @@ int left_pos;
 int right_pos;
 motor_dir dir;
 
-#define Kp 1
+#define Kp 0.9
 #define Ki 0.01
-#define Kd 0.1
+#define Kd 0.07
 int prev_error = 0; 
 
  
@@ -140,11 +140,6 @@ void motor_calibration(void){
 
 
 int motor_PID(int slider_value){
-	/*if(slider_value < left_pos){
-		slider_value = left_pos; 
-	} else if (slider_value > right_pos){
-		slider_value = right_pos;
-	}*/
 	
 	static float integral = 0; 
 	int data = motor_read_encoder();
@@ -169,7 +164,6 @@ int motor_PID(int slider_value){
 	else if (output < MIN){
 		output = MIN;
 	} 
-	printf("OUTPUT %d\n", output);
 	
 	prev_error = error;
 	return output;
