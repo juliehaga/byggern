@@ -33,6 +33,7 @@ int output = 0;
 int timer_flag = 0;
 int IR_value = 0; 
 int last_IR_value = 0; 
+int solenoid_button = 0;
 typedef enum {IDLE = 0, EASY = 1, MEDIUM = 2, HARD = 3, PLAY} states;
 states current_state = IDLE;
 
@@ -73,33 +74,36 @@ int main(void)
 			break;
 		case MEDIUM:
 			printf("MEDIUM \n");
-			Kp = 1;
-			Kd = 0.8;
-			Ki = 0.01;
+			Kp = 0.95;
+			Kd = 0.1;
+			Ki = 0.05;
 			current_state = PLAY;
 			break;
 		case HARD:
 			printf("HARD \n");
-			Kp = 1.2;
-			Kd = 0.3;
+			Kp = 1;
+			Kd = 0.1;
 			Ki = 0.01;
 			current_state = PLAY;
 			break;
 		case PLAY:
-		
+			
 			if(rx_int_flag){
 				Message recieve_msg = CAN_recieve();
 				
 				joystick_pos_x = recieve_msg.data[0];
 				slider_pos_r = recieve_msg.data[1];
-				int solenoid_button = recieve_msg.data[2];
+				
+				if (recieve_msg.data[2] == 0){
+					solenoid_button = 0;
+				}
 				
 				servo_set_pos(joystick_pos_x);
 				
-				if (solenoid_button == 2){
+				if (recieve_msg.data[2] != solenoid_button){
 					printf("shoot\n");
 					solenoid_shoot();
-					solenoid_button = 0;
+					solenoid_button = 2;
 				}
 				rx_int_flag = 0;
 			}

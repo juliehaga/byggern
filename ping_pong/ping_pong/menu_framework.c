@@ -25,7 +25,7 @@ extern states current_state;
 
 
 void menu_setup(void){
-	menu* menu_front_page = create_menu("How to steal");
+	menu* menu_front_page = create_menu("JAJ PINGPONG");
 	display_menu = menu_front_page;
 
 	menu* sub1 = create_menu("Play game");
@@ -33,12 +33,21 @@ void menu_setup(void){
 	menu* subsub1 = create_menu("Easy");
 	menu* subsub2 = create_menu("Medium");
 	menu* subsub3 = create_menu("Hard");
-
+	menu* subsub4 = create_menu("View highscore");
+	menu* subsub5 = create_menu("Reset highscore");
+	menu* subsubsub1 = create_menu("YES");
+	menu* subsubsub2 = create_menu("NO");
+	
+	
 	create_submenu(menu_front_page, sub1);
 	create_submenu(menu_front_page, sub2);
 	create_submenu(sub1, subsub1);
 	create_submenu(sub1, subsub2);
 	create_submenu(sub1, subsub3);
+	create_submenu(sub2, subsub4);
+	create_submenu(sub2, subsub5);
+	create_submenu(subsub5, subsubsub1);
+	create_submenu(subsub5, subsubsub2);
 	
 	oled_reset();
 	menu_sram_update(display_menu, current_page);
@@ -206,12 +215,18 @@ void main_menu(void){
 		if (current_menu->name == "Easy"){
 			current_state = EASY;
 		}else if (current_menu->name == "Medium"){
-		current_state = MEDIUM;
+			current_state = MEDIUM;
 		}else if (current_menu->name == "Hard"){
-		current_state = HARD;
+			current_state = HARD;
 		}
-		else if (current_menu->name == "Highscore"){
+		else if (current_menu->name == "View highscore"){
 			current_state = HIGHSCORE;
+		}
+		else if (current_menu->name == "YES"){
+			current_state = RESET_HIGHSCORE;
+		}
+		else if (current_menu->name == "NO"){
+			current_state = IDLE;
 		}
 	}
 }

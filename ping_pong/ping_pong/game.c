@@ -30,7 +30,7 @@ states current_state;
 
 
 void play_game(states state){
-	// Send state to node2 
+	//Send state to node2 
 	Message msg = {0, 4, {0,0,0,state}};
 	printf("har sendt state %d\n", state);	
 	CAN_send(&msg);

@@ -68,6 +68,10 @@ int main(void) {
 			case HARD:
 				play_game(HARD);
 				break;
+			case RESET_HIGHSCORE:
+				reset_highscore_list();
+				current_state = HIGHSCORE;
+				break;
 			case HIGHSCORE:
 				if(find_joystick_dir() == LEFT){
 					current_state = IDLE; 
