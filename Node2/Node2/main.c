@@ -121,9 +121,10 @@ int main(void)
 				printf("Can melding, spill over\n");
 				Message msg = {0, 1, {0}};
 				CAN_send(&msg);
-				while(!rx_int_flag);			//waiting for message about new game
 				current_state = IDLE;
-				rx_int_flag = 0;
+						//waiting for message about new game
+				
+				
 			}
 
 			_delay_ms(1);

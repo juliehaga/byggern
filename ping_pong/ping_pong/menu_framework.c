@@ -33,8 +33,8 @@ void menu_setup(void){
 	menu* subsub1 = create_menu("Easy");
 	menu* subsub2 = create_menu("Medium");
 	menu* subsub3 = create_menu("Hard");
-	menu* subsub4 = create_menu("View highscore");
-	menu* subsub5 = create_menu("Reset highscore");
+	menu* subsub4 = create_menu("View");
+	menu* subsub5 = create_menu("Reset");
 	menu* subsubsub1 = create_menu("YES");
 	menu* subsubsub2 = create_menu("NO");
 	
@@ -218,7 +218,7 @@ void main_menu(void){
 		}else if (current_menu->name == "Hard"){
 			current_state = HARD;
 		}
-		else if (current_menu->name == "View highscore"){
+		else if (current_menu->name == "View"){
 			current_state = HIGHSCORE;
 		}
 		else if (current_menu->name == "YES"){

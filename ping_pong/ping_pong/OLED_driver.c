@@ -11,6 +11,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "highscore.h"
 #include "game.h"
 
 
@@ -22,8 +23,7 @@ volatile char* SRAM = (char*) 0x1800;
 
 joystick_dir prev_joy_dir = CENTER;
 static uint8_t current_page, current_col;
-char* highscore_names[5];
-int highscore_scores[5];
+
 
 void oled_init(){
 	//  display  off
@@ -171,11 +171,12 @@ char oled_read_SRAM(int page, int col){
 	return SRAM[128 * page + col];
 }
 
+
 char* oled_type_in_name(char* score){
-	printf("Score typeName %s  \n", score);
-	char* letters = "AAA";
+	char* name = "AAA";
+	//char* score_send = "";
+	//itoa(score, score_send, 10);
 	oled_sram_reset();
-	
 	oled_sram_string("NEW HIGHSCORE", 0, 0);
 	oled_sram_string("^", 3, 0);
 	oled_sram_string("AAA", 4, 0);
@@ -185,57 +186,68 @@ char* oled_type_in_name(char* score){
 	int i = 0;
 	char current_letter = 'A';
 
-	while (!button_read(LEFT_BUTTON)){
+	while (i < 3){
+		if(button_read(LEFT_BUTTON)){
+			break;
+		}
 		joystick_dir joy_dir = find_joystick_dir();
 		if(prev_joy_dir != joy_dir){
 			
 			switch(joy_dir){
 				case UP:
-					if(current_letter == 'A'){
-						current_letter = 'Z';
+				if(current_letter == 'A'){
+					current_letter = 'Z';
 					}else{
 					current_letter--;
-					}
-					break;
+				}
+				break;
 				case DOWN:
-					if(current_letter == 'Z'){
-						current_letter = 'A';
-						}else{
-						current_letter++;
-						break;
-					}
+				if(current_letter == 'Z'){
+					current_letter = 'A';
+					}else{
+					current_letter++;
+					break;
+				}
 				case RIGHT:
-					if(i < 2){
-						current_letter = letters[i+1];
-						i++;
-						oled_sram_string("^", 3, i);
-						oled_sram_string("v", 5, i);
-						oled_sram_string(" ", 3, i-1);
-						oled_sram_string(" ", 5, i-1);
-					}
-					break;
+				if(i < 2){
+					current_letter = 'A';
+					i++;
+					oled_sram_string("^", 3, i);
+					oled_sram_string("v", 5, i);
+					oled_sram_string(" ", 3, i-1);
+					oled_sram_string(" ", 5, i-1);
+				}
+				break;
 				case LEFT:
-					if(i>0){
-						current_letter = letters[i-1];
-						i--;
-						oled_sram_string("^", 3, i);
-						oled_sram_string("v", 5, i);
-						oled_sram_string(" ", 3, i+1);
-						oled_sram_string(" ", 5, i+1);
-					}
-					break;
+				if(i>0){
+					current_letter = name[i-1];
+					i--;
+					oled_sram_string("^", 3, i);
+					oled_sram_string("v", 5, i);
+					oled_sram_string(" ", 3, i+1);
+					oled_sram_string(" ", 5, i+1);
+				}
+				break;
 				default:
-					break;
-
+				break;
+				
+				
+				
 			}
+			for (int i = 0; i < 5; i++)
+			{
+				printf("NAMES: %s\n", highscore_names[i]);
+			}
+			printf("---------------------------------- \n");
+			
 			prev_joy_dir = joy_dir;
-			letters[i] = current_letter;
-			oled_sram_string(letters, 4, 0);
+			name[i] = current_letter;
+			oled_sram_string(name, 4, 0);
 			oled_update();
-		}		
+		}
+		
 	}
-	printf("Ut av while\n");
-	return letters;
+	return name;
 }
 
 void oled_play_game(int life, int score){

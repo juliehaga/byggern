@@ -32,6 +32,7 @@
 
 states current_state = IDLE;
 int oled_flag = 0;
+int place = 0;
 int highest_score;
 
 
@@ -49,14 +50,15 @@ int main(void) {
 	/*IKKE FJÆRN*/
 	menu_setup();
 	read_highscore_list();
+
 	
 	
 	
-	insert_highscore(1, 2, "AAA");
-	oled_print_highscore();
+
 	while(1){
-		/*
-		
+	
+	
+
 		switch(current_state){
 			case IDLE:
 				main_menu();
@@ -69,7 +71,6 @@ int main(void) {
 				break;
 			case HARD:
 				play_game(HARD);
-				printf("spillet er over\n");
 				break;
 			case RESET_HIGHSCORE:
 				reset_highscore_list();
@@ -85,15 +86,19 @@ int main(void) {
 				}
 				break;
 			case NEW_HIGHSCORE:
-				if (check_highscore(highest_score) > -1){
-					char* name = oled_type_in_name(12);
-					insert_highscore(0, highest_score, name);
+				place = check_highscore(highest_score);
+				char* nickname;
+				
+				if ( place  > -1){
+					nickname = oled_type_in_name(highest_score);
+					
+					insert_highscore(place, highest_score, nickname);
 				}
 				current_state = HIGHSCORE;
 				break;
 			default:
 				break;
-		}*/
+		}
 	}
 	return 0;
 }

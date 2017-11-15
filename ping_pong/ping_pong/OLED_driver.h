@@ -30,7 +30,7 @@ void oled_sram_string(char* string, int page, int start_col);
 void oled_sram_char(char c, int page, int col);
 char oled_read_SRAM(int page, int col);
 void oled_sram_reset(void);
-char* oled_type_in_name(char* score);
+char* oled_type_in_name( char* score);
 void oled_play_game(int life, int score); 
 void oled_game_over(void); 
 void oled_play_again(void);

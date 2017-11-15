@@ -84,6 +84,7 @@ void play_game(states state){
 					game_over = 1;
 				}else{
 					//If yes - Send play game signal to node 2
+					_delay_ms(500);
 					Message new_game = {0, 4, {0, 0, 0, state}};
 					CAN_send(&new_game);
 					score = 0;

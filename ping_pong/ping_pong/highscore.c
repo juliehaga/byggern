@@ -37,6 +37,8 @@ int check_highscore(int score){
 }
 
 void insert_highscore(int place, int score, char* new_name){
+	
+	
 	for(int j = 4 ; j > place ; j--){
 		highscore_scores[j] = highscore_scores[j-1];
 		highscore_names[j] =  highscore_names[j-1];
@@ -59,13 +61,16 @@ void read_highscore_list(void){
 }
 
 void update_highscore_list(void){
+	printf("Updater highscore: \n ");
 	for (int i = 0; i < 5 ; i++){
 		for(int j = 0 ; j < 3 ; j++){
+			printf(" %c", highscore_names[i][j]);
 			EEPROM_write(highscore_names[i][j], 3*i+j);
-		}
+		}printf("\n");
 	}
 	for (int i = 0; i < 5 ; i++){
 		EEPROM_write(highscore_scores[i], 15+i);
+		printf(" %d", highscore_scores[i]);
 	}
 }
 
@@ -74,9 +79,10 @@ void EEPROM_write(uint8_t ucData, unsigned int uiAddress){
 	/* 
 	Wait for completion of previous write
 	*/
-	cli();
+	
 	while(EECR & (1<<EEWE));
 	/* Set up address and data registers */
+	cli();
 	EEAR = uiAddress;
 	EEDR = ucData;
 	/* Write logical one to EEMWE */
@@ -87,24 +93,30 @@ void EEPROM_write(uint8_t ucData, unsigned int uiAddress){
 }
 
 unsigned char EEPROM_read(unsigned int uiAddress)
-{
+{	
+	
 	/* Wait for completion of previous write */
 	while(EECR & (1<<EEWE));
+	
 	/* Set up address register */
 	EEAR = uiAddress;
 	/* Start eeprom read by writing EERE */
 	EECR |= (1<<EERE);
 	/* Return data from data register */
 	return EEDR;
+	 
 }
 
 void reset_highscore_list(){
 	for (int i = 0; i < 5 ; i++){
+		highscore_names[i] = "---";
 		for(int j = 0 ; j < 3 ; j++){
 			EEPROM_write('-', 3*i+j);
 		}
 	}
 	for (int i = 0; i < 5 ; i++){
 		EEPROM_write(0, 15+i);
+		highscore_scores[i] = 0; 
 	}
+	update_highscore_list();
 }
