@@ -32,7 +32,7 @@
 
 states current_state = IDLE;
 int oled_flag = 0;
-
+int highest_score;
 
 
 int main(void) {
@@ -46,14 +46,16 @@ int main(void) {
 	//Enable global interrupts
 	sei();
 	
-	
+	/*IKKE FJÆRN*/
 	menu_setup();
-	//update_highscore_list();
-	//insert_highscore(1, 5, "HEI");
-	//insert_highscore(1, 10, "YOO");
-	//oled_print_highscore();
+	read_highscore_list();
+	
+	
+	
+	insert_highscore(1, 2, "AAA");
+	oled_print_highscore();
 	while(1){
-		printf("STATE = %d\n", current_state);
+		/*
 		
 		switch(current_state){
 			case IDLE:
@@ -83,14 +85,15 @@ int main(void) {
 				}
 				break;
 			case NEW_HIGHSCORE:
-				printf("STATE = NEWHIGHSCORE\n");
-				char* name = oled_type_in_name(12);
-				insert_highscore(0, 12, name);
+				if (check_highscore(highest_score) > -1){
+					char* name = oled_type_in_name(12);
+					insert_highscore(0, highest_score, name);
+				}
 				current_state = HIGHSCORE;
 				break;
 			default:
 				break;
-		}
+		}*/
 	}
 	return 0;
 }

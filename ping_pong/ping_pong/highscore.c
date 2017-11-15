@@ -7,6 +7,7 @@
  */ 
 
 #include <avr/io.h>
+#include <avr/interrupt.h>
 #include "highscore.h"
 #include "OLED_driver.h"
 
@@ -73,6 +74,7 @@ void EEPROM_write(uint8_t ucData, unsigned int uiAddress){
 	/* 
 	Wait for completion of previous write
 	*/
+	cli();
 	while(EECR & (1<<EEWE));
 	/* Set up address and data registers */
 	EEAR = uiAddress;
@@ -81,6 +83,7 @@ void EEPROM_write(uint8_t ucData, unsigned int uiAddress){
 	EECR |= (1<<EEMWE);
 	/* Start eeprom write by setting EEWE */
 	EECR |= (1<<EEWE);
+	sei(); 
 }
 
 unsigned char EEPROM_read(unsigned int uiAddress)

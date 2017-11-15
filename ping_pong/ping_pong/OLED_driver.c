@@ -175,6 +175,7 @@ char* oled_type_in_name(char* score){
 	printf("Score typeName %s  \n", score);
 	char* letters = "AAA";
 	oled_sram_reset();
+	
 	oled_sram_string("NEW HIGHSCORE", 0, 0);
 	oled_sram_string("^", 3, 0);
 	oled_sram_string("AAA", 4, 0);

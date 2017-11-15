@@ -24,6 +24,7 @@ int score = 0;
 int highest_score = 0;  
 int life;
 extern int oled_flag;
+extern int highest_score;
 int send_can_flag = 0;
 volatile uint8_t rx_int_flag = 0;		//automatically set when 
 states current_state;
