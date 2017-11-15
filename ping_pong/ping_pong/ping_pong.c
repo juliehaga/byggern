@@ -52,8 +52,8 @@ int main(void) {
 	//insert_highscore(1, 5, "HEI");
 	//insert_highscore(1, 10, "YOO");
 	//oled_print_highscore();
-	
 	while(1){
+		printf("STATE = %d\n", current_state);
 		
 		switch(current_state){
 			case IDLE:
@@ -67,6 +67,7 @@ int main(void) {
 				break;
 			case HARD:
 				play_game(HARD);
+				printf("spillet er over\n");
 				break;
 			case RESET_HIGHSCORE:
 				reset_highscore_list();
@@ -80,6 +81,12 @@ int main(void) {
 					oled_print_highscore();
 					oled_flag = 0;
 				}
+				break;
+			case NEW_HIGHSCORE:
+				printf("STATE = NEWHIGHSCORE\n");
+				char* name = oled_type_in_name(12);
+				insert_highscore(0, 12, name);
+				current_state = HIGHSCORE;
 				break;
 			default:
 				break;

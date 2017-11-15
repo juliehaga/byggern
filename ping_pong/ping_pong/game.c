@@ -30,7 +30,7 @@ states current_state;
 
 
 void play_game(states state){
-	//Send state to node2 
+	// Send state to node2 
 	Message msg = {0, 4, {0,0,0,state}};
 	printf("har sendt state %d\n", state);	
 	CAN_send(&msg);
@@ -88,24 +88,13 @@ void play_game(states state){
 					score = 0;
 					}
 				}
-			oled_reset();
 			rx_int_flag = 0; 	
 			}
 		}
 	//If highscore, add to list and display highscore-list
-	/*
-	int place = check_highscore(highest_score); 
-	printf("Place %d \n", highest_score);
-	if(place > -1){
-		
-		char* typed_name = oled_type_in_name(int_to_str(highest_score));
-		printf("Typed name %s \n ", typed_name);
-		insert_highscore(place, highest_score, "HEI");
-	}
-	*/
-	current_state = IDLE;
+	
+	current_state = NEW_HIGHSCORE;
 }
-
 
 
 

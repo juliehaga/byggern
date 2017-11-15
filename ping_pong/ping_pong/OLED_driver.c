@@ -172,6 +172,7 @@ char oled_read_SRAM(int page, int col){
 }
 
 char* oled_type_in_name(char* score){
+	printf("Score typeName %s  \n", score);
 	char* letters = "AAA";
 	oled_sram_reset();
 	oled_sram_string("NEW HIGHSCORE", 0, 0);

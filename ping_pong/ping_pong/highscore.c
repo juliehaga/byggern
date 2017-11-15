@@ -36,7 +36,7 @@ int check_highscore(int score){
 }
 
 void insert_highscore(int place, int score, char* new_name){
-	for(int j = 5 ; j > place ; j--){
+	for(int j = 4 ; j > place ; j--){
 		highscore_scores[j] = highscore_scores[j-1];
 		highscore_names[j] =  highscore_names[j-1];
 	}

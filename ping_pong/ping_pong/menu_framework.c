@@ -164,7 +164,6 @@ void print_selection_sign(int page){
 
 
 void main_menu(void){
-	
 	joystick_dir joy_dir = find_joystick_dir();
 	if(joy_dir != last_joy_dir){
 		switch(joy_dir){
