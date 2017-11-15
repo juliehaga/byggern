@@ -52,9 +52,6 @@ joystick_dir find_joystick_dir(void){
 	int joystick_x = joystick_read(CHANNEL_X);
 	int joystick_y = joystick_read(CHANNEL_Y);
 	
-	//printf("x = %d\n", joystick_x); 
-	//printf("y = %d\n", joystick_y); 
-	
 	if (joystick_y > 150){
 		return UP;
 	}

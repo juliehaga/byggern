@@ -247,7 +247,7 @@ void oled_play_game(int life, int score){
 	itoa(score, score_send, 10);
 	oled_sram_reset();
 	oled_sram_string("PINGPONG GAME", 0, 0);
-	oled_sram_string("LIFE", 3, 0);
+	oled_sram_string("LIVES", 3, 0);
 	oled_sram_string("SCORE", 3, 9);
 	oled_sram_char(life + '0', 5, 2);
 	oled_sram_string(score_send, 5, 10);

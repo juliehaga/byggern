@@ -64,10 +64,7 @@ void motor_init(void){
 	
 	//Prescaler Fosc/8
 	set_bit(TCCR3B, CS31);
-	
-	
-	
-	
+
 	//Interrupt enable overflow
 	set_bit(TIMSK3, TOIE3);
 }
@@ -114,34 +111,45 @@ int16_t motor_read_encoder_unscaled(void){
 
 int16_t motor_read_encoder(void){
 	int data = motor_read_encoder_unscaled();
-	return -((double)(255)/(left_pos-right_pos))*data;
+
+	return -((double)(255)/(0-right_pos))*data;
 }
 
-
-
 void motor_calibration(void){
-	
 	//drive to left corner
 	dir = LEFT;
-	motor_drive(180);
-	_delay_ms(500);
+	motor_drive(150);
+	_delay_ms(700);
 	
 	//choose zero-position
 	motor_reset_encoder();
-	left_pos = motor_read_encoder_unscaled();
-	printf("encoder value %d\n", motor_read_encoder_unscaled());
 	
 	dir = RIGHT;
-	motor_drive(180);
-	_delay_ms(500);
+	motor_drive(150);
+	_delay_ms(700);
 	right_pos = motor_read_encoder_unscaled();
+	printf("right encoder value %d\n", motor_read_encoder_unscaled());
 	motor_drive(STOP);
+	
+	dir = LEFT;
+	motor_drive(150);
+	left_pos = motor_read_encoder_unscaled();
+	_delay_ms(1200);
+	motor_reset_encoder();
 }
 
 
 int motor_PID(int slider_value){
+	/*if(slider_value < left_pos){
+		slider_value = left_pos; 
+	} else if (slider_value > right_pos){
+		slider_value = right_pos;
+	}*/
+	
 	static float integral = 0; 
-	int error = slider_value - motor_read_encoder(); 
+	int data = motor_read_encoder();
+	int error = slider_value - data; 
+	//printf("encoder: %d\n", data);
 	if (error > 0){
 		dir = RIGHT;
 	} 
@@ -161,6 +169,8 @@ int motor_PID(int slider_value){
 	else if (output < MIN){
 		output = MIN;
 	} 
+	printf("OUTPUT %d\n", output);
+	
 	prev_error = error;
 	return output;
 }

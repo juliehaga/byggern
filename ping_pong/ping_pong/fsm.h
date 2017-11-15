@@ -11,8 +11,9 @@
 
 
 
-typedef enum{PLAY_GAME, HIGHSCORE, NEW_HIGHSCORE, IDLE} states;
-extern states current_state;
+
+
+
 
 
 #endif /* FSM_H_ */

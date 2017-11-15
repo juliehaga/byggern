@@ -124,12 +124,6 @@
     <Compile Include="CAN_driver.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="fsm.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="fsm.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="game.c">
       <SubType>compile</SubType>
     </Compile>

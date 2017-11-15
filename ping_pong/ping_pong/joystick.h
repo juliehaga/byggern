@@ -29,6 +29,7 @@
 
 typedef enum{UP, DOWN, RIGHT, LEFT, CENTER} joystick_dir;
 
+
 int joystick_read(int channel);
 int slider_read(int channel);
 int button_read(int button);

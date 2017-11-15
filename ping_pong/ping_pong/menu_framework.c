@@ -20,7 +20,8 @@ menu* display_menu;
 static menu* current_menu;
 joystick_dir last_joy_dir = CENTER;
 
-states current_state; 
+
+enum states current_state; 
 
 
 void menu_setup(void){

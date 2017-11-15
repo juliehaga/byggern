@@ -9,6 +9,7 @@
 #ifndef FSM_H_
 #define FSM_H_
 
+typedef enum states{PLAY_GAME, HIGHSCORE, NEW_HIGHSCORE, IDLE} states;
 
 
 void play_game(void);

@@ -20,6 +20,8 @@ typedef struct menu{
 }menu;
 
 
+typedef enum states{PLAY_GAME, HIGHSCORE, NEW_HIGHSCORE, IDLE} states;
+extern states current_state;
 
 
 void main_menu(void);

@@ -31,9 +31,9 @@
 
 
 states current_state = IDLE;
+int oled_flag = 0;
 
 
-//volatile uint8_t* a = 0x1400;
 
 
 int main(void) {
@@ -53,7 +53,6 @@ int main(void) {
 
 	while(1){
 		
-		
 		switch(current_state){
 			case IDLE:
 				main_menu();
@@ -65,13 +64,15 @@ int main(void) {
 				if(find_joystick_dir() == LEFT){
 					current_state = IDLE; 
 				}
-				oled_print_highscore();
+				if (oled_flag){
+					oled_print_highscore();
+					oled_flag = 0;
+				}
 				break;
 			default:
 				break;
 		}
 	}
-	
 	return 0;
 }
 

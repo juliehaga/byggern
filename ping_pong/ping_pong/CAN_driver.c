@@ -4,7 +4,7 @@
  * Created: 11.10.2017 14:54:47
  *  Author: andrholt
  */ 
-
+#define F_CPU 4915200
 #include "MCP2515.h"
 #include "MCP2515_driver.h"
 #include "CAN_driver.h"
@@ -18,9 +18,6 @@
 
 extern volatile uint8_t rx_int_flag; 
 
-uint8_t last_joystick_pos_x = 0;
-uint8_t last_slider_pos_l = 0;
-uint8_t last_button_l = 0;
 
 Message msg;
 
@@ -129,27 +126,14 @@ void CAN_int_vect(){
 void CAN_send_controllers(void){
 	
 	uint8_t joy_pos_x = joystick_read(CHANNEL_X);
-	//uint8_t joy_pos_y = joystick_read(CHANNEL_Y);
-	//uint8_t slider_pos_r = slider_read(SLIDER_R);
-	uint8_t slider_pos_l = slider_read(SLIDER_L);
+	uint8_t slider_pos_r = slider_read(SLIDER_R);
 	
 	int button_l = button_read(1);
 
-	if(abs(joy_pos_x - last_joystick_pos_x) > 10 || abs(slider_pos_l - last_slider_pos_l) > 10 || (button_l != last_button_l)){
-		Message msg;
+	Message msg = {0, 3, {joy_pos_x ,slider_pos_r,  button_l}};
+	
+	CAN_send(&msg);
 		
-		msg.length = 3;
-		msg.data[0] = joy_pos_x;
-		msg.data[1] = slider_pos_l;
-		msg.data[2] = button_l;
-		msg.ID = 0;
-		
-		CAN_send(&msg);
-		last_joystick_pos_x = joy_pos_x;
-		last_slider_pos_l = slider_pos_l;
-		last_button_l = button_l;
-		
-	}
 }
 
 void CAN_send_start(void){

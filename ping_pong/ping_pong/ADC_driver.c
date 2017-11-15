@@ -4,7 +4,7 @@
  * Created: 20.09.2017 10:46:05
  *  Author: andrholt
  */ 
-
+#define F_CPU 4915200
 #include "ADC_driver.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -50,6 +50,7 @@ uint8_t ADC_read(uint8_t channel) {
 	//Choose channel in ADC
 	*adc = 0x04 | channel;
 	while(!ADC_ready);
+	_delay_ms(2);
 	ADC_ready = 0; 
 	return *adc;
 }

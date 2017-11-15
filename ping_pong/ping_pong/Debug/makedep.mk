@@ -6,8 +6,6 @@ ADC_driver.c
 
 CAN_driver.c
 
-fsm.c
-
 game.c
 
 MCP2515_driver.c

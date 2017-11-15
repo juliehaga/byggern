@@ -21,9 +21,10 @@
 #include "driver_motor.h"
 #include "driver_DAC.h"
 #include "driver_solenoid.h"
+#include "bit_functions.h"
 
 volatile uint8_t rx_int_flag = 0;
-uint8_t slider_pos_r = 132;
+uint8_t slider_pos_r =0;
 uint8_t joystick_pos_x;
 int output = 0;
 int timer_flag = 0;
@@ -43,19 +44,16 @@ int main(void)
 	sei();
 	
 	while(1)
-	{	
+	{
 		
 		if(rx_int_flag){
 			
 			Message recieve_msg = CAN_recieve();
 			
-			joystick_pos_x = recieve_msg.data[1];
-			slider_pos_r = recieve_msg.data[0];
+			joystick_pos_x = recieve_msg.data[0];
+			slider_pos_r = recieve_msg.data[1];
 			int solenoid_button = recieve_msg.data[2];
 			
-			printf("joy_pos_x %d \t ", joystick_pos_x);
-			printf("slider l %d \t", slider_pos_r);
-			printf("Button %d \n ", solenoid_button);
 			
 			servo_set_pos(joystick_pos_x);
 			
@@ -68,20 +66,22 @@ int main(void)
 		}
 		
 		if(timer_flag == 1){
+			clr_bit(TIMSK3, TOIE3);
+			//printf("PI input %d \t", slider_pos_r);
+			//printf("Encoder %d \n", motor_read_encoder());
+			
 			motor_drive(motor_PID(slider_pos_r));
+			set_bit(TIMSK3, TOIE3);
 			timer_flag = 0;
 		}
 		IR_value = IR_game_over();
 		
-		if(IR_value == 1 & last_IR_value==0){
-			printf("Can melding \n");
-			Message msg; 
-			msg.length = 1;
-			msg.data[0] = 1;
-			msg.ID = 0;
+		if(IR_value == 1){
+			printf("Can melding, spill over\n");
+			Message msg = {1, 1, 0};
 			CAN_send(&msg);
-			IR_value = 0;
-			last_IR_value = IR_value; 
+			while(!rx_int_flag);			//waiting for message about new game
+			rx_int_flag = 0; 
 		}
 
 		_delay_ms(1);
@@ -93,4 +93,5 @@ int main(void)
 
 ISR(TIMER3_OVF_vect){
 	timer_flag = 1;
+	
 }

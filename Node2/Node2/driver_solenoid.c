@@ -18,7 +18,7 @@ void solenoid_init(void){
 
 void solenoid_shoot(void){
 	clr_bit(PORTF, PF1);
-	_delay_ms(500); 
+	_delay_ms(100); 
 	set_bit(PORTF, PF1);
 
 }
