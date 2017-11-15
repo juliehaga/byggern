@@ -22,6 +22,8 @@ MCP2515_driver.c
 
 main.c
 
+playstation_test.c
+
 SPI_driver.c
 
 driver_pwm.c

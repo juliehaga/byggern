@@ -47,6 +47,7 @@ C_SRCS +=  \
 ../driver_uart.c \
 ../MCP2515_driver.c \
 ../main.c \
+../playstation_test.c \
 ../SPI_driver.c \
 ../driver_pwm.c \
 ../TWI_Master.c
@@ -69,6 +70,7 @@ driver_solenoid.o \
 driver_uart.o \
 MCP2515_driver.o \
 main.o \
+playstation_test.o \
 SPI_driver.o \
 driver_pwm.o \
 TWI_Master.o
@@ -84,6 +86,7 @@ driver_solenoid.o \
 driver_uart.o \
 MCP2515_driver.o \
 main.o \
+playstation_test.o \
 SPI_driver.o \
 driver_pwm.o \
 TWI_Master.o
@@ -99,6 +102,7 @@ driver_solenoid.d \
 driver_uart.d \
 MCP2515_driver.d \
 main.d \
+playstation_test.d \
 SPI_driver.d \
 driver_pwm.d \
 TWI_Master.d
@@ -114,6 +118,7 @@ driver_solenoid.d \
 driver_uart.d \
 MCP2515_driver.d \
 main.d \
+playstation_test.d \
 SPI_driver.d \
 driver_pwm.d \
 TWI_Master.d
@@ -132,6 +137,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

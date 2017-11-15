@@ -20,6 +20,8 @@ menu_framework.c
 
 OLED_driver.c
 
+ps2.c
+
 SPI_driver.c
 
 ping_pong.c

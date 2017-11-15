@@ -172,6 +172,12 @@
     <Compile Include="OLED_driver.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="ps2.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ps2.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="register_init.h">
       <SubType>compile</SubType>
     </Compile>

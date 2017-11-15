@@ -28,6 +28,7 @@
 #include "MCP2515.h"
 #include "highscore.h"
 #include "game.h"
+#include "ps2.h"
 
 
 states current_state = IDLE;
@@ -44,6 +45,7 @@ int main(void) {
 	oled_init();
 	ADC_init();
 	CAN_init();
+	ps2_init();
 	//Enable global interrupts
 	sei();
 	
@@ -53,11 +55,14 @@ int main(void) {
 
 	
 	
+	uint8_t data = SPI_read_write_PS2(0x00);
+	printf("Leser %d\n", data);
 	
-
+	
 	while(1){
+		ps2_poll(255, 125);
 	
-	
+	/*
 
 		switch(current_state){
 			case IDLE:
@@ -99,7 +104,7 @@ int main(void) {
 			default:
 				break;
 		}
-	}
+	*/}
 	return 0;
 }
 

@@ -41,7 +41,7 @@ int CAN_init(){
 	MCP2515_bit_modify(MCP_CANINTE, 0x01, 0x01);
 	MCP2515_bit_modify(MCP_RXB0CTRL, 0x60, 0xFF);
 	
-	//Set loopback-mode
+	//Set Normal-mode
 	MCP2515_bit_modify(MCP_CANCTRL, MODE_MASK , MODE_NORMAL);
 	
 	value = MCP2515_read(MCP_CANSTAT);

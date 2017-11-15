@@ -21,7 +21,8 @@ ping_pong.d ping_pong.o: .././ping_pong.c \
  .././driver_uart.h .././bit_functions.h .././register_init.h \
  .././sram_test.h .././OLED_driver.h .././ADC_driver.h .././joystick.h \
  .././menu_framework.h .././CAN_driver.h .././SPI_driver.h \
- .././MCP2515_driver.h .././MCP2515.h .././highscore.h .././game.h
+ .././MCP2515_driver.h .././MCP2515.h .././highscore.h .././game.h \
+ .././ps2.h
 
 c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1061\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -88,3 +89,5 @@ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1061\avr8-g
 .././highscore.h:
 
 .././game.h:
+
+.././ps2.h:

@@ -22,6 +22,7 @@
 #include "driver_DAC.h"
 #include "driver_solenoid.h"
 #include "bit_functions.h"
+#include "playstation_test.h"
 
 volatile uint8_t rx_int_flag = 0;
 uint8_t slider_pos_r = 0;

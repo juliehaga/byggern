@@ -46,6 +46,7 @@ C_SRCS +=  \
 ../joystick.c \
 ../menu_framework.c \
 ../OLED_driver.c \
+../ps2.c \
 ../SPI_driver.c \
 ../ping_pong.c \
 ../sram_test.c
@@ -67,6 +68,7 @@ driver_uart.o \
 joystick.o \
 menu_framework.o \
 OLED_driver.o \
+ps2.o \
 SPI_driver.o \
 ping_pong.o \
 sram_test.o
@@ -81,6 +83,7 @@ driver_uart.o \
 joystick.o \
 menu_framework.o \
 OLED_driver.o \
+ps2.o \
 SPI_driver.o \
 ping_pong.o \
 sram_test.o
@@ -95,6 +98,7 @@ driver_uart.d \
 joystick.d \
 menu_framework.d \
 OLED_driver.d \
+ps2.d \
 SPI_driver.d \
 ping_pong.d \
 sram_test.d
@@ -109,6 +113,7 @@ driver_uart.d \
 joystick.d \
 menu_framework.d \
 OLED_driver.d \
+ps2.d \
 SPI_driver.d \
 ping_pong.d \
 sram_test.d
@@ -127,6 +132,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 
