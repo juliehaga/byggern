@@ -24,6 +24,7 @@ int CAN_error();
 void CAN_int_vect();  
 void CAN_send_controllers(void);
 void CAN_send_start(void);
+void CAN_send_ps2_controllers(void);
 
 
 #endif /* CAN_DRIVER_H_ */

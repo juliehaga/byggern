@@ -51,7 +51,15 @@ int main(void)
 	
 	while(1)
 	{
-
+		if (rx_int_flag){
+			Message recieve_msg = CAN_recieve();
+			printf("rx %d \t", recieve_msg.data[0]);
+			printf("lx %d \t", recieve_msg.data[1]);
+			printf("R2 button %d \n", recieve_msg.data[2]);
+			
+			rx_int_flag = 0;
+		}
+		/*
 		switch (current_state)
 		{
 		case IDLE:
@@ -75,6 +83,7 @@ int main(void)
 		case MEDIUM:
 			printf("MEDIUM \n");
 			Kp = 0.95;
+			
 			Kd = 0.1;
 			Ki = 0.05;
 			current_state = PLAY;
@@ -129,7 +138,7 @@ int main(void)
 
 			_delay_ms(1);
 			break;
-		}
+		}*/
 		
 	}
 	return 0;

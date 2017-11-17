@@ -5,7 +5,6 @@
  *  Author: julihag
  */ 
 
-#define F_CPU 4915200
 
 #include <avr/io.h>
 #include <stdio.h>
@@ -45,8 +44,7 @@ int main(void) {
 	register_init();
 	oled_init();
 	ADC_init();
-	//CAN_init();
-	SPI_init_ps2();
+	CAN_init();
 	ps2_init();
 	//Enable global interrupts
 	sei();
@@ -60,11 +58,12 @@ int main(void) {
 	
 	
 	while(1){
+		
 		ps2_poll(1, 0xFF);
-		_delay_ms(150);
-		//printf("hei\n");
-		//uint8_t data = SPI_read_write_PS2(0x01);
-		//printf("data: %d\n", data);
+		_delay_ms(10);
+		//printf("R2 pushed %d\n", ps2_R2_pushed());
+		CAN_send_ps2_controllers();
+		_delay_ms(10);
 		
 	/*
 

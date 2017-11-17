@@ -22,6 +22,31 @@ const uint8_t PS2_SETUPMOTOR[9] = {0x01, 0x4D, 0x00, 0x00, 0x01, 0xff, 0xff, 0xf
 const uint8_t PS2_RETURNPRES[9] = {0x01, 0x4f, 0x00, 0xFF, 0xFF, 0x03, 0x00, 0x00, 0x00};
 const uint8_t PS2_EXITCONFIG[9] = {0x01, 0x43, 0x00, 0x00, 0x5a, 0x5a, 0x5a, 0x5a, 0x5a};
 
+
+// Initialize the ps2 controller
+void ps2_init()
+{
+	uint8_t d = 0x00;
+	// Attention pin idle high
+	SPI_deactivate_SS_PS2();
+	_delay_ms(10);
+	
+	// Configure controller to send everything
+	ps2_configmode();
+	_delay_ms(250);
+	ps2_analogmode();
+	_delay_ms(250);
+	ps2_setupmotor();
+	_delay_ms(250);
+	ps2_returnpres();
+	_delay_ms(250);
+	ps2_exitconfig();
+	
+	SPI_activate_SS_PS2();
+	
+}
+
+
 // The poll command is sent to get the status of each button,
 //  and to set the speed of the motors. Can also turn on the
 //  small motor
@@ -41,30 +66,17 @@ void ps2_poll(uint8_t speed, uint8_t smallmotor)
     // Motors on/off
     rx_buffer[3] = SPI_read_write_PS2(smallmotor); // 0x01 => small motor on
     rx_buffer[4] = SPI_read_write_PS2(speed);      // Big motor speed
-	
-	printf("RX[3]: %d\n", rx_buffer[4]);
+
     // Joystick:
-    ps2.rx = SPI_read_write_PS2(0x00);
-    ps2.ry = SPI_read_write_PS2(0x00);
-    ps2.lx = SPI_read_write_PS2(0x00);
-    ps2.ly = SPI_read_write_PS2(0x00);
-	//printf("ps2.rx %d \t", ps2.rx);
-	//printf("ps2.ry %d \t", ps2.ry);
-	//printf("ps2.lx %d \t\t", ps2.lx);
-	//printf("ps2.ly %d \n", ps2.ly);
+    joy_values.rx = SPI_read_write_PS2(0x00);
+    joy_values.ry = SPI_read_write_PS2(0x00);
+    joy_values.lx = SPI_read_write_PS2(0x00);
+    joy_values.ly = SPI_read_write_PS2(0x00);
 
-    // Pressure buttons:
-    for(i=0; i<12; i++) {
-		ps2.pressure[i] = SPI_read_write_PS2(0x00);
-		//printf("Button i %d: %d\t", i, ps2.pressure[4]);
-	}//printf("\n");
-	//printf("RX_bufferID %d\n", ps2.pressure[4]);
+
 	_delay_ms(1);
-	set_bit(PORTB, MOSI);
-	_delay_ms(1);
+
     SPI_deactivate_SS_PS2(); // Attention off
-	
-
 }
 
 // A general function for sending commands to the ps2 controller via SPI
@@ -113,26 +125,12 @@ void ps2_exitconfig()
     ps2_send_cmd(PS2_EXITCONFIG, 9);
 }
 
-// Initialize the ps2 controller
-void ps2_init()
-{
-	uint8_t d = 0x00;
-    // Attention pin idle high
-    SPI_deactivate_SS_PS2();
-	_delay_ms(10);
-	
-		 // Configure controller to send everything
-		 ps2_configmode();
-		 _delay_ms(250);
-		 ps2_analogmode();
-		 _delay_ms(250);
-		 ps2_setupmotor();
-		 _delay_ms(250);
-		 ps2_returnpres();
-		 _delay_ms(250);
-		 ps2_exitconfig();
-		
-		 SPI_activate_SS_PS2();
-	
+
+int ps2_R2_pushed(void){
+	//Returns 1 if R2 is pushed
+	return !((rx_buffer[4] & R2_BUTTON_MASK) == 2);
 }
 
+ps2 ps2_joystick_values(void){
+	return joy_values;
+}

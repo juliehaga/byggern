@@ -18,9 +18,7 @@ void SPI_init_ps2(void){
 	set_bit(SPCR, SPE); 
 	//Set SPI to master mode
 	set_bit(SPCR, MSTR);
-	//Clock frequency to f_OSC/16
-	//PS2 console has frequency 500 kHz
-	//set_bit(SPCR, SPR0);
+	//Clock frequency to f_OSC/32
 	set_bit(SPCR, SPR1);
 	set_bit(SPSR, SPI2X);
 	
@@ -94,9 +92,15 @@ void SPI_deactivate_SS(){
 }
 
 void SPI_activate_SS_PS2(){
+	//Data order LSB transmitted first
+	set_bit(SPCR, DORD);
+	
 	clr_bit(PORTB, PB3);
 }
 
 void SPI_deactivate_SS_PS2(){
 	set_bit(PORTB, PB3);
+	
+	//Data order MSB transmitted first
+	clr_bit(SPCR, DORD);
 }

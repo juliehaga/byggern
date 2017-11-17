@@ -9,6 +9,7 @@
 #include "CAN_driver.h"
 #include "bit_functions.h"
 #include "joystick.h"
+#include "ps2.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
@@ -29,7 +30,6 @@ int CAN_init(){
 	//enable interrupts in MCP
 	//Interrupt when message received in RXB0
 		
-	
 	
 	value = MCP2515_read(MCP_CANSTAT);
 	if ((value & MODE_MASK) != MODE_CONFIG) {
@@ -131,8 +131,15 @@ void CAN_send_controllers(void){
 
 	Message msg = {0, 3, {joy_pos_x ,slider_pos_r,  button_l}};
 	
+	CAN_send(&msg);	
+}
+
+void CAN_send_ps2_controllers(void){
+	ps2 ps2_joy_values = ps2_joystick_values();
+	int button_r2 =  ps2_R2_pushed();
+	Message msg = {0, 3, {ps2_joy_values.rx ,ps2_joy_values.lx, button_r2}};
+	
 	CAN_send(&msg);
-		
 }
 
 
