@@ -211,6 +211,7 @@ void main_menu(void){
 
 	
 	if(read_joystick_button() == 0){
+		/* strcmp() */
 		if (current_menu->name == "Easy"){
 			current_state = EASY;
 		}else if (current_menu->name == "Medium"){
