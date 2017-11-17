@@ -38,30 +38,34 @@ int highest_score;
 
 
 int main(void) {
+	
 	// Disable global interrupts
 	cli();
 	UART_init(31);
+	
 	register_init();
 	oled_init();
 	ADC_init();
-	CAN_init();
-	ps2_init();
+	//CAN_init();
+	//ps2_init();
 	//Enable global interrupts
 	sei();
-	
+	printf("hei\n");
 	/*IKKE FJÆRN*/
 	menu_setup();
 	read_highscore_list();
 
 	
 	
-	uint8_t data = SPI_read_write_PS2(0x00);
-	printf("Leser %d\n", data);
+	//ps2_configmode();
+	//ps2_analogmode();
+	//ps2_exitconfig();
+	
 	
 	
 	while(1){
-		ps2_poll(255, 125);
-	
+		printf("while\n");
+		//ps2_poll(100, 100);
 	/*
 
 		switch(current_state){

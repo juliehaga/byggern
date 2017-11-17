@@ -1,14 +1,11 @@
-/* 
- * PS2 controller on Atmel MCU
- * 
- * V1.0  
- * 
- * By: Lars Ivar Miljeteig, September 2010
- * Platform: AVR ATmega168 (avr-gcc)
- * Dependencies: avr/io avr/interrupt delay.h stdint.h larslib.h
+/*
+ * ps2.c
  *
- * Reading data from a PlayStation 2 controller
- */
+ * Created: 11.10.2017 11:25:25
+ *  Author: johanndk
+ */ 
+
+//http://roboticsforevery1.blogspot.no/2014/08/interfacing-playstation-controller-with.html
 
 #define F_CPU 4915200
 #include <util/delay.h>
@@ -30,11 +27,11 @@ void ps2_poll(uint8_t speed, uint8_t smallmotor)
     uint8_t i = 0;
 
 
-    SPI_activate_SS_2(); // Attention
+    SPI_activate_SS_PS2(); // Attention
 
-    // Send header
-    rx_buffer[0] = SPI_read_write_PS2(0x01);
-    rx_buffer[1] = SPI_read_write_PS2(0x42);
+    // Send command main polling
+    rx_buffer[0] = SPI_read_write_PS2(0x01); //ID
+    rx_buffer[1] = SPI_read_write_PS2(0x42); //get Data
     rx_buffer[2] = SPI_read_write_PS2(0x00);
 
     // Motors on/off
@@ -54,54 +51,56 @@ void ps2_poll(uint8_t speed, uint8_t smallmotor)
     for(i=0; i<12; i++) ps2.pressure[i] = SPI_read_write_PS2(0x00);
 
 
-    SPI_deactivate_SS_2(); // Attention off
+    SPI_deactivate_SS_PS2(); // Attention off
 
 }
 
 // A general function for sending commands to the ps2 controller via SPI
-void ps2_send(const uint8_t *cmd, uint8_t length)
+void ps2_send_cmd(const uint8_t *cmd, uint8_t length)
 {
     uint8_t i = 0;
-    SPI_activate_SS_2();
-    for(i=0; i<length; i++) rx_buffer[i] = SPI_read_write_PS2(cmd[i]);
-    SPI_deactivate_SS_2();    
+    SPI_activate_SS_PS2();
+    for(i=0; i<length; i++){
+		 rx_buffer[i] = SPI_read_write_PS2(cmd[i]);
+	}
+    SPI_deactivate_SS_PS2();    
 }
 
 // Go into configuration mode to adjust the settings
 void ps2_configmode()
 {
-    ps2_send(PS2_CONFIGMODE, 5);
+    ps2_send_cmd(PS2_CONFIGMODE, 5);
 }
 
 // Force analog mode to enable pressure values
 void ps2_analogmode()
 {
-    ps2_send(PS2_ANALOGMODE, 9);
+    ps2_send_cmd(PS2_ANALOGMODE, 9);
 }
 
 // Enable the internal vibration motors
 void ps2_setupmotor()
 {
-    ps2_send(PS2_SETUPMOTOR, 9);
+    ps2_send_cmd(PS2_SETUPMOTOR, 9);
 }
 
 // Ask to get the pressure values as well
 void ps2_returnpres()
 {
-    ps2_send(PS2_RETURNPRES, 9);
+    ps2_send_cmd(PS2_RETURNPRES, 9);
 }
 
 // Exit configuration mode
 void ps2_exitconfig()
 {
-    ps2_send(PS2_EXITCONFIG, 9);
+    ps2_send_cmd(PS2_EXITCONFIG, 9);
 }
 
 // Initialize the ps2 controller
 void ps2_init()
 {
     // Attention pin idle high
-    SPI_deactivate_SS_2();
+    SPI_deactivate_SS_PS2();
 
     // Configure controller to send everything
     ps2_configmode();

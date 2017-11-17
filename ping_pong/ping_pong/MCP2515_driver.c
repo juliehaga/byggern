@@ -11,7 +11,7 @@
 #include <string.h>
 
 void MCP2515_init(void){
-	SPI_init();
+	SPI_init_ps2();
 	//set MCP2515 in configuration mode
 	MCP2515_reset(); 
 }

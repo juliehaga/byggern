@@ -11,28 +11,29 @@
 #include <util/delay.h>
 
 
-void SPI_init(void){
+
+void SPI_init_ps2(void){
 	//SPI enable
-	set_bit(SPCR, SPE);
-	//Data order MSB transmitted first
-	//clr_bit(SPCR, DORD);
+	set_bit(SPCR, SPE); 
+	//Data order LSB transmitted first
+	set_bit(SPCR, DORD); 
 	//Set SPI to master mode
 	set_bit(SPCR, MSTR);
+
+	//Clock polarity SCK is high when idle
+	set_bit(SPCR, CPOL); 
+	//Clock phase transmit
+	set_bit(SPCR, CPHA);
 	
-	//set SPI clock rate = Fosc/64 TESTER PLAYSTATION (Hadde Fosc/2 tidligere)
-	//set_bit(SPSR, SPI2X);
-	set_bit(SPSR, SPR1);
-	
+	//Clock frequency to f_OSC/16
+	//PS2 console has frequency 500 kHz
+	set_bit(SPSR, SPR0);
 	
 	//set MOSI and SCK to output, all others input
 	set_bit(DDRB, MOSI);
 	set_bit(DDRB, SCK);
-	set_bit(DDRB, SS);
-	set_bit(DDRB, PB3);
-	
-	SPI_deactivate_SS();
-	SPI_deactivate_SS_2();
-
+	set_bit(DDRB, SS);  //til CAN
+	set_bit(DDRB, PB3); //ATT
 }
 
 uint8_t SPI_read_write(char cData){
@@ -42,6 +43,7 @@ uint8_t SPI_read_write(char cData){
 	while(!(test_bit(SPSR, SPIF)));   //wait until SPIF-flag is set. 
 	return SPDR;
 }
+
 uint8_t SPI_read_write_PS2(char cData){
 	/* Start transmission */
 	SPDR = cData;
@@ -60,10 +62,10 @@ void SPI_deactivate_SS(){
 	set_bit(PORTB, SS);
 }
 
-void SPI_activate_SS_2(){
+void SPI_activate_SS_PS2(){
 	clr_bit(PORTB, PB3);
 }
 
-void SPI_deactivate_SS_2(){
+void SPI_deactivate_SS_PS2(){
 	set_bit(PORTB, PB3);
 }

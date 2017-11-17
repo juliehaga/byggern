@@ -16,13 +16,13 @@
 #define SS PB4
 
 
-void SPI_init(void);
+void SPI_init_ps2(void);
 uint8_t SPI_read_write(char cData);
 uint8_t SPI_read_write_PS2(char cData);
 void SPI_activate_SS(void);
 void SPI_deactivate_SS(void);
-void SPI_activate_SS_2(void);
-void SPI_deactivate_SS_2(void);
+void SPI_activate_SS_PS2(void);
+void SPI_deactivate_SS_PS2(void);
 
 
 #endif /* SPI_DRIVER_H_ */
