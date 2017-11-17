@@ -24,8 +24,8 @@
 #include "bit_functions.h"
 
 volatile uint8_t rx_int_flag = 0;
-uint8_t slider_pos_r = 0;
-uint8_t joystick_pos_x;
+uint8_t left_joystick = 0;
+uint8_t right_joystick;
 float Kp;
 float Ki;
 float Kd;
@@ -51,15 +51,7 @@ int main(void)
 	
 	while(1)
 	{
-		if (rx_int_flag){
-			Message recieve_msg = CAN_recieve();
-			printf("rx %d \t", recieve_msg.data[0]);
-			printf("lx %d \t", recieve_msg.data[1]);
-			printf("R2 button %d \n", recieve_msg.data[2]);
-			
-			rx_int_flag = 0;
-		}
-		/*
+		
 		switch (current_state)
 		{
 		case IDLE:
@@ -100,26 +92,26 @@ int main(void)
 			if(rx_int_flag){
 				Message recieve_msg = CAN_recieve();
 				
-				joystick_pos_x = recieve_msg.data[0];
-				slider_pos_r = recieve_msg.data[1];
+				right_joystick = recieve_msg.data[0];
+				left_joystick = recieve_msg.data[1];
 				
 				if (recieve_msg.data[2] == 0){
 					solenoid_button = 0;
 				}
 				
-				servo_set_pos(joystick_pos_x);
+				servo_set_pos(right_joystick);
 				
 				if (recieve_msg.data[2] != solenoid_button){
 					printf("shoot\n");
 					solenoid_shoot();
-					solenoid_button = 2;
+					solenoid_button = 1;
 				}
 				rx_int_flag = 0;
 			}
 			
 			if(timer_flag == 1){
 				clr_bit(TIMSK3, TOIE3);
-				motor_drive(motor_PID(slider_pos_r, Kp, Ki, Kd));
+				motor_drive(motor_PID(left_joystick, Kp, Ki, Kd));
 				set_bit(TIMSK3, TOIE3);
 				timer_flag = 0;
 			}
@@ -138,7 +130,7 @@ int main(void)
 
 			_delay_ms(1);
 			break;
-		}*/
+		}
 		
 	}
 	return 0;

@@ -137,7 +137,7 @@ void CAN_send_controllers(void){
 void CAN_send_ps2_controllers(void){
 	ps2 ps2_joy_values = ps2_joystick_values();
 	int button_r2 =  ps2_R2_pushed();
-	Message msg = {0, 3, {ps2_joy_values.rx ,ps2_joy_values.lx, button_r2}};
+	Message msg = {0, 3, {ps2_joy_values.rx ,ps2_joy_values.lx, button_r2, 1}};
 	
 	CAN_send(&msg);
 }

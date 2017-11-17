@@ -60,10 +60,10 @@ int main(void) {
 	while(1){
 		
 		ps2_poll(1, 0xFF);
-		_delay_ms(10);
+		_delay_ms(100);
 		//printf("R2 pushed %d\n", ps2_R2_pushed());
 		CAN_send_ps2_controllers();
-		_delay_ms(10);
+		_delay_ms(100);
 		
 	/*
 
