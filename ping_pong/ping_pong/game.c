@@ -38,12 +38,15 @@ void play_game(){
 	
 	CAN_send(&boot_node2);
 	
+	
 	int game_over = 0;
 	life = 3;
 	score = 0;  
 	highest_score = 0; 
-	oled_reset();
-	
+	oled_loading_game(); 
+	_delay_ms(3000);
+	oled_sram_reset();
+	printf("START sendt til node 2\n");
 	while(!game_over){
 		
 		//Update display
