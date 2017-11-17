@@ -9,31 +9,63 @@
 #include "bit_functions.h"
 #include <avr/io.h>
 #include <util/delay.h>
-
+#define F_CPU 4915200
 
 
 void SPI_init_ps2(void){
+	
+	
+	
 	//SPI enable
 	set_bit(SPCR, SPE); 
-	//Data order LSB transmitted first
-	set_bit(SPCR, DORD); 
 	//Set SPI to master mode
 	set_bit(SPCR, MSTR);
-
-	//Clock polarity SCK is high when idle
-	set_bit(SPCR, CPOL); 
-	//Clock phase transmit
-	set_bit(SPCR, CPHA);
-	
 	//Clock frequency to f_OSC/16
 	//PS2 console has frequency 500 kHz
 	set_bit(SPSR, SPR0);
+	//Clock polarity SCK is high when idle
+	set_bit(SPCR, CPOL);
+	//Data order LSB transmitted first
+	set_bit(SPCR, DORD); 
+	//Clock phase transmit
+	set_bit(SPCR, CPHA);
+	
+	
+	//set_bit(SPSR, SPI2X);
 	
 	//set MOSI and SCK to output, all others input
 	set_bit(DDRB, MOSI);
 	set_bit(DDRB, SCK);
 	set_bit(DDRB, SS);  //til CAN
 	set_bit(DDRB, PB3); //ATT
+	
+	
+	SPI_deactivate_SS();
+	SPI_deactivate_SS_PS2();
+}
+
+
+
+   
+void SPI_init(void){
+	//SPI enable
+	set_bit(SPCR, SPE);
+	//Data order MSB transmitted first
+	//clr_bit(SPCR, DORD);
+	//Set SPI to master mode
+	set_bit(SPCR, MSTR);
+	
+	//set SPI clock rate = Fosc/2
+	set_bit(SPSR, SPI2X);
+	
+	
+	//set MOSI and SCK to output, all others input
+	set_bit(DDRB, MOSI);
+	set_bit(DDRB, SCK);
+	set_bit(DDRB, SS);
+	
+	SPI_deactivate_SS();
+
 }
 
 uint8_t SPI_read_write(char cData){
@@ -49,7 +81,7 @@ uint8_t SPI_read_write_PS2(char cData){
 	SPDR = cData;
 	/* Wait for transmission complete */
 	while(!(test_bit(SPSR, SPIF)));   //wait until SPIF-flag is set.
-	_delay_ms(30);
+	_delay_ms(100);
 	return SPDR;
 }
 

@@ -42,29 +42,31 @@ int main(void) {
 	// Disable global interrupts
 	cli();
 	UART_init(31);
-	
 	register_init();
 	oled_init();
 	ADC_init();
 	//CAN_init();
+	SPI_init_ps2();
 	//ps2_init();
 	//Enable global interrupts
 	sei();
-	printf("hei\n");
+	
 	/*IKKE FJÆRN*/
 	menu_setup();
 	read_highscore_list();
 
 	
 	
-	//ps2_configmode();
-	//ps2_analogmode();
-	//ps2_exitconfig();
+	ps2_configmode();
+	ps2_analogmode();
+	ps2_exitconfig();
 	
 	
 	
 	while(1){
-		printf("while\n");
+		//printf("hei\n");
+		uint8_t data = SPI_read_write_PS2(0x00);
+		printf("data: \n", data);
 		//ps2_poll(100, 100);
 	/*
 

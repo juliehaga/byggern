@@ -9,13 +9,12 @@
 
 #ifndef SPI_DRIVER_H_
 #define SPI_DRIVER_H_
-#define FOSC2 16000000
 #define SCK PB7
 #define MISO PB6
 #define MOSI PB5
 #define SS PB4
 
-
+void SPI_init(void);
 void SPI_init_ps2(void);
 uint8_t SPI_read_write(char cData);
 uint8_t SPI_read_write_PS2(char cData);

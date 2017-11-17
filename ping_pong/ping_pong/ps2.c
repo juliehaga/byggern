@@ -33,7 +33,7 @@ void ps2_poll(uint8_t speed, uint8_t smallmotor)
     rx_buffer[0] = SPI_read_write_PS2(0x01); //ID
     rx_buffer[1] = SPI_read_write_PS2(0x42); //get Data
     rx_buffer[2] = SPI_read_write_PS2(0x00);
-
+	printf("RX_bufferID %d\n", rx_buffer[0]);
     // Motors on/off
     rx_buffer[3] = SPI_read_write_PS2(smallmotor); // 0x01 => small motor on
     rx_buffer[4] = SPI_read_write_PS2(speed);      // Big motor speed
@@ -44,8 +44,8 @@ void ps2_poll(uint8_t speed, uint8_t smallmotor)
     ps2.ry = SPI_read_write_PS2(0x00);
     ps2.lx = SPI_read_write_PS2(0x00);
     ps2.ly = SPI_read_write_PS2(0x00);
-	printf("ps2.rx %d \n", ps2.rx);
-	printf("ps2.lx %d \n", ps2.lx);
+	//printf("ps2.rx %d \n", ps2.rx);
+	//printf("ps2.lx %d \n", ps2.lx);
 
     // Pressure buttons:
     for(i=0; i<12; i++) ps2.pressure[i] = SPI_read_write_PS2(0x00);
