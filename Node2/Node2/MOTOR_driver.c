@@ -6,9 +6,9 @@
  */ 
 
 #define F_CPU 16000000
-#include "driver_motor.h"
+#include "MOTOR_driver.h"
 #include "bit_functions.h"
-#include "driver_DAC.h"
+#include "DAC_driver.h"
 #include <util/delay.h>
 #include <avr/io.h>
 #include <stdlib.h>
@@ -49,9 +49,6 @@ void motor_init(void){
 	DDRK = 0x00;
 	motor_reset_encoder();
 	
-	sei();
-	motor_calibration();
-	cli();
 	
 	
 	

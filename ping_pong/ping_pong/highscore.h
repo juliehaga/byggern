@@ -12,7 +12,7 @@
 void oled_print_highscore(void);
 int check_highscore(int score);
 void read_highscore_list(void);
-void update_highscore_list(void);
+void update_EEPROM(void);
 void insert_highscore(int place, int score, char* new_name);
 void EEPROM_write(uint8_t ucData, unsigned int uiAddress);
 void reset_highscore_list();

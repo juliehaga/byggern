@@ -5,9 +5,11 @@
  *  Author: julihag
  */ 
 #define F_CPU 16000000
-#include "driver_solenoid.h"
-#include "bit_functions.h"
 #include <util/delay.h>
+
+#include "SOLENOID_driver.h"
+#include "bit_functions.h"
+
 
 
 void solenoid_init(void){

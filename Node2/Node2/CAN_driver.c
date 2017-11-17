@@ -127,5 +127,6 @@ void CAN_int_vect(){
 
 ISR(PCINT0_vect){
 	//RX0 interrupt flag set to 0
+	printf("interrrupt\n");
 	CAN_int_vect();
 }

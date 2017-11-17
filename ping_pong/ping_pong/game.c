@@ -13,7 +13,7 @@
 #include "game.h"
 #include "CAN_driver.h"
 #include "OLED_driver.h"
-#include "joystick.h"
+#include "USB_board.h"
 #include "bit_functions.h"
 #include "highscore.h"
 
@@ -28,21 +28,25 @@ extern int highest_score;
 int send_can_flag = 0;
 volatile uint8_t rx_int_flag = 0;		//automatically set when 
 states current_state;
+int controller;
+int difficulty;
 
 
-void play_game(states state){
-	// Send state to node2 
-	Message msg = {0, 4, {0,0,0,state}};
-	printf("har sendt state %d\n", state);	
-	CAN_send(&msg);
+void play_game(){
+	
+	Message boot_node2 = {0, 2, {controller, difficulty}};
+	
+	CAN_send(&boot_node2);
+	
 	
 	int game_over = 0;
 	life = 3;
 	score = 0;  
 	highest_score = 0; 
-	oled_reset();
-	
-	
+	oled_loading_game(); 
+	_delay_ms(3000);
+	oled_sram_reset();
+	printf("START sendt til node 2\n");
 	while(!game_over){
 		
 		//Update display
@@ -54,7 +58,11 @@ void play_game(states state){
 		//Send Can-message to node2
 		if(send_can_flag){
 			clr_bit(ETIMSK, TOIE3);
-			CAN_send_controllers();
+			if(controller == PS2){
+				CAN_send_ps2_controllers();
+			}else{
+				CAN_send_controllers();
+			}
 			send_can_flag = 0;
 			set_bit(ETIMSK, TOIE3);
 		}
@@ -85,8 +93,7 @@ void play_game(states state){
 				}else{
 					//If yes - Send play game signal to node 2
 					_delay_ms(500);
-					Message new_game = {0, 4, {0, 0, 0, state}};
-					CAN_send(&new_game);
+					CAN_send(&boot_node2);
 					score = 0;
 					}
 				}
@@ -94,7 +101,6 @@ void play_game(states state){
 			}
 		}
 	//If highscore, add to list and display highscore-list
-	
 	current_state = NEW_HIGHSCORE;
 }
 

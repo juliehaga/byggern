@@ -11,7 +11,7 @@
 
 #include <avr/io.h>
 #include "sram_test.h"
-#include "driver_uart.h"
+#include "UART_driver.h"
 
 void SRAM_test(void) {
 	volatile char *ext_ram = (char *) 0x1800; // Start address for the SRAM 

@@ -8,7 +8,7 @@
 #ifndef MENU_FRAMEWORK_H_
 #define MENU_FRAMEWORK_H_
  
-#include "joystick.h"
+#include "USB_board.h"
 
 typedef struct menu{
 	char* name;

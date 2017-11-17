@@ -10,17 +10,17 @@
 #include <avr/io.h>
 #include <stdio.h>
 #include <avr/interrupt.h>
-#include "driver_uart.h"
+#include "UART_driver.h"
 #include "SPI_driver.h"
 #include "MCP2515_driver.h"
 #include "CAN_driver.h"
-#include "driver_servo.h"
-#include "driver_pwm.h"
-#include "driver_ADC.h"
-#include "driver_IR.h"
-#include "driver_motor.h"
-#include "driver_DAC.h"
-#include "driver_solenoid.h"
+#include "SERVO_driver.h"
+#include "PWM_driver.h"
+#include "ADC_driver.h"
+#include "IR_driver.h"
+#include "MOTOR_driver.h"
+#include "DAC_driver.h"
+#include "SOLENOID_driver.h"
 #include "bit_functions.h"
 
 volatile uint8_t rx_int_flag = 0;
@@ -34,9 +34,10 @@ int timer_flag = 0;
 int IR_value = 0; 
 int last_IR_value = 0; 
 int solenoid_button = 0;
-typedef enum {IDLE = 0, EASY = 1, MEDIUM = 2, HARD = 3, PLAY} states;
+typedef enum {IDLE, USB, PS2} states;
 states current_state = IDLE;
-
+typedef enum {EASY, MEDIUM, HARD} difficulty;
+difficulty mode = EASY;
 int main(void)
 {
 	
@@ -47,48 +48,55 @@ int main(void)
 	ADC_init();
 	solenoid_init();
 	motor_init();
+	
 	sei();
+	/*
+	//wait for signal from Node 1
+	while(!rx_int_flag){
+		printf("hei\n");
+	}
+	
+	motor_calibration();
+	Message config_msg = CAN_recieve();
+	current_state = config_msg.data[0];
+	mode = config_msg.data[1];
+	printf("Configed: state %d \t mode %d\n", current_state, mode);
+	
+	*/
 	
 	while(1)
 	{
+		if (rx_int_flag){
+			Message recieve_msg = CAN_recieve();
+			int received_state = recieve_msg.data[3];
+			printf("current state %d \n", recieve_msg.data[3]);
+		}
 		
-		switch (current_state)
+		/*switch (current_state)
 		{
 		case IDLE:
-			if (rx_int_flag){
-				Message recieve_msg = CAN_recieve();
-				int received_state = recieve_msg.data[3];
-				if (received_state > 0 && received_state <4){ 
-					current_state = received_state;
-					printf("current state %d \n", recieve_msg.data[3]);
-				}
+			
 				rx_int_flag = 0;
 			}
 			break;
-		case EASY:
+		
+		case USB:
 			printf("EASY \n");
 			Kp = 0.9;
 			Kd = 0.07;
 			Ki = 0.1;
-			current_state = PLAY;
+	
 			break;
-		case MEDIUM:
 			printf("MEDIUM \n");
 			Kp = 0.95;
 			
 			Kd = 0.1;
 			Ki = 0.05;
-			current_state = PLAY;
+
 			break;
-		case HARD:
-			printf("HARD \n");
-			Kp = 1;
-			Kd = 0.1;
-			Ki = 0.01;
-			current_state = PLAY;
-			break;
-		case PLAY:
+		case PS2:
 			
+		
 			if(rx_int_flag){
 				Message recieve_msg = CAN_recieve();
 				
@@ -106,7 +114,7 @@ int main(void)
 					solenoid_shoot();
 					solenoid_button = 1;
 				}
-				rx_int_flag = 0;
+	
 			}
 			
 			if(timer_flag == 1){
@@ -132,7 +140,7 @@ int main(void)
 			break;
 		}
 		
-	}
+	*/}
 	return 0;
 }
 

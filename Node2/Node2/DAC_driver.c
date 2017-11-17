@@ -5,7 +5,7 @@
  *  Author: julihag
  */ 
 
-#include "driver_DAC.h"
+#include "DAC_driver.h"
 #include "TWI_Master.h"
 #include <avr/io.h>
 #include "bit_functions.h"

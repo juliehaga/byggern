@@ -5,12 +5,13 @@
  *  Author: julihag
  */ 
 
-
-#include "driver_pwm.h"
-#include "driver_servo.h"
 #include <stdio.h>
 #include <avr/io.h>
-#include "driver_uart.h"
+#include "PWM_driver.h"
+#include "SERVO_driver.h"
+#include "UART_driver.h"
+
+
 void servo_init(void){
 	pwm_init();
 	//initialize to center position

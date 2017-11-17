@@ -8,7 +8,7 @@
 #include <avr/io.h>
 #include <stdio.h>
 #include "bit_functions.h"
-#include "driver_uart.h"
+#include "UART_driver.h"
 
 FILE *uart; 
 

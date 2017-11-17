@@ -24,6 +24,7 @@ void SPI_init(void){
 	//Clock phase transmit
 	set_bit(SPCR, CPHA);
 	
+	
 	//set MOSI and SCK to output, all others input
 	set_bit(DDRB, MOSI);
 	set_bit(DDRB, SCK);
@@ -36,7 +37,7 @@ void SPI_init(void){
 	SPI_deactivate_SS();
 	
 
-}
+} 
 
 uint8_t SPI_read_write(char cData){
 	/* Start transmission */

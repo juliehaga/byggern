@@ -121,46 +121,46 @@
     <Compile Include="CAN_driver.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="driver_ADC.c">
+    <Compile Include="ADC_driver.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="driver_ADC.h">
+    <Compile Include="ADC_driver.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="driver_DAC.c">
+    <Compile Include="DAC_driver.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="driver_DAC.h">
+    <Compile Include="DAC_driver.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="driver_IR.c">
+    <Compile Include="IR_driver.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="driver_IR.h">
+    <Compile Include="IR_driver.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="driver_motor.c">
+    <Compile Include="MOTOR_driver.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="driver_motor.h">
+    <Compile Include="MOTOR_driver.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="driver_servo.c">
+    <Compile Include="SERVO_driver.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="driver_servo.h">
+    <Compile Include="SERVO_driver.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="driver_solenoid.c">
+    <Compile Include="SOLENOID_driver.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="driver_solenoid.h">
+    <Compile Include="SOLENOID_driver.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="driver_uart.c">
+    <Compile Include="UART_driver.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="driver_uart.h">
+    <Compile Include="UART_driver.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MCP2515.h">
@@ -181,10 +181,10 @@
     <Compile Include="SPI_driver.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="driver_pwm.c">
+    <Compile Include="PWM_driver.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="driver_pwm.h">
+    <Compile Include="PWM_driver.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="TWI_Master.c">

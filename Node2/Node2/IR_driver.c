@@ -5,8 +5,8 @@
  *  Author: julihag
  */ 
 
-#include "driver_IR.h"
-#include "driver_ADC.h"
+#include "IR_driver.h"
+#include "ADC_driver.h"
 #include <stdio.h>
 
 

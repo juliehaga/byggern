@@ -5,11 +5,13 @@
  *  Author: julihag
  */ 
 
-#include "driver_uart.h"
-#include "driver_pwm.h"
+
 #include <avr/io.h>
-#include "bit_functions.h"
 #include <avr/interrupt.h>
+#include "UART_driver.h"
+#include "PWM_driver.h"
+#include "bit_functions.h"
+
 
 #define PWM_FREQ FOSC/256
 

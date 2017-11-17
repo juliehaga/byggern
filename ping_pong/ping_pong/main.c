@@ -13,13 +13,13 @@
 #include <avr/pgmspace.h>
 
 
-#include "driver_uart.h"
+#include "UART_driver.h"
 #include "bit_functions.h"
 #include "register_init.h"
 #include "sram_test.h"
 #include "OLED_driver.h"
 #include "ADC_driver.h"
-#include "joystick.h"
+#include "USB_board.h"
 #include "menu_framework.h"
 #include "CAN_driver.h"
 #include "SPI_driver.h"
@@ -53,56 +53,42 @@ int main(void) {
 	menu_setup();
 	read_highscore_list();
 
-
-	
+	Message msg = {0,1,{0}}; 
+	printf("Sender CAN\n");
 	
 	
 	while(1){
-		
-		ps2_poll(1, 0xFF);
+		printf("while\n");
+		CAN_send(&msg);
 		_delay_ms(100);
-		//printf("R2 pushed %d\n", ps2_R2_pushed());
-		CAN_send_ps2_controllers();
-		_delay_ms(100);
-		
-	/*
-
+/*
 		switch(current_state){
 			case IDLE:
 				main_menu();
 				break;
-			case EASY:
-				play_game(EASY);
-				break;
-			case MEDIUM:
-				play_game(MEDIUM);
-				break;
-			case HARD:
-				play_game(HARD);
+			case PLAY:
+				play_game();
 				break;
 			case RESET_HIGHSCORE:
 				reset_highscore_list();
 				current_state = HIGHSCORE;
 				break;
+			case NEW_HIGHSCORE:
+				place = check_highscore(highest_score);
+				if ( place  > -1){
+					char* nickname = oled_type_in_name(int_to_str(highest_score));
+					insert_highscore(place, highest_score, nickname);
+				}
+				current_state = HIGHSCORE;
+				break;
 			case HIGHSCORE:
 				if(find_joystick_dir() == LEFT){
-					current_state = IDLE; 
+					current_state = IDLE;
 				}
 				if (oled_flag){
 					oled_print_highscore();
 					oled_flag = 0;
 				}
-				break;
-			case NEW_HIGHSCORE:
-				place = check_highscore(highest_score);
-				char* nickname;
-				
-				if ( place  > -1){
-					nickname = oled_type_in_name(highest_score);
-					
-					insert_highscore(place, highest_score, nickname);
-				}
-				current_state = HIGHSCORE;
 				break;
 			default:
 				break;

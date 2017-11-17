@@ -5,7 +5,7 @@
  *  Author: julihag
  */ 
 
-#include "driver_ADC.h"
+#include "ADC_driver.h"
 #include <avr/io.h>
 #include "bit_functions.h"
 #include <avr/interrupt.h>

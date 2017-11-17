@@ -5,13 +5,13 @@
  *  Author: andrholt
  */ 
 
-#include "joystick.h"
+#include "USB_board.h"
 #include "ADC_driver.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "bit_functions.h"
 #include "CAN_driver.h"
-#include "driver_uart.h"
+#include "UART_driver.h"
 #include <stdlib.h>
 #include "bit_functions.h"
 
