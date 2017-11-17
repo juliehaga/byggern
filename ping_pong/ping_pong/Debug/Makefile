@@ -42,13 +42,13 @@ C_SRCS +=  \
 ../game.c \
 ../highscore.c \
 ../MCP2515_driver.c \
-../driver_uart.c \
-../joystick.c \
+../UART_driver.c \
+../USB_board.c \
 ../menu_framework.c \
 ../OLED_driver.c \
 ../ps2.c \
 ../SPI_driver.c \
-../ping_pong.c \
+../main.c \
 ../sram_test.c
 
 
@@ -64,13 +64,13 @@ CAN_driver.o \
 game.o \
 highscore.o \
 MCP2515_driver.o \
-driver_uart.o \
-joystick.o \
+UART_driver.o \
+USB_board.o \
 menu_framework.o \
 OLED_driver.o \
 ps2.o \
 SPI_driver.o \
-ping_pong.o \
+main.o \
 sram_test.o
 
 OBJS_AS_ARGS +=  \
@@ -79,13 +79,13 @@ CAN_driver.o \
 game.o \
 highscore.o \
 MCP2515_driver.o \
-driver_uart.o \
-joystick.o \
+UART_driver.o \
+USB_board.o \
 menu_framework.o \
 OLED_driver.o \
 ps2.o \
 SPI_driver.o \
-ping_pong.o \
+main.o \
 sram_test.o
 
 C_DEPS +=  \
@@ -94,13 +94,13 @@ CAN_driver.d \
 game.d \
 highscore.d \
 MCP2515_driver.d \
-driver_uart.d \
-joystick.d \
+UART_driver.d \
+USB_board.d \
 menu_framework.d \
 OLED_driver.d \
 ps2.d \
 SPI_driver.d \
-ping_pong.d \
+main.d \
 sram_test.d
 
 C_DEPS_AS_ARGS +=  \
@@ -109,18 +109,18 @@ CAN_driver.d \
 game.d \
 highscore.d \
 MCP2515_driver.d \
-driver_uart.d \
-joystick.d \
+UART_driver.d \
+USB_board.d \
 menu_framework.d \
 OLED_driver.d \
 ps2.d \
 SPI_driver.d \
-ping_pong.d \
+main.d \
 sram_test.d
 
-OUTPUT_FILE_PATH +=ping_pong.elf
+OUTPUT_FILE_PATH +=Node1.elf
 
-OUTPUT_FILE_PATH_AS_ARGS +=ping_pong.elf
+OUTPUT_FILE_PATH_AS_ARGS +=Node1.elf
 
 ADDITIONAL_DEPENDENCIES:=
 
@@ -191,13 +191,13 @@ all: $(OUTPUT_FILE_PATH) $(ADDITIONAL_DEPENDENCIES)
 $(OUTPUT_FILE_PATH): $(OBJS) $(USER_OBJS) $(OUTPUT_FILE_DEP) $(LIB_DEP) $(LINKER_SCRIPT_DEP)
 	@echo Building target: $@
 	@echo Invoking: AVR/GNU Linker : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE) -o$(OUTPUT_FILE_PATH_AS_ARGS) $(OBJS_AS_ARGS) $(USER_OBJS) $(LIBS) -Wl,-Map="ping_pong.map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mmcu=atmega162  
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE) -o$(OUTPUT_FILE_PATH_AS_ARGS) $(OBJS_AS_ARGS) $(USER_OBJS) $(LIBS) -Wl,-Map="Node1.map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mmcu=atmega162  
 	@echo Finished building target: $@
-	"C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-objcopy.exe" -O ihex -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures  "ping_pong.elf" "ping_pong.hex"
-	"C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-objcopy.exe" -j .eeprom  --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0  --no-change-warnings -O ihex "ping_pong.elf" "ping_pong.eep" || exit 0
-	"C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-objdump.exe" -h -S "ping_pong.elf" > "ping_pong.lss"
-	"C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-objcopy.exe" -O srec -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures "ping_pong.elf" "ping_pong.srec"
-	"C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-size.exe" "ping_pong.elf"
+	"C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-objcopy.exe" -O ihex -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures  "Node1.elf" "Node1.hex"
+	"C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-objcopy.exe" -j .eeprom  --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0  --no-change-warnings -O ihex "Node1.elf" "Node1.eep" || exit 0
+	"C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-objdump.exe" -h -S "Node1.elf" > "Node1.lss"
+	"C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-objcopy.exe" -O srec -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures "Node1.elf" "Node1.srec"
+	"C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-size.exe" "Node1.elf"
 	
 	
 
@@ -209,5 +209,5 @@ $(OUTPUT_FILE_PATH): $(OBJS) $(USER_OBJS) $(OUTPUT_FILE_DEP) $(LIB_DEP) $(LINKER
 clean:
 	-$(RM) $(OBJS_AS_ARGS) $(EXECUTABLES)  
 	-$(RM) $(C_DEPS_AS_ARGS)   
-	rm -rf "ping_pong.elf" "ping_pong.a" "ping_pong.hex" "ping_pong.lss" "ping_pong.eep" "ping_pong.map" "ping_pong.srec" "ping_pong.usersignatures"
+	rm -rf "Node1.elf" "Node1.a" "Node1.hex" "Node1.lss" "Node1.eep" "Node1.map" "Node1.srec" "Node1.usersignatures"
 	

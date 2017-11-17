@@ -7,10 +7,11 @@
 
 #include "OLED_driver.h"
 #include "menu_framework.h"
-#include "driver_uart.h"
+#include "UART_driver.h"
 #include "game.h"
 #include <stdlib.h>
 #include <string.h>
+#include <util/delay.h>
 
 
 #include <stddef.h>
@@ -19,35 +20,45 @@ int current_page = 1;
 menu* display_menu;
 static menu* current_menu;
 joystick_dir last_joy_dir = CENTER;
+int difficulty = EASY;
 
 
 extern states current_state; 
 
 
 void menu_setup(void){
-	menu* menu_front_page = create_menu("JAJ PINGPONG");
+	menu* menu_front_page = create_menu("PingPongShow");
 	display_menu = menu_front_page;
 
-	menu* sub1 = create_menu("Play game");
-	menu* sub2 = create_menu("Highscore");
-	menu* subsub1 = create_menu("Easy");
-	menu* subsub2 = create_menu("Medium");
-	menu* subsub3 = create_menu("Hard");
-	menu* subsub4 = create_menu("View");
-	menu* subsub5 = create_menu("Reset");
-	menu* subsubsub1 = create_menu("YES");
-	menu* subsubsub2 = create_menu("NO");
+	menu* play = create_menu("Start new game");
+	menu* highscore_menu = create_menu("Highscore");
+	menu* play_usb = create_menu("Control: USB");
+	menu* play_ps2 = create_menu("Control: PS2");
+	menu* usb_easy = create_menu("Easy");
+	menu* usb_medium = create_menu("Medium");
+	menu* usb_hard = create_menu("Hard");
+	menu* ps2_easy = create_menu("Easy");
+	menu* ps2_medium = create_menu("Medium");
+	menu* ps2_hard = create_menu("Hard");
+	menu* highscore_view = create_menu("View");
+	menu* highscore_reset = create_menu("Reset");
+	menu* reset_yes = create_menu("YES");
+	menu* reset_no = create_menu("NO");
 	
-	
-	create_submenu(menu_front_page, sub1);
-	create_submenu(menu_front_page, sub2);
-	create_submenu(sub1, subsub1);
-	create_submenu(sub1, subsub2);
-	create_submenu(sub1, subsub3);
-	create_submenu(sub2, subsub4);
-	create_submenu(sub2, subsub5);
-	create_submenu(subsub5, subsubsub1);
-	create_submenu(subsub5, subsubsub2);
+	create_submenu(menu_front_page, play);
+	create_submenu(menu_front_page, highscore_menu);
+	create_submenu(play, play_usb);
+	create_submenu(play, play_ps2);
+	create_submenu(play_usb, usb_easy);
+	create_submenu(play_usb, usb_medium);
+	create_submenu(play_usb, usb_hard);
+	create_submenu(play_ps2, ps2_easy);
+	create_submenu(play_ps2, ps2_medium);
+	create_submenu(play_ps2, ps2_hard);
+	create_submenu(highscore_menu, highscore_view);
+	create_submenu(highscore_menu, highscore_reset);
+	create_submenu(highscore_reset, reset_yes);
+	create_submenu(highscore_reset, reset_no);
 	
 	oled_reset();
 	menu_sram_update(display_menu, current_page);
@@ -58,22 +69,6 @@ void menu_setup(void){
 
 
 
-/*
-void print_menu_oled(menu* menu_node, int page){
-	oled_reset();
-	oled_home();
-	oled_print_string(menu_node->name);
-	while(current != NULL){
-		oled_goto_page(page_count);
-		oled_goto_column(15);
-		oled_print_string(current->name);
-		current = current->next_sibling;
-		page_count++;
-	}
-	print_selection_sign(page);
-	
-}*/
-
 void menu_sram_update(menu* menu_node, int selector_pos){
 	int col = 0; 
 	int page = 0; 
@@ -82,15 +77,17 @@ void menu_sram_update(menu* menu_node, int selector_pos){
 	menu* current = menu_node->child;
 	
 	oled_sram_string(menu_node->name, page, col);
+	oled_sram_string("----------------", page+1, col);
 	
-	page = 1;
+	
+	page = 2;
 	col = 2;
 	while(current != NULL){
 		oled_sram_string(current->name, page, col);
 		current = current->next_sibling;
 		page++;
 	}
-	oled_sram_char('*', selector_pos, 0);
+	oled_sram_char('*', selector_pos+1, 0);
 	
 }
 
@@ -147,8 +144,6 @@ menu* update_display_menu(menu* current_menu, int page, joystick_dir dir){
 		current = current_menu->parent;
 	}
 	
-	
-	
 	if(current != NULL){
 		return current;
 	}
@@ -164,7 +159,10 @@ void print_selection_sign(int page){
 
 
 void main_menu(void){
+	
+	int end_menu = 0; 
 	joystick_dir joy_dir = find_joystick_dir();
+	printf("JOY_DIR %d\n", joy_dir);
 	if(joy_dir != last_joy_dir){
 		switch(joy_dir){
 			case UP:
@@ -191,7 +189,12 @@ void main_menu(void){
 					oled_update();
 					current_menu = current_menu->child;
 				}
+				else if(current_menu->parent->parent != NULL){
+					end_menu = 1;
+				}
+
 				break;
+		
 			case LEFT:
 				if(current_menu->parent->parent != NULL){
 					display_menu = update_display_menu(display_menu, current_page, LEFT);
@@ -200,6 +203,7 @@ void main_menu(void){
 					oled_update();
 					current_menu = current_menu->parent->parent->child;
 				}
+				
 				break;
 			default:
 				break;
@@ -210,22 +214,50 @@ void main_menu(void){
 	last_joy_dir = joy_dir;
 
 	
-	if(read_joystick_button() == 0){
-		/* strcmp() */
-		if (current_menu->name == "Easy"){
-			current_state = EASY;
-		}else if (current_menu->name == "Medium"){
-			current_state = MEDIUM;
-		}else if (current_menu->name == "Hard"){
-			current_state = HARD;
+	if(end_menu){
+		const char* menu_title = current_menu->name;
+		if (!strcmp(menu_title,"Easy") && strcmp(current_menu->parent, "Control: PS2")){
+			current_state = PLAY;
+			controller = PS2;
+			difficulty = EASY;
+		}else if (!strcmp(current_menu->name, "Medium")&& strcmp(current_menu->parent, "Control: PS2")){
+			current_state = PLAY;
+			controller = PS2;
+			difficulty = MEDIUM;
+		}else if (!strcmp(current_menu->name, "Hard")&& strcmp(current_menu->parent, "Control: PS2")){
+			current_state = PLAY;
+			controller = PS2;
+			difficulty = HARD;
 		}
-		else if (current_menu->name == "View"){
+
+		else if (!strcmp(current_menu->name,"Easy")&& strcmp(current_menu->parent, "Control: USB")){
+			current_state = PLAY;
+			controller = USB;
+			difficulty = EASY;
+		}else if (!strcmp(current_menu->name, "Medium")&& strcmp(current_menu->parent, "Control: USB")){
+			current_state = PLAY;
+			controller = USB;
+			difficulty = MEDIUM;
+		}else if (!strcmp(current_menu->name, "Hard")&& strcmp(current_menu->parent, "Control: USB")){
+			current_state = PLAY;
+			controller = USB;
+			difficulty = HARD;
+		}
+		else if (!strcmp(current_menu->name,"View")){
 			current_state = HIGHSCORE;
 		}
-		else if (current_menu->name == "YES"){
+		else if (!strcmp(current_menu->name, "YES")){
 			current_state = RESET_HIGHSCORE;
+			oled_sram_reset();
+			oled_sram_string("****************",0,0);
+			oled_sram_string("Highscore list",3,1);
+			oled_sram_string("reset", 4, 5);
+			oled_sram_string("****************",7,0);
+			oled_update();
+			_delay_ms(2000);
+			
 		}
-		else if (current_menu->name == "NO"){
+		else if (!strcmp(current_menu->name, "NO")){
 			current_state = IDLE;
 		}
 	}

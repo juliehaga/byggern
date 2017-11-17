@@ -10,17 +10,17 @@
 #include <avr/io.h>
 #include <stdio.h>
 #include <avr/interrupt.h>
-#include "driver_uart.h"
+#include "UART_driver.h"
 #include "SPI_driver.h"
 #include "MCP2515_driver.h"
 #include "CAN_driver.h"
-#include "driver_servo.h"
-#include "driver_pwm.h"
-#include "driver_ADC.h"
-#include "driver_IR.h"
-#include "driver_motor.h"
-#include "driver_DAC.h"
-#include "driver_solenoid.h"
+#include "SERVO_driver.h"
+#include "PWM_driver.h"
+#include "ADC_driver.h"
+#include "IR_driver.h"
+#include "MOTOR_driver.h"
+#include "DAC_driver.h"
+#include "SOLENOID_driver.h"
 #include "bit_functions.h"
 
 volatile uint8_t rx_int_flag = 0;

@@ -7,7 +7,7 @@
 #include "OLED_driver.h"
 #include <avr/pgmspace.h>
 #include "fonts.h"
-#include "joystick.h"
+#include "USB_board.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>

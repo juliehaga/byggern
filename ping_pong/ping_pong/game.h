@@ -9,10 +9,17 @@
 #ifndef FSM_H_
 #define FSM_H_
 
-typedef enum {IDLE = 0, EASY = 1, MEDIUM = 2, HARD = 3, HIGHSCORE, RESET_HIGHSCORE, NEW_HIGHSCORE} states;
+#define USB 0
+#define PS2 1
+#define EASY 0
+#define MEDIUM 1
+#define HARD 2
 
+typedef enum {IDLE, PLAY, HIGHSCORE, RESET_HIGHSCORE, NEW_HIGHSCORE} states;
 
-void play_game(states state);
+extern int difficulty;
+extern int controller;
+void play_game(void);
 
 
 

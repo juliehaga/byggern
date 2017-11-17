@@ -12,9 +12,9 @@ highscore.c
 
 MCP2515_driver.c
 
-driver_uart.c
+UART_driver.c
 
-joystick.c
+USB_board.c
 
 menu_framework.c
 
@@ -24,7 +24,7 @@ ps2.c
 
 SPI_driver.c
 
-ping_pong.c
+main.c
 
 sram_test.c
 

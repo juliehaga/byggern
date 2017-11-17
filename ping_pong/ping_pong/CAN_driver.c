@@ -8,7 +8,7 @@
 #include "MCP2515_driver.h"
 #include "CAN_driver.h"
 #include "bit_functions.h"
-#include "joystick.h"
+#include "USB_board.h"
 #include "ps2.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>

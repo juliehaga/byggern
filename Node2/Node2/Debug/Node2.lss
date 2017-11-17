@@ -774,7 +774,7 @@ void DAC_send_data(uint8_t data){
      4fa:	08 95       	ret
 
 000004fc <IR_digital_filter>:
-#include "driver_ADC.h"
+#include "ADC_driver.h"
 #include <stdio.h>
 
 
@@ -1405,10 +1405,10 @@ int motor_PID(int slider_value, float Kp, float Ki, float Kd){
      88c:	08 95       	ret
 
 0000088e <servo_init>:
-#include "driver_servo.h"
-#include <stdio.h>
-#include <avr/io.h>
-#include "driver_uart.h"
+#include "SERVO_driver.h"
+#include "UART_driver.h"
+
+
 void servo_init(void){
 	pwm_init();
      88e:	28 d2       	rcall	.+1104   	; 0xce0 <pwm_init>
@@ -1485,7 +1485,7 @@ void servo_set_pos(uint8_t dir){
      8fa:	08 95       	ret
 
 000008fc <solenoid_init>:
-#include <util/delay.h>
+
 
 
 void solenoid_init(void){

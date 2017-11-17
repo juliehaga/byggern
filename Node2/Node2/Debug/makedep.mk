@@ -4,19 +4,19 @@
 
 CAN_driver.c
 
-driver_ADC.c
+ADC_driver.c
 
-driver_DAC.c
+DAC_driver.c
 
-driver_IR.c
+IR_driver.c
 
-driver_motor.c
+MOTOR_driver.c
 
-driver_servo.c
+SERVO_driver.c
 
-driver_solenoid.c
+SOLENOID_driver.c
 
-driver_uart.c
+UART_driver.c
 
 MCP2515_driver.c
 
@@ -24,7 +24,7 @@ main.c
 
 SPI_driver.c
 
-driver_pwm.c
+PWM_driver.c
 
 TWI_Master.c
 

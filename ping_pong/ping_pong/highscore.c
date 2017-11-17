@@ -45,7 +45,7 @@ void insert_highscore(int place, int score, char* new_name){
 	}
 	highscore_scores[place] = score;
 	highscore_names[place] =  new_name;
-	update_highscore_list();
+	update_EEPROM();
 }
 	
 	
@@ -60,7 +60,7 @@ void read_highscore_list(void){
 	}
 }
 
-void update_highscore_list(void){
+void update_EEPROM(void){
 	printf("Updater highscore: \n ");
 	for (int i = 0; i < 5 ; i++){
 		for(int j = 0 ; j < 3 ; j++){
@@ -118,5 +118,5 @@ void reset_highscore_list(){
 		EEPROM_write(0, 15+i);
 		highscore_scores[i] = 0; 
 	}
-	update_highscore_list();
+	update_EEPROM();
 }
