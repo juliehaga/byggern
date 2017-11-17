@@ -47,7 +47,7 @@ int main(void) {
 	ADC_init();
 	//CAN_init();
 	SPI_init_ps2();
-	//ps2_init();
+	ps2_init();
 	//Enable global interrupts
 	sei();
 	
@@ -55,19 +55,17 @@ int main(void) {
 	menu_setup();
 	read_highscore_list();
 
-	
-	
-	ps2_configmode();
-	ps2_analogmode();
-	ps2_exitconfig();
+
 	
 	
 	
 	while(1){
+		ps2_poll(1, 0xFF);
+		_delay_ms(150);
 		//printf("hei\n");
-		uint8_t data = SPI_read_write_PS2(0x00);
-		printf("data: \n", data);
-		//ps2_poll(100, 100);
+		//uint8_t data = SPI_read_write_PS2(0x01);
+		//printf("data: %d\n", data);
+		
 	/*
 
 		switch(current_state){

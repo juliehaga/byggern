@@ -4,7 +4,7 @@
  * Created: 20.09.2017 10:46:05
  *  Author: andrholt
  */ 
-#define F_CPU 4915200
+
 #include "ADC_driver.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>

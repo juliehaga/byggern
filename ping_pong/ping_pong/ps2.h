@@ -31,5 +31,11 @@ struct
 
 void ps2_init();
 void ps2_poll(uint8_t speed, uint8_t smallmotor);
+void ps2_configmode();
+void ps2_analogmode();
+void ps2_setupmotor();
+void ps2_returnpres();
+void ps2_digitalgmode();
+void ps2_exitconfig();
 
 #endif // PS2_H

@@ -4,7 +4,6 @@
  * Created: 11.10.2017 14:54:47
  *  Author: andrholt
  */ 
-#define F_CPU 4915200
 #include "MCP2515.h"
 #include "MCP2515_driver.h"
 #include "CAN_driver.h"

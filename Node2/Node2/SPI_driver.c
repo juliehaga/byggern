@@ -33,6 +33,7 @@ void SPI_init(void){
 	//SPI enable
 	set_bit(SPCR, SPE);
 	SPI_deactivate_SS();
+	
 
 }
 

@@ -5,33 +5,32 @@
  *  Author: andrholt
  */ 
 
+
 #include "SPI_driver.h"
 #include "bit_functions.h"
 #include <avr/io.h>
 #include <util/delay.h>
-#define F_CPU 4915200
+
 
 
 void SPI_init_ps2(void){
-	
-	
-	
 	//SPI enable
 	set_bit(SPCR, SPE); 
 	//Set SPI to master mode
 	set_bit(SPCR, MSTR);
 	//Clock frequency to f_OSC/16
 	//PS2 console has frequency 500 kHz
-	set_bit(SPSR, SPR0);
+	//set_bit(SPCR, SPR0);
+	set_bit(SPCR, SPR1);
+	set_bit(SPSR, SPI2X);
+	
+	
 	//Clock polarity SCK is high when idle
 	set_bit(SPCR, CPOL);
 	//Data order LSB transmitted first
 	set_bit(SPCR, DORD); 
 	//Clock phase transmit
 	set_bit(SPCR, CPHA);
-	
-	
-	//set_bit(SPSR, SPI2X);
 	
 	//set MOSI and SCK to output, all others input
 	set_bit(DDRB, MOSI);
@@ -81,7 +80,7 @@ uint8_t SPI_read_write_PS2(char cData){
 	SPDR = cData;
 	/* Wait for transmission complete */
 	while(!(test_bit(SPSR, SPIF)));   //wait until SPIF-flag is set.
-	_delay_ms(100);
+	_delay_ms(0.1);
 	return SPDR;
 }
 
