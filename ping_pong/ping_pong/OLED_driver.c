@@ -179,7 +179,7 @@ char* oled_type_in_name(char* score){
 	oled_sram_reset();
 	oled_sram_string("NEW HIGHSCORE", 0, 0);
 	oled_sram_string("^", 3, 0);
-	oled_sram_string("AAA", 4, 0);
+	oled_sram_string(name, 4, 0);
 	oled_sram_string("v", 5, 0);
 	oled_sram_string(score, 4, 10);
 	oled_update();
