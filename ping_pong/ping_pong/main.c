@@ -53,12 +53,17 @@ int main(void) {
 	/*IKKE FJÆRN*/
 	menu_setup();
 	read_highscore_list();
-
+	read_highscore_list();
 	
+	current_state = NEW_HIGHSCORE;
+	
+	highest_score = 100;
 	while(1){
+		printf("hei\n");
+		
 		switch(current_state){
 			case IDLE:
-				main_menu();
+				//main_menu();
 				break;
 			case PLAY:
 				play_game();

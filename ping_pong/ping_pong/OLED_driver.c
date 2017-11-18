@@ -292,17 +292,28 @@ void oled_play_game(int life, int score){
 	itoa(score, score_send, 10);
 	oled_sram_reset();
 	oled_sram_string("PINGPONG GAME", 0, 0);
-	oled_sram_string("LIVES", 3, 0);
-	oled_sram_string("SCORE", 3, 9);
-	oled_sram_char(life + '0', 5, 2);
-	oled_sram_string(score_send, 5, 10);
+	oled_sram_string("_____________", 0, 1);
+	oled_sram_string("LIVES", 4, 0);
+	oled_sram_string("SCORE", 4, 9);
+	oled_sram_char(life + '0', 6, 2);
+	oled_sram_string(score_send, 6, 10);
 	oled_update();
 		
 }
 void oled_game_over(void){
 	oled_sram_reset(); 
-	oled_sram_string("YOU LOSE", 4, 0); 
-	oled_update(); 
+	oled_sram_string("****************", 0, 0);
+	oled_sram_string("YOU LOSE!", 4, 0); 
+	oled_sram_string("****************", 8, 0);
+	oled_update();
+	_delay_ms(300); 
+	oled_sram_reset();
+	_delay_ms(250);
+	oled_sram_string("****************", 0, 0);
+	oled_sram_string("YOU LOSE!", 4, 0);
+	oled_sram_string("****************", 8, 0);
+	oled_update();
+	_delay_ms(300);
 }
 
 void oled_play_again(){

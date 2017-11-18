@@ -95,6 +95,7 @@ void play_game(){
 					}else{
 						//If yes - Send play game signal to node 2
 						_delay_ms(500);
+						oled_loading_game();
 						CAN_send(&boot_node2);
 						score = 0;
 					}
