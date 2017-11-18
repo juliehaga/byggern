@@ -15,6 +15,12 @@
 #define MEDIUM 1
 #define HARD 2
 
+#define SCORE_ID 1
+#define INIT_ID 2
+#define PLAY_ID 3
+#define ERROR_ID 4
+
+
 typedef enum {IDLE, PLAY, HIGHSCORE, RESET_HIGHSCORE, NEW_HIGHSCORE} states;
 
 extern int difficulty;

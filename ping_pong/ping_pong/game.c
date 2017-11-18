@@ -18,8 +18,6 @@
 #include "highscore.h"
 
 
-#define SCORE_ID 1
-
 int score = 0; 
 int highest_score = 0;  
 int life;
@@ -28,20 +26,21 @@ extern int highest_score;
 int send_can_flag = 0;
 volatile uint8_t rx_int_flag = 0;		//automatically set when 
 states current_state;
-int controller = USB;
+int controller;
 int difficulty;
 
 
 void play_game(){
 	printf("Controller %d\t MODE: %d\t\n", controller, difficulty);
-	Message boot_node2 = {0, 2, {controller, difficulty}};
+	Message boot_node2 = {INIT_ID, 2, {controller, difficulty}};
 	CAN_send(&boot_node2);
 	int game_over = 0;
 	life = 3;
 	highest_score = 0; 
+	oled_loading_game();
 	while(!rx_int_flag); //wait for init succeeded
 	CAN_recieve();
-	oled_loading_game();
+	
 	score = 0; 
 	printf("NODE 2 initialized \n");
 	
@@ -66,12 +65,16 @@ void play_game(){
 		
 		if(rx_int_flag){							
 			//Score in Node 2
-			printf("mottar melding fra node 2 \n");
+			
 			oled_play_game(life, score);
 			Message msg_node2 = CAN_recieve();
-			if(msg_node2.data[0] = SCORE_ID){
+			if (msg_node2.ID == ERROR_ID){
+				game_over = 1;
+				current_state = IDLE;
+			}
+			else if(msg_node2.ID == SCORE_ID){
+				printf("mottar Score 2 \n");
 				//Score in Node 2, end of round
-				
 				life --;
 				//check if new highscore
 				if(score > highest_score){
@@ -99,8 +102,9 @@ void play_game(){
 			}
 				
 		}
-			
-	}
+		
+	}printf("EXIT WHILE\n");
+
 	//If highscore, add to list and display highscore-list
 	current_state = NEW_HIGHSCORE;
 }

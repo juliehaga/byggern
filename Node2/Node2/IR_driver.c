@@ -16,7 +16,6 @@ int IR_digital_filter(void){
 	
 	for(int i = 0 ; i < 4 ; i++){
 		total_read_value += ADC_read();
-		printf("IR %d", ADC_read());
 	}
 	
 	return total_read_value/4;

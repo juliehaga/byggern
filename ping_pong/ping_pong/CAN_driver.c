@@ -10,6 +10,7 @@
 #include "bit_functions.h"
 #include "USB_board.h"
 #include "ps2.h"
+#include "game.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
@@ -120,17 +121,18 @@ void CAN_send_controllers(void){
 	
 	int button_l = button_read(1);
 
-	Message msg = {0, 3, {joy_pos_x ,slider_pos_r,  button_l}};
+	Message msg = {PLAY_ID, 3, {joy_pos_x ,slider_pos_r,  button_l}};
 	
 	CAN_send(&msg);	
 }
 
 void CAN_send_ps2_controllers(void){
 	ps2_poll(0,0);
+	printf("Sender CAN\n");
 	CAN_send_controllers();
 	ps2 ps2_joy_values = ps2_joystick_values();
 	int button_r2 =  ps2_R2_pushed();
-	Message msg = {0, 3, {ps2_joy_values.rx ,ps2_joy_values.lx, button_r2, 1}};
+	Message msg = {PLAY_ID, 3, {ps2_joy_values.rx ,ps2_joy_values.lx, button_r2, 1}};
 	CAN_send(&msg);
 }
 
