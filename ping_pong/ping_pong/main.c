@@ -11,8 +11,6 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
-
-
 #include "UART_driver.h"
 #include "bit_functions.h"
 #include "register_init.h"
@@ -40,7 +38,7 @@ int main(void) {
 	
 	// Disable global interrupts
 	cli();
-	UART_init(31);
+	UART_init(MYUBRR);
 	register_init();
 	oled_init();
 	ADC_init();
@@ -54,11 +52,10 @@ int main(void) {
 	menu_setup();
 	read_highscore_list();
 
-	
 	while(1){
 		switch(current_state){
 			case IDLE:
-				main_menu();
+				menu_navigation();
 				break;
 			case PLAY:
 				play_game();

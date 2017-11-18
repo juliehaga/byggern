@@ -13,16 +13,16 @@
 typedef struct Message{
 	int ID;
 	int length;
-	uint8_t data[8];			//One message is max 8 characters
+	uint8_t data[8];		//One message is max 8 characters
 	}Message;
 
-int CAN_init();
+int CAN_init(void);
 void CAN_send(Message* msg);
-int CAN_transmit_complete();
-Message CAN_recieve(); 
-int CAN_error(); 
-void CAN_int_vect();  
-void CAN_send_controllers(void);
+int CAN_transmit_complete(void);
+Message CAN_recieve(void); 
+int CAN_error(void); 
+void CAN_int_vect(void);  
+void CAN_send_USB_controllers(void);
 void CAN_send_start(void);
 void CAN_send_ps2_controllers(void);
 

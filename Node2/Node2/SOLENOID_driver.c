@@ -5,17 +5,15 @@
  *  Author: julihag
  */ 
 #define F_CPU 16000000
-#include <util/delay.h>
 
+#include <util/delay.h>
 #include "SOLENOID_driver.h"
 #include "bit_functions.h"
-
-
 
 void solenoid_init(void){
 	//Set solenoidpin(A1 == PF1) to output
 	set_bit(DDRF, PF1);
-	set_bit(PORTF, PF1);å
+	set_bit(PORTF, PF1);
 }
 
 void solenoid_shoot(void){

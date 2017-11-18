@@ -13,7 +13,7 @@
 
 
 
-void SPI_init_ps2(void){
+void SPI_init(void){
 	//SPI enable
 	set_bit(SPCR, SPE); 
 	//Set SPI to master mode
@@ -24,20 +24,18 @@ void SPI_init_ps2(void){
 	set_bit(SPSR, SPI2X);
 	
 	
-	//set SPI clock rate = Fosc/2
-	//set_bit(SPSR, SPI2X);
+	/*SPI mode 3 to communicate with PS2 consol*/
 	
-	////Clock polarity SCK is high when idle
+	//Clock polarity SCK is high when idle
 	set_bit(SPCR, CPOL);
-	////Clock phase transmit
+	//Clock phase transmit
 	set_bit(SPCR, CPHA);
 	
 	//set MOSI and SCK to output, all others input
 	set_bit(DDRB, MOSI);
 	set_bit(DDRB, SCK);
-	set_bit(DDRB, SS);  //til CAN
-	set_bit(DDRB, PB3); //ATT
-	
+	set_bit(DDRB, SS);  //CAN-controller
+	set_bit(DDRB, PB3); //PS2-consol
 	
 	
 	SPI_deactivate_SS_PS2();

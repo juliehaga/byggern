@@ -4,17 +4,19 @@
  * Created: 11.10.2017 14:54:47
  *  Author: andrholt
  */ 
+
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "MCP2515.h"
 #include "MCP2515_driver.h"
 #include "CAN_driver.h"
 #include "bit_functions.h"
 #include "USB_board.h"
 #include "ps2.h"
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <util/delay.h>
-#include <stdio.h>
-#include <stdlib.h>
+
 
 extern volatile uint8_t rx_int_flag; 
 
@@ -27,10 +29,7 @@ int CAN_init(){
 	//config-mode
 	MCP2515_init();
 	_delay_ms(1);
-	//enable interrupts in MCP
-	//Interrupt when message received in RXB0
 		
-	
 	value = MCP2515_read(MCP_CANSTAT);
 	if ((value & MODE_MASK) != MODE_CONFIG) {
 		printf("MCP2515 is NOT in config mode after reset!\n");
@@ -48,7 +47,6 @@ int CAN_init(){
 		printf("MCP2515 is NOT in normal mode!\n");
 		return 1;
 	}
-	
 	return 0;
 }
 
@@ -88,7 +86,6 @@ Message CAN_recieve(){
 	}
 	for (int i = 0; i < receive_msg.length ; i++){
 		receive_msg.data[i] = MCP2515_read(MCP_RXB0DM + i);
-		//printf("Leser %c\n", msg.data[i]);
 	}
 	rx_int_flag = 0;	
 	return receive_msg; 
@@ -103,22 +100,15 @@ int CAN_error(){
 	return 0; 
 }
 
-void CAN_int_vect(){
-	//set recieve flag to 0
-	MCP2515_bit_modify(MCP_CANINTF, 0x01, 0x00);
-	//set transmit flag to 0 
-	MCP2515_bit_modify(MCP_CANINTF, 0x04, 0x00);
-	rx_int_flag = 1;
-	
-}
 
 
-void CAN_send_controllers(void){
+
+void CAN_send_USB_controllers(void){
 	
 	uint8_t joy_pos_x = joystick_read(CHANNEL_X);
 	uint8_t slider_pos_r = slider_read(SLIDER_R);
 	
-	int button_l = button_read(1);
+	int button_l = button_read(LEFT_BUTTON);
 
 	Message msg = {0, 3, {joy_pos_x ,slider_pos_r,  button_l}};
 	
@@ -127,14 +117,21 @@ void CAN_send_controllers(void){
 
 void CAN_send_ps2_controllers(void){
 	ps2_poll(0,0);
-	CAN_send_controllers();
+	CAN_send_USB_controllers();
 	ps2 ps2_joy_values = ps2_joystick_values();
 	int button_r2 =  ps2_R2_pushed();
 	Message msg = {0, 3, {ps2_joy_values.rx ,ps2_joy_values.lx, button_r2, 1}};
 	CAN_send(&msg);
 }
 
-
+void CAN_int_vect(){
+	//set recieve flag to 0
+	MCP2515_bit_modify(MCP_CANINTF, 0x01, 0x00);
+	//set transmit flag to 0
+	MCP2515_bit_modify(MCP_CANINTF, 0x04, 0x00);
+	rx_int_flag = 1;
+	
+}
 
 ISR(INT0_vect){
 	//RX0 interrupt flag set to 0

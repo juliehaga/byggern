@@ -11,6 +11,7 @@
 #include "highscore.h"
 #include "OLED_driver.h"
 
+//Put highscore lists on OLED display
 void oled_print_highscore(void){
 	oled_sram_reset();
 	oled_sram_string("HIGHSCORE", 0, 3);
@@ -21,24 +22,21 @@ void oled_print_highscore(void){
 		oled_sram_string(int_to_str(i+1),i+2, 0);
 		oled_sram_string(".", i+2, 1);
 		oled_sram_string(int_to_str(highscore_scores[i]), i+2, 10);
-		
 	}
 	oled_update();
 }
 
-
+// Check if new score is better than any on the highscore list
 int check_highscore(int score){
 	for (int i = 0; i < 5 ; i++ ){
 		if(score > highscore_scores[i]){
 			return i;
 		}
-	}
-	return -1;
+	}return -1;
 }
 
+// insert a new highscore in highscore lists
 void insert_highscore(int place, int score, char* new_name){
-	
-	
 	for(int j = 4 ; j > place ; j--){
 		highscore_scores[j] = highscore_scores[j-1];
 		highscore_names[j] =  highscore_names[j-1];
@@ -48,38 +46,32 @@ void insert_highscore(int place, int score, char* new_name){
 	update_EEPROM();
 }
 	
-	
+// Fetch highscore lists stored in EEPROM
 void read_highscore_list(void){
 	for (int i = 0; i < 5 ; i++){
 		for(int j = 0 ; j < 3 ; j++){
 			highscore_names[i][j] = EEPROM_read(3*i+j);
 		}
-	}
-	for (int i = 0; i < 5 ; i++){
+	}for (int i = 0; i < 5 ; i++){
 		highscore_scores[i] = EEPROM_read(i+15);
 	}
 }
 
+// Update the highscore lists stored in EEPROM
 void update_EEPROM(void){
-	printf("Updater highscore: \n ");
 	for (int i = 0; i < 5 ; i++){
 		for(int j = 0 ; j < 3 ; j++){
-			printf(" %c", highscore_names[i][j]);
 			EEPROM_write(highscore_names[i][j], 3*i+j);
-		}printf("\n");
+		}
 	}
 	for (int i = 0; i < 5 ; i++){
 		EEPROM_write(highscore_scores[i], 15+i);
-		printf(" %d", highscore_scores[i]);
 	}
 }
 
-
+// Write to EEPROM
 void EEPROM_write(uint8_t ucData, unsigned int uiAddress){
-	/* 
-	Wait for completion of previous write
-	*/
-	
+	/* 	Wait for completion of previous write */
 	while(EECR & (1<<EEWE));
 	/* Set up address and data registers */
 	cli();
@@ -92,20 +84,17 @@ void EEPROM_write(uint8_t ucData, unsigned int uiAddress){
 	sei(); 
 }
 
-unsigned char EEPROM_read(unsigned int uiAddress)
-{	
-	
+unsigned char EEPROM_read(unsigned int uiAddress){		
 	/* Wait for completion of previous write */
 	while(EECR & (1<<EEWE));
-	
 	/* Set up address register */
 	EEAR = uiAddress;
 	/* Start eeprom read by writing EERE */
 	EECR |= (1<<EERE);
 	/* Return data from data register */
 	return EEDR;
-	 
 }
+
 
 void reset_highscore_list(){
 	for (int i = 0; i < 5 ; i++){

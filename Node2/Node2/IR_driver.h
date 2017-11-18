@@ -9,8 +9,6 @@
 #ifndef DRIVER_IR_H_
 #define DRIVER_IR_H_
 
-
-
 int IR_digital_filter(void);
 int IR_score(void);
 

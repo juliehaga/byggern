@@ -5,11 +5,12 @@
  *  Author: andrholt
  */ 
 
-#include "ADC_driver.h"
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "bit_functions.h"
 #include <util/delay.h>
+#include "ADC_driver.h"
+#include "bit_functions.h"
 
 
 
@@ -17,20 +18,20 @@ volatile int ADC_ready;
 
 int ADC_init(void) {
 	// Interrupt on rising edge PE0
-	EMCUCR |= (1<<ISC2);
+	set_bit(EMCUCR,ISC2);
 
 	// Enable interrupt on PE0
-	GICR |= (1<<INT2);
+	set_bit(GICR, INT2);
 	
 	// Button input
 	clr_bit(DDRE, PE0);
 	
 	//Enable the external memory interface/4 bits address
-	MCUCR |= (1<<SRE);
-	SFIOR |= (1<<XMM2);
+	set_bit(MCUCR, SRE);
+	set_bit(SFIOR, XMM2);
 	
 	//Set the interrupt pin to input
-	DDRE &= ~(1<<PINE0);
+	clr_bit(DDRE, PINE0);
 
 	//set button pins to input
 	clr_bit(DDRB, DDB0);

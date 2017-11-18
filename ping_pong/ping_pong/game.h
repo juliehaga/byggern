@@ -20,7 +20,6 @@ typedef enum {IDLE, PLAY, HIGHSCORE, RESET_HIGHSCORE, NEW_HIGHSCORE} states;
 extern int difficulty;
 extern int controller;
 void play_game(void);
-
-
+void game_setup(void);
 
 #endif /* FSM_H_ */

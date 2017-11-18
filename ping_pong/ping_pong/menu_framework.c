@@ -12,8 +12,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <util/delay.h>
-
-
 #include <stddef.h>
 
 int current_page = 1;
@@ -25,7 +23,7 @@ int difficulty = EASY;
 
 extern states current_state; 
 
-
+//Create menu tree-structure
 void menu_setup(void){
 	menu* menu_front_page = create_menu("PingPongShow");
 	display_menu = menu_front_page;
@@ -65,32 +63,6 @@ void menu_setup(void){
 	oled_update();
 	current_menu = display_menu->child;
 }
-
-
-
-
-void menu_sram_update(menu* menu_node, int selector_pos){
-	int col = 0; 
-	int page = 0; 
-	oled_sram_reset();
-	
-	menu* current = menu_node->child;
-	
-	oled_sram_string(menu_node->name, page, col);
-	oled_sram_string("----------------", page+1, col);
-	
-	
-	page = 2;
-	col = 2;
-	while(current != NULL){
-		oled_sram_string(current->name, page, col);
-		current = current->next_sibling;
-		page++;
-	}
-	oled_sram_char('*', selector_pos+1, 0);
-	
-}
-
 
 menu* create_menu(char* new_name){
 	menu* new_menu = (menu*)malloc(sizeof(menu));
@@ -134,6 +106,30 @@ menu* create_submenu(menu* parent_menu, menu* child_menu){ //tar inn liste av su
 }
 
 
+//Updates menu screen in SRAM
+void menu_sram_update(menu* menu_node, int selector_pos){
+	int col = 0; 
+	int page = 0; 
+	oled_sram_reset();
+	
+	menu* current = menu_node->child;
+	
+	oled_sram_string(menu_node->name, page, col);
+	oled_sram_string("----------------", page+1, col);
+	
+	page = 2;
+	col = 2;
+	while(current != NULL){
+		oled_sram_string(current->name, page, col);
+		current = current->next_sibling;
+		page++;
+	}
+	oled_sram_char('*', selector_pos+1, 0);
+	
+}
+
+
+//Controls menu on OLED
 menu* update_display_menu(menu* current_menu, int page, joystick_dir dir){
 	menu* current = current_menu->child;
 	if(dir == RIGHT){
@@ -158,12 +154,11 @@ void print_selection_sign(int page){
 }
 
 
-void main_menu(void){
-	
+void menu_navigation(void){
 	int end_menu = 0; 
 	joystick_dir joy_dir = find_joystick_dir();
-	printf("%d\n", joy_dir);
 	if(joy_dir != last_joy_dir){
+		
 		switch(joy_dir){
 			case UP:
 				if(current_page > 1){
@@ -173,6 +168,7 @@ void main_menu(void){
 				menu_sram_update(display_menu, current_page);
 				oled_update();
 				break;
+				
 			case DOWN:
 				if(current_page < display_menu->number_of_childs){
 					current_menu = current_menu ->next_sibling;
@@ -181,6 +177,7 @@ void main_menu(void){
 				menu_sram_update(display_menu, current_page);
 				oled_update();
 				break;
+				
 			case RIGHT:
 				if(current_menu->child != NULL){
 					display_menu = update_display_menu(display_menu, current_page, RIGHT);
@@ -188,12 +185,9 @@ void main_menu(void){
 					menu_sram_update(display_menu, current_page);
 					oled_update();
 					current_menu = current_menu->child;
-				}
-				else if(current_menu->parent->parent != NULL){
+				}else if(current_menu->parent->parent != NULL){
 					end_menu = 1;
-				}
-
-				break;
+				}break;
 		
 			case LEFT:
 				if(current_menu->parent->parent != NULL){
@@ -202,18 +196,14 @@ void main_menu(void){
 					menu_sram_update(display_menu, current_page);
 					oled_update();
 					current_menu = current_menu->parent->parent->child;
-				}
-				
-				break;
+				}break;
 			default:
 				break;
 		}
-		
 	}
 	
+	// Choose state from menu selection
 	last_joy_dir = joy_dir;
-
-	
 	if(end_menu){
 		const char* menu_title = current_menu->name;
 		if (!strcmp(menu_title,"Easy") && !strcmp(current_menu->parent->name, "Control: PS2")){
@@ -228,13 +218,10 @@ void main_menu(void){
 			current_state = PLAY;
 			controller = PS2;
 			difficulty = HARD;
-		}
-
-		else if (!strcmp(current_menu->name,"Easy") && !strcmp(current_menu->parent->name, "Control: USB")){
+		}else if (!strcmp(current_menu->name,"Easy") && !strcmp(current_menu->parent->name, "Control: USB")){
 			current_state = PLAY;
 			controller = USB;
-			difficulty = EASY;
-			
+			difficulty = EASY;	
 		}else if (!strcmp(current_menu->name, "Medium")&& !strcmp(current_menu->parent->name, "Control: USB")){
 			current_state = PLAY;
 			controller = USB;
@@ -243,11 +230,9 @@ void main_menu(void){
 			current_state = PLAY;
 			controller = USB;
 			difficulty = HARD;
-		}
-		else if (!strcmp(current_menu->name,"View")){
+		}else if (!strcmp(current_menu->name,"View")){
 			current_state = HIGHSCORE;
-		}
-		else if (!strcmp(current_menu->name, "YES")){
+		}else if (!strcmp(current_menu->name, "YES")){
 			current_state = RESET_HIGHSCORE;
 			oled_sram_reset();
 			oled_sram_string("****************",0,0);
@@ -256,9 +241,7 @@ void main_menu(void){
 			oled_sram_string("****************",7,0);
 			oled_update();
 			_delay_ms(2000);
-			
-		}
-		else if (!strcmp(current_menu->name, "NO")){
+		}else if (!strcmp(current_menu->name, "NO")){
 			current_state = IDLE;
 		}
 	}

@@ -11,7 +11,8 @@
 #include <string.h>
 
 void MCP2515_init(void){
-	SPI_init_ps2();
+	SPI_init();
+	
 	//set MCP2515 in configuration mode
 	MCP2515_reset(); 
 }
@@ -56,7 +57,7 @@ uint8_t MCP2515_read_status(void){
 	SPI_activate_SS();
 	SPI_read_write(MCP_READ_STATUS);
 	status = SPI_read_write(0xFF);
-	status = SPI_read_write(0xFF);		//send same data to times
+	status = SPI_read_write(0xFF);		//send same data two times
 	SPI_deactivate_SS();	
 	return status;
 }

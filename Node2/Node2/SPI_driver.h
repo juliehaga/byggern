@@ -15,11 +15,9 @@
 #define MOSI PB2
 #define SS PB7
 
-
 void SPI_init(void);
 uint8_t SPI_read_write(char cData);
 void SPI_activate_SS(void);
 void SPI_deactivate_SS(void);
-
 
 #endif /* SPI_DRIVER_H_ */

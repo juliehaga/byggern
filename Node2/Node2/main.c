@@ -5,8 +5,9 @@
 *  Author: andrholt
 */
 #define F_CPU 16000000
-#include <util/delay.h>
+#define INIT_ID 2
 
+#include <util/delay.h>
 #include <avr/io.h>
 #include <stdio.h>
 #include <avr/interrupt.h>
@@ -24,21 +25,14 @@
 #include "bit_functions.h"
 #include "game.h"
 
-#define INIT_ID 0
-
-
 volatile uint8_t rx_int_flag = 0;
-
 states current_state = IDLE;
 difficulty mode = EASY;
-
 Message config_msg;
+Message init_succeeded = {INIT_ID, 1, {0}};
 
 
-
-int main(void)
-{
-	
+int main(void){
 	cli();
 	UART_init(MYUBRR);
 	CAN_init();
@@ -47,43 +41,27 @@ int main(void)
 	solenoid_init();
 	motor_init();
 	sei();
-	printf("\n----------------------\n\nNODE 2 \n\n -------------------------\n");
-	while (!rx_int_flag);
-	config_msg = CAN_recieve();
+	printf("\n----------------------\n\nNODE 2 \n\n -------------------------\n"); //PRINTF
+	
 
 	
-	if(config_msg.data[0] > -1 && config_msg.data[0] < 3){
-		Message init_succeeded = {INIT_ID, 1, {0}};
-		CAN_send(&init_succeeded);							//Init success, start game in Node 1
-
-		motor_calibration();
-		current_state = config_msg.data[0];
-		mode = config_msg.data[1];
-		printf("Controller %d\t Mode %d\n", current_state, mode);
-	}
 	
-	
-	
-	while(1)
-	{	
-		
-		
-		printf("while\n");
-		switch (current_state)
-		{
-			printf("Current state: %d\n", current_state);
+	while(1){
+			
+		switch (current_state){
 			case IDLE:
 				if(rx_int_flag){
-					if(config_msg.data[0] > -1 && config_msg.data[0] < 3){
-						Message init_succeeded = {0, 1, {0}};
+					config_msg = CAN_recieve();
+					if(config_msg.ID == INIT_ID){
+						motor_calibration();
 						CAN_send(&init_succeeded);
 						current_state = config_msg.data[0];
 						mode = config_msg.data[1];
-					
+					}else{
+						current_state = IDLE;
 					}
 				}
 				break;
-				
 				
 			case USB:
 				set_USB_mode(mode);
