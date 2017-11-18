@@ -53,7 +53,7 @@ void motor_init(void){
 	clr_bit(TCCR3A, WGM31);
 	clr_bit(TCCR3A, WGM30);
 	
-	//Prescaler Fosc/8
+	//Prescaler Fosc/6
 	set_bit(TCCR3B, CS31);
 
 	//Interrupt enable overflow

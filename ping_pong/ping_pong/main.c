@@ -53,8 +53,8 @@ int main(void) {
 	/*IKKE FJÆRN*/
 	menu_setup();
 	read_highscore_list();
-
-	
+	oled_loading_game();
+	/*
 	while(1){
 		switch(current_state){
 			case IDLE:
@@ -88,7 +88,7 @@ int main(void) {
 				break;
 		_delay_ms(10);
 		}
-	}
+	}*/
 	return 0;
 }
 

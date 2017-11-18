@@ -35,6 +35,7 @@ void oled_play_game(int life, int score);
 void oled_game_over(void); 
 void oled_play_again(void);
 void oled_loading_game(void);
+void oled_fill_square(uint8_t page, uint8_t col);
 
 char* int_to_str(int data);
 

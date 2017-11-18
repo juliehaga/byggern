@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include "highscore.h"
 #include "game.h"
+#include <util/delay.h>
 
 
 
@@ -129,6 +130,13 @@ void oled_fill_page(uint8_t page){
 	}
 }
 
+void oled_fill_square(uint8_t page, uint8_t col){
+	oled_pos(page, col);
+	for (uint16_t i = 0 ; i < 7; i++){
+		*OLED_d = 0xff;		
+	}
+}
+
 void oled_print_char(char c){
 	for (uint8_t i = 0 ; i < 8 ; i++){  //i < 8 fordi vi bruker font8
 		*OLED_d = pgm_read_byte(&(font8[c - ASCII_OFFSET][i]));
@@ -173,21 +181,30 @@ char oled_read_SRAM(int page, int col){
 
 void oled_loading_game(){
 	oled_sram_reset();
-	oled_sram_string("****************",0,0);
-	oled_sram_string("LOADING GAME\n", 3, 0);
-	oled_sram_string("-------",2,6); 
-	oled_sram_string("|", 3,12); 
+	
+	oled_sram_string("LOADING ", 0, 0);
+	oled_sram_string("________",2,4); 
+	oled_sram_string("|", 3,3); 
+	oled_sram_string("|", 4,3);
 	oled_sram_string("|", 3,12);
-	oled_sram_string("-------",2,6); 
-	oled_sram_string("****************",7,0);
+	oled_sram_string("|", 4,12);
+	oled_sram_string("________",4,4); 
+	
+	int j = 6*9+1; 
 	oled_update();
-	_delay_ms(10);
-	oled_sram_reset();
-	oled_sram_string("****************",0,0);
-	oled_sram_string("-------",2,6);
-	oled_sram_string("|", 3,6);
-	oled_sram_string("-------",2,6);
-	oled_sram_string("****************",7,0);
+	
+
+	for(int i = 4; i < 12; i++){
+		
+		oled_fill_square(3,i*8);
+		oled_fill_square(4,i*8);
+		oled_pos(0,(j++*8));
+		oled_print_char('.');
+		_delay_ms(300);
+		
+	}
+	oled_update();
+	
 } 
 
 

@@ -31,15 +31,18 @@ void register_init(void){
 	clr_bit(TCCR3A, WGM30);
 	
 	//Timer 1: Prescaler Fosc/1024
+	//Used to count score
 	set_bit(TCCR1B, CS11);
 	set_bit(TCCR1B, CS10);
 	
 	
 	//Timer 2: Precale Fosc/8
+	//Used to send CAN msg
 	set_bit(TCCR3B, CS31);
 
 	//Interrupt enable overflow
 	set_bit(TIMSK, TOIE1);
+	
 	set_bit(ETIMSK, TOIE3);		//Enable Can_send interrupt
 
 }
