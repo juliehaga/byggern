@@ -42,7 +42,7 @@ int main(void){
 	motor_init();
 	sei();
 	printf("\n----------------------\n\nNODE 2 \n\n -------------------------\n"); //PRINTF
-	
+	motor_calibration();
 
 	
 	
@@ -53,7 +53,9 @@ int main(void){
 				if(rx_int_flag){
 					config_msg = CAN_recieve();
 					if(config_msg.ID == INIT_ID){
-						motor_calibration();
+						printf("INIT message from Node 1\n");
+						printf("Configuration %d\t %d:\n", config_msg.data[0], config_msg.data[1]);
+						
 						CAN_send(&init_succeeded);
 						current_state = config_msg.data[0];
 						mode = config_msg.data[1];

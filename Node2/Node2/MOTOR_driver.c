@@ -86,9 +86,8 @@ int16_t motor_read_encoder_unscaled(void){
 	set_bit(PORTH, PH3);		//SEL high
 	_delay_ms(20);
 
-	//printf("K = %d\n", PINK);
+
 	data = PINK | data;
-	//motor_reset_encoder();
 	set_bit(PORTH, PH5);		//!OE high
 	
 	return data;

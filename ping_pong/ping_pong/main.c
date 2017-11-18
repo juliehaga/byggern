@@ -48,7 +48,6 @@ int main(void) {
 	sei();
 	printf("\n--------------------\n\nNODE 1 \n\n ---------------------\n");
 	
-	/*IKKE FJÆRN*/
 	menu_setup();
 	read_highscore_list();
 

@@ -157,6 +157,7 @@ void print_selection_sign(int page){
 void menu_navigation(void){
 	int end_menu = 0; 
 	joystick_dir joy_dir = find_joystick_dir();
+	printf("%d\n, ", joy_dir);
 	if(joy_dir != last_joy_dir){
 		
 		switch(joy_dir){
