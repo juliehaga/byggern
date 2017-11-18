@@ -81,8 +81,6 @@ int CAN_transmit_complete(){
 
 Message CAN_recieve(){
 	Message receive_msg; 
-		
-	
 	receive_msg.ID = (MCP2515_read(MCP_RXB0SIDH) << 3 | MCP2515_read(MCP_RXB0SIDL) >> 5);
 	receive_msg.length = MCP2515_read(MCP_RXB0DLC) & 0x0F;
 	if(receive_msg.length > 8){
@@ -92,8 +90,7 @@ Message CAN_recieve(){
 		receive_msg.data[i] = MCP2515_read(MCP_RXB0DM + i);
 		//printf("Leser %c\n", msg.data[i]);
 	}
-	rx_int_flag = 0;
-	
+	rx_int_flag = 0;	
 	return receive_msg; 
 }
 
@@ -130,10 +127,10 @@ void CAN_send_controllers(void){
 
 void CAN_send_ps2_controllers(void){
 	ps2_poll(0,0);
-	
 	CAN_send_controllers();
 	ps2 ps2_joy_values = ps2_joystick_values();
 	int button_r2 =  ps2_R2_pushed();
+	printf("LEFT: %d\t RIGHT %d\n", ps2_joy_values.lx, ps2_joy_values.rx);
 	Message msg = {0, 3, {ps2_joy_values.rx ,ps2_joy_values.lx, button_r2, 1}};
 	CAN_send(&msg);
 }
@@ -143,5 +140,6 @@ void CAN_send_ps2_controllers(void){
 ISR(INT0_vect){
 	//RX0 interrupt flag set to 0
 	CAN_int_vect();
+	printf("NODE 1 FÅR MELDING\n");
 }
 

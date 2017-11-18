@@ -23,7 +23,7 @@ void SPI_init(void){
 	set_bit(SPCR, CPOL);
 	////Clock phase transmit
 	set_bit(SPCR, CPHA);
-	//
+	
 	
 	//set MOSI and SCK to output, all others input
 	set_bit(DDRB, MOSI);

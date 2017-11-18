@@ -26,15 +26,10 @@
 
 volatile uint8_t rx_int_flag = 0;
 
-
 states current_state = IDLE;
 difficulty mode = EASY;
 
-
 Message config_msg;
-
-
-
 
 
 
@@ -53,27 +48,37 @@ int main(void)
 	while (!rx_int_flag);
 	config_msg = CAN_recieve();
 	motor_calibration();
-	current_state = config_msg.data[0];
-	mode = config_msg.data[1];
+	if(config_msg.data[0] > -1 && config_msg.data[0] < 3){
+		Message init_succeeded = {0, 1, {0}};
+		CAN_send(&init_succeeded);
+		printf("MELDING sent til node 1\n");
+		current_state = config_msg.data[0];
+		mode = config_msg.data[1];
+		//LEGG TIL FAILED TO INIT
+	}
+	
+	
+	
 	printf("CONFIG state %d \t mode %d \n", config_msg.data[0], config_msg.data[1]);
 	while(1)
 	{
-		
 		switch (current_state)
 		{
 			printf("Current state: %d\n", current_state);
 			case IDLE:
-				if (rx_int_flag){
-					config_msg = CAN_recieve();
+				if(config_msg.data[0] > -1 && config_msg.data[0] < 3){
 					current_state = config_msg.data[0];
 					mode = config_msg.data[1];
+					//LEGG TIL FAILED TO INIT
 				}
 				break;
 			case USB:
-				set_tuning_PID(mode);
+				set_USB_mode(mode);
 				USB_play_game();
 				break;
 			case PS2:
+				set_PS2_mode(mode);
+				PS2_play_game();
 				break;
 			default:
 				break;

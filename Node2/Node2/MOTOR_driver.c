@@ -24,6 +24,7 @@
 int left_pos;
 int right_pos;
 motor_dir dir;
+int max_motor_value = 0; 
 
 
 int prev_error = 0; 
@@ -64,8 +65,7 @@ void motor_init(void){
 }
 
 
-//Get joystick input 0-130: Left, 135-255: Right
-void motor_drive(int motor_input){
+void motor_power(int motor_input){
 	motor_set_dir();
 	DAC_send_data(motor_input);
 }
@@ -112,21 +112,21 @@ int16_t motor_read_encoder(void){
 void motor_calibration(void){
 	//drive to left corner
 	dir = LEFT;
-	motor_drive(150);
+	motor_power(150);
 	_delay_ms(700);
 	
 	//choose zero-position
 	motor_reset_encoder();
 	
 	dir = RIGHT;
-	motor_drive(150);
+	motor_power(150);
 	_delay_ms(700);
 	right_pos = motor_read_encoder_unscaled();
 	printf("right encoder value %d\n", motor_read_encoder_unscaled());
-	motor_drive(STOP);
+	motor_power(STOP);
 	
 	dir = LEFT;
-	motor_drive(150);
+	motor_power(150);
 	left_pos = motor_read_encoder_unscaled();
 	_delay_ms(1200);
 	motor_reset_encoder();
@@ -162,5 +162,30 @@ int motor_PID(int slider_value, float Kp, float Ki, float Kd){
 	prev_error = error;
 	return output;
 }
+
+void motor_velocity_control(int joystick_value){
+	if (joystick_value < 150){
+		dir = LEFT;
+	}else if (joystick_value > 100){
+		dir = RIGHT;
+	}
+	int input;
+	motor_set_dir();
+	if(joystick_value > 135){
+		input = (int)(joystick_value-135)*2.125;
+	}
+	else if(joystick_value < 130){
+		input = (int)(130-joystick_value)*(double)255/130;
+	}
+	else{
+		input = 0;
+	}
+	if(input > max_motor_value){
+		input = max_motor_value;
+	}
+	DAC_send_data(input);
+	
+}
+
 
 

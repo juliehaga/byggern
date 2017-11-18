@@ -41,6 +41,10 @@ void play_game(){
 	life = 3;
 	score = 0;  
 	highest_score = 0; 
+	while(!rx_int_flag); //wait for init succeeded
+	CAN_recieve();
+	printf("NODE 2 initialized \n");
+	
 	while(!game_over){
 		//Update display
 		if (oled_flag){
