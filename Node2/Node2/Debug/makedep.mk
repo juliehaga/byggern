@@ -8,6 +8,8 @@ ADC_driver.c
 
 DAC_driver.c
 
+game.c
+
 IR_driver.c
 
 MOTOR_driver.c

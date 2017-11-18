@@ -39,8 +39,8 @@ void register_init(void){
 	set_bit(TCCR3B, CS31);
 
 	//Interrupt enable overflow
-	//set_bit(TIMSK, TOIE1);
-	//set_bit(ETIMSK, TOIE3);		//Enable Can_send interrupt
+	set_bit(TIMSK, TOIE1);
+	set_bit(ETIMSK, TOIE3);		//Enable Can_send interrupt
 
 }
 

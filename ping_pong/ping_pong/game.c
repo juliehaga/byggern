@@ -28,33 +28,25 @@ extern int highest_score;
 int send_can_flag = 0;
 volatile uint8_t rx_int_flag = 0;		//automatically set when 
 states current_state;
-int controller;
+int controller = USB;
 int difficulty;
 
 
 void play_game(){
-	
+	printf("Controller %d\t MODE: %d\t\n", controller, difficulty);
 	Message boot_node2 = {0, 2, {controller, difficulty}};
 	
 	CAN_send(&boot_node2);
-	
-	
 	int game_over = 0;
 	life = 3;
 	score = 0;  
 	highest_score = 0; 
-	oled_loading_game(); 
-	_delay_ms(3000);
-	oled_sram_reset();
-	printf("START sendt til node 2\n");
 	while(!game_over){
-		
 		//Update display
 		if (oled_flag){
 			oled_play_game(life, score);
 			oled_flag = 0;
 		}
-		
 		//Send Can-message to node2
 		if(send_can_flag){
 			clr_bit(ETIMSK, TOIE3);
@@ -96,40 +88,12 @@ void play_game(){
 					CAN_send(&boot_node2);
 					score = 0;
 					}
-				}
-			rx_int_flag = 0; 	
+				}	
 			}
 		}
 	//If highscore, add to list and display highscore-list
 	current_state = NEW_HIGHSCORE;
 }
-
-
-
-/*
-
-int check_highscore(int score){
-	char* name;
-	for (int i = 0; i < 5 ; i++ ){
-		if(score > highscore_scores[i]){
-			name  =	"AAA";//oled_type_in_name(int_to_str(score));
-			for(int j = 4 ; j >= i+1 ; j--){
-				highscore_scores[j] = highscore_scores[j-1];
-				highscore_names[j] =  highscore_names[j-1];
-			}
-			highscore_names[i] = name;
-			highscore_scores[i] = score;
-			update_highscore_list();		//Update EEPROM highscore list
-			for(int i = 0; i <5; i++){
-				printf("name %s\n",highscore_names[i]);
-			}
-			return 1;
-		}
-	}
-	return 0;
-}*/
-
-
 
 
 ISR(TIMER1_OVF_vect){

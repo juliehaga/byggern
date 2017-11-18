@@ -9,8 +9,8 @@
 #ifndef FSM_H_
 #define FSM_H_
 
-#define USB 0
-#define PS2 1
+#define USB 1
+#define PS2 2
 #define EASY 0
 #define MEDIUM 1
 #define HARD 2

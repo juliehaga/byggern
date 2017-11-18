@@ -12,7 +12,7 @@
 
 
 int IR_digital_filter(void);
-int IR_game_over(void);
+int IR_score(void);
 
 
 #endif /* DRIVER_IR_H_ */

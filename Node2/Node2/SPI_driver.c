@@ -19,11 +19,11 @@ void SPI_init(void){
 	//set SPI clock rate = Fosc/16 
 	set_bit(SPCR, SPR0);
 	
-	//Clock polarity SCK is high when idle
+	////Clock polarity SCK is high when idle
 	set_bit(SPCR, CPOL);
-	//Clock phase transmit
+	////Clock phase transmit
 	set_bit(SPCR, CPHA);
-	
+	//
 	
 	//set MOSI and SCK to output, all others input
 	set_bit(DDRB, MOSI);

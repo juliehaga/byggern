@@ -50,8 +50,6 @@ void motor_init(void){
 	motor_reset_encoder();
 	
 	
-	
-	
 	//Set timer/counter0 interrupt
 	//Normal mode
 	clr_bit(TCCR3A, WGM31);
@@ -62,6 +60,7 @@ void motor_init(void){
 
 	//Interrupt enable overflow
 	set_bit(TIMSK3, TOIE3);
+	
 }
 
 

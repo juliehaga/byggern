@@ -28,7 +28,6 @@ void ps2_init()
 {
 	uint8_t d = 0x00;
 	// Attention pin idle high
-	SPI_deactivate_SS_PS2();
 	_delay_ms(10);
 	
 	// Configure controller to send everything
@@ -42,8 +41,8 @@ void ps2_init()
 	_delay_ms(250);
 	ps2_exitconfig();
 	
-	SPI_activate_SS_PS2();
-	
+	SPI_deactivate_SS_PS2();
+
 }
 
 

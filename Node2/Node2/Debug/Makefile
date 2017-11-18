@@ -40,6 +40,7 @@ C_SRCS +=  \
 ../CAN_driver.c \
 ../ADC_driver.c \
 ../DAC_driver.c \
+../game.c \
 ../IR_driver.c \
 ../MOTOR_driver.c \
 ../SERVO_driver.c \
@@ -62,6 +63,7 @@ OBJS +=  \
 CAN_driver.o \
 ADC_driver.o \
 DAC_driver.o \
+game.o \
 IR_driver.o \
 MOTOR_driver.o \
 SERVO_driver.o \
@@ -77,6 +79,7 @@ OBJS_AS_ARGS +=  \
 CAN_driver.o \
 ADC_driver.o \
 DAC_driver.o \
+game.o \
 IR_driver.o \
 MOTOR_driver.o \
 SERVO_driver.o \
@@ -92,6 +95,7 @@ C_DEPS +=  \
 CAN_driver.d \
 ADC_driver.d \
 DAC_driver.d \
+game.d \
 IR_driver.d \
 MOTOR_driver.d \
 SERVO_driver.d \
@@ -107,6 +111,7 @@ C_DEPS_AS_ARGS +=  \
 CAN_driver.d \
 ADC_driver.d \
 DAC_driver.d \
+game.d \
 IR_driver.d \
 MOTOR_driver.d \
 SERVO_driver.d \
@@ -132,6 +137,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

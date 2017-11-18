@@ -55,14 +55,11 @@ int CAN_init(){
 
 void CAN_send(Message* msg){
 	if(CAN_transmit_complete()){
-		
 		//sending ID
 		MCP2515_write(MCP_TXB0SIDH, (uint8_t)msg->ID >> 3);
 		MCP2515_write(MCP_TXB0SIDL, (uint8_t)msg->ID << 5);
-	
 		//sending data length
 		MCP2515_write(MCP_TXB0DLC, msg->length & 0x0F);
-	
 		//Sending data, max 8 bytes
 		if(msg->length > 8){
 			msg->length = 8;
@@ -70,11 +67,8 @@ void CAN_send(Message* msg){
 		for (int i = 0; i < msg->length; i++){
 			MCP2515_write(MCP_TXB0D0 + i, msg->data[i]);  
 		}
-	
 		//initiate message transmission
-		
 		MCP2515_request_to_send(1);
-		
 	}
 }
 
@@ -135,10 +129,12 @@ void CAN_send_controllers(void){
 }
 
 void CAN_send_ps2_controllers(void){
+	ps2_poll(0,0);
+	
+	CAN_send_controllers();
 	ps2 ps2_joy_values = ps2_joystick_values();
 	int button_r2 =  ps2_R2_pushed();
 	Message msg = {0, 3, {ps2_joy_values.rx ,ps2_joy_values.lx, button_r2, 1}};
-	
 	CAN_send(&msg);
 }
 

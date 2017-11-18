@@ -20,7 +20,7 @@ int IR_digital_filter(void){
 	return total_read_value/4;
 }
 
-int IR_game_over(){
+int IR_score(){
 	if(IR_digital_filter() < 250){
 		return 1;
 	}

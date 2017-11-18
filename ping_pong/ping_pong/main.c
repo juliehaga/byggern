@@ -53,15 +53,8 @@ int main(void) {
 	menu_setup();
 	read_highscore_list();
 
-	Message msg = {0,1,{0}}; 
-	printf("Sender CAN\n");
-	
 	
 	while(1){
-		printf("while\n");
-		CAN_send(&msg);
-		_delay_ms(100);
-/*
 		switch(current_state){
 			case IDLE:
 				main_menu();
@@ -93,7 +86,7 @@ int main(void) {
 			default:
 				break;
 		}
-	*/}
+	}
 	return 0;
 }
 

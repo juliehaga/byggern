@@ -162,7 +162,6 @@ void main_menu(void){
 	
 	int end_menu = 0; 
 	joystick_dir joy_dir = find_joystick_dir();
-	printf("JOY_DIR %d\n", joy_dir);
 	if(joy_dir != last_joy_dir){
 		switch(joy_dir){
 			case UP:
@@ -216,29 +215,30 @@ void main_menu(void){
 	
 	if(end_menu){
 		const char* menu_title = current_menu->name;
-		if (!strcmp(menu_title,"Easy") && strcmp(current_menu->parent, "Control: PS2")){
+		if (!strcmp(menu_title,"Easy") && !strcmp(current_menu->parent->name, "Control: PS2")){
 			current_state = PLAY;
 			controller = PS2;
 			difficulty = EASY;
-		}else if (!strcmp(current_menu->name, "Medium")&& strcmp(current_menu->parent, "Control: PS2")){
+		}else if (!strcmp(current_menu->name, "Medium")&& !strcmp(current_menu->parent->name, "Control: PS2")){
 			current_state = PLAY;
 			controller = PS2;
 			difficulty = MEDIUM;
-		}else if (!strcmp(current_menu->name, "Hard")&& strcmp(current_menu->parent, "Control: PS2")){
+		}else if (!strcmp(current_menu->name, "Hard")&& !strcmp(current_menu->parent->name, "Control: PS2")){
 			current_state = PLAY;
 			controller = PS2;
 			difficulty = HARD;
 		}
 
-		else if (!strcmp(current_menu->name,"Easy")&& strcmp(current_menu->parent, "Control: USB")){
+		else if (!strcmp(current_menu->name,"Easy") && !strcmp(current_menu->parent->name, "Control: USB")){
 			current_state = PLAY;
 			controller = USB;
 			difficulty = EASY;
-		}else if (!strcmp(current_menu->name, "Medium")&& strcmp(current_menu->parent, "Control: USB")){
+			
+		}else if (!strcmp(current_menu->name, "Medium")&& !strcmp(current_menu->parent->name, "Control: USB")){
 			current_state = PLAY;
 			controller = USB;
 			difficulty = MEDIUM;
-		}else if (!strcmp(current_menu->name, "Hard")&& strcmp(current_menu->parent, "Control: USB")){
+		}else if (!strcmp(current_menu->name, "Hard")&& !strcmp(current_menu->parent->name, "Control: USB")){
 			current_state = PLAY;
 			controller = USB;
 			difficulty = HARD;

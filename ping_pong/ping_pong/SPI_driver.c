@@ -18,16 +18,18 @@ void SPI_init_ps2(void){
 	set_bit(SPCR, SPE); 
 	//Set SPI to master mode
 	set_bit(SPCR, MSTR);
+	
 	//Clock frequency to f_OSC/32
 	set_bit(SPCR, SPR1);
 	set_bit(SPSR, SPI2X);
 	
 	
-	//Clock polarity SCK is high when idle
+	//set SPI clock rate = Fosc/2
+	//set_bit(SPSR, SPI2X);
+	
+	////Clock polarity SCK is high when idle
 	set_bit(SPCR, CPOL);
-	//Data order LSB transmitted first
-	set_bit(SPCR, DORD); 
-	//Clock phase transmit
+	////Clock phase transmit
 	set_bit(SPCR, CPHA);
 	
 	//set MOSI and SCK to output, all others input
@@ -37,39 +39,20 @@ void SPI_init_ps2(void){
 	set_bit(DDRB, PB3); //ATT
 	
 	
-	SPI_deactivate_SS();
+	
 	SPI_deactivate_SS_PS2();
-}
-
-
-
-   
-void SPI_init(void){
-	//SPI enable
-	set_bit(SPCR, SPE);
-	//Data order MSB transmitted first
-	//clr_bit(SPCR, DORD);
-	//Set SPI to master mode
-	set_bit(SPCR, MSTR);
-	
-	//set SPI clock rate = Fosc/2
-	set_bit(SPSR, SPI2X);
-	
-	
-	//set MOSI and SCK to output, all others input
-	set_bit(DDRB, MOSI);
-	set_bit(DDRB, SCK);
-	set_bit(DDRB, SS);
-	
 	SPI_deactivate_SS();
-
 }
+
+
+
 
 uint8_t SPI_read_write(char cData){
 	/* Start transmission */
 	SPDR = cData;
 	/* Wait for transmission complete */
 	while(!(test_bit(SPSR, SPIF)));   //wait until SPIF-flag is set. 
+	_delay_ms(0.1);
 	return SPDR;
 }
 
