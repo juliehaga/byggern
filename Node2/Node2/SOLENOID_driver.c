@@ -14,13 +14,13 @@
 
 void solenoid_init(void){
 	//Set solenoidpin(A1 == PF1) to output
-	set_bit(DDRF, PF2);
-	set_bit(PORTF, PF2);
+	set_bit(DDRF, PF1);
+	set_bit(PORTF, PF1);å
 }
 
 void solenoid_shoot(void){
-	clr_bit(PORTF, PF2);
+	clr_bit(PORTF, PF1);
 	_delay_ms(100); 
-	set_bit(PORTF, PF2);
+	set_bit(PORTF, PF1);
 
 }

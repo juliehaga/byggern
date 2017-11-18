@@ -35,14 +35,14 @@ int difficulty;
 void play_game(){
 	printf("Controller %d\t MODE: %d\t\n", controller, difficulty);
 	Message boot_node2 = {0, 2, {controller, difficulty}};
-	
 	CAN_send(&boot_node2);
 	int game_over = 0;
 	life = 3;
-	score = 0;  
 	highest_score = 0; 
 	while(!rx_int_flag); //wait for init succeeded
 	CAN_recieve();
+	oled_loading_game();
+	score = 0; 
 	printf("NODE 2 initialized \n");
 	
 	while(!game_over){
