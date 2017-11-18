@@ -23,7 +23,7 @@ typedef struct menu{
 //typedef enum {PLAY_GAME, HIGHSCORE, NEW_HIGHSCORE, IDLE} states;
 
 
-void main_menu(void);
+void menu_navigation(void);
 void menu_setup(void);
 void print_menu_oled(menu* menu_print, int page);
 void menu_sram_update(menu* menu_node, int selector_pos);

@@ -15,11 +15,10 @@
 
 #include <stdio.h>
 
-int UART_init( unsigned int ubrr );
+int UART_init( unsigned int ubrr);
 unsigned char UART_receive();
 int UART_transmit(unsigned char data, FILE *stream);
 unsigned char UART_receiveT();
-
 extern FILE *uart; 
 
 #endif /* DRIVER_ATMEGA_H_ */

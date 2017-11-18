@@ -5,21 +5,17 @@
  *  Author: andrholt
  */ 
 
+#include <avr/io.h>
+#include <stdlib.h>
+#include <util/delay.h>
 #include "USB_board.h"
 #include "ADC_driver.h"
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include "bit_functions.h"
-#include "CAN_driver.h"
-#include "UART_driver.h"
-#include <stdlib.h>
 #include "bit_functions.h"
 
-#include <util/delay.h>
-
-joystick_dir last_joy_pos = 0;
 
 
+
+joystick_dir last_joy_pos = CENTER;
 
 
 int joystick_read(int channel){
@@ -33,20 +29,21 @@ int slider_read(int channel){
 	return ADC_read(channel);
 }
 
-
 int button_read(int button){
-	/*
-	Left button = 1
-	Right button = 2
-	*/
-	
-	if (button == 1){
-		return (test_bit(PINB, PINB1)/2);		//returns 2??
-	}else if(button == 2){
+	if (button == LEFT_BUTTON){
+		return (test_bit(PINB, PINB1)/2);	
+	}else if(button == RIGHT_BUTTON){
 		return test_bit(PINB, PINB0);
 	}
 	return -1;
 }
+
+
+int read_joystick_button(void){
+	return test_bit(PINB, PINB2);
+}
+
+
 
 joystick_dir find_joystick_dir(void){
 	int joystick_x = joystick_read(CHANNEL_X);
@@ -68,17 +65,3 @@ joystick_dir find_joystick_dir(void){
 }
 
 
-void send_slider_pos(void){
-	int joy_pos = slider_read(6);
-	Message msg;
-	
-	msg.length = 1;
-	msg.data[0] = (uint8_t)joy_pos;
-	msg.ID = 0;
-	
-	CAN_send(&msg);
-}
-
-int read_joystick_button(void){
-	return test_bit(PINB, PINB2);
-}

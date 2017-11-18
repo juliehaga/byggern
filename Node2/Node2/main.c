@@ -5,8 +5,9 @@
 *  Author: andrholt
 */
 #define F_CPU 16000000
-#include <util/delay.h>
+#define INIT_ID 2
 
+#include <util/delay.h>
 #include <avr/io.h>
 #include <stdio.h>
 #include <avr/interrupt.h>
@@ -24,6 +25,7 @@
 #include "bit_functions.h"
 #include "game.h"
 
+<<<<<<< HEAD
 
 
 
@@ -31,15 +33,19 @@
 volatile uint8_t rx_int_flag = 0;
 
 states current_state;
+=======
+volatile uint8_t rx_int_flag = 0;
+states current_state = IDLE;
+>>>>>>> master
 difficulty mode = EASY;
-
 Message config_msg;
 Message init_succeeded = {INIT_ID, 1, {0}};
+<<<<<<< HEAD
+=======
 
+>>>>>>> master
 
-int main(void)
-{
-	
+int main(void){
 	cli();
 	UART_init(MYUBRR);
 	CAN_init();
@@ -48,6 +54,7 @@ int main(void)
 	solenoid_init();
 	motor_init();
 	sei();
+<<<<<<< HEAD
 	printf("\n----------------------\n\nNODE 2 \n\n -------------------------\n");
 
 
@@ -58,22 +65,41 @@ int main(void)
 		
 		switch (current_state)
 		{
+=======
+	printf("\n----------------------\n\nNODE 2 \n\n -------------------------\n"); //PRINTF
+	motor_calibration();
+
+	
+	
+	while(1){
+			
+		switch (current_state){
+>>>>>>> master
 			case IDLE:
 				if(rx_int_flag){
 					config_msg = CAN_recieve();
 					if(config_msg.ID == INIT_ID){
+<<<<<<< HEAD
 						motor_calibration();
 						printf("INIT message from Node 1\n");
 						printf("Configuration %d\t %d:\n", config_msg.data[0], config_msg.data[1]);
+=======
+						printf("INIT message from Node 1\n");
+						printf("Configuration %d\t %d:\n", config_msg.data[0], config_msg.data[1]);
+						
+>>>>>>> master
 						CAN_send(&init_succeeded);
 						current_state = config_msg.data[0];
 						mode = config_msg.data[1];
 					}else{
+<<<<<<< HEAD
 							current_state = IDLE;
+=======
+						current_state = IDLE;
+>>>>>>> master
 					}
 				}
 				break;
-				
 				
 			case USB:
 				printf("USB \n", current_state);

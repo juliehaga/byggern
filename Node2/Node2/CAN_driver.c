@@ -7,22 +7,21 @@
 
 #define F_CPU 16000000
 
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
+#include <stdio.h>
 #include "MCP2515.h"
 #include "MCP2515_driver.h"
 #include "CAN_driver.h"
 #include "bit_functions.h"
 #include "SPI_driver.h"
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <util/delay.h>
-#include <stdio.h>
-
 
 extern volatile uint8_t rx_int_flag; 
 
 int CAN_init(){
 	volatile uint8_t value;
-
+	
 	//config-mode
 	SPI_init();
 	MCP2515_reset();
@@ -35,7 +34,7 @@ int CAN_init(){
 		printf("MCP2515 is NOT in config mode after reset!\n");
 		return 1;
 	}
-	
+	//Enable interrupts 
 	MCP2515_bit_modify(MCP_CANINTE, 0x01, 0x01);
 	MCP2515_bit_modify(MCP_RXB0CTRL, 0x60, 0xFF);
 	
@@ -45,21 +44,19 @@ int CAN_init(){
 	if ((value & MODE_MASK) != MODE_NORMAL) {
 		printf("MCP2515 is NOT in normal mode!\n");
 		return 1;
-	}
-	
+	}	
 	//Set interrupts in MCU
 	set_bit(PCMSK0, PCINT6);
 	set_bit(PCICR, PCIE0);
 	clr_bit(EICRA, ISC01);
 	clr_bit(EICRA, ISC00);
-		
+	
 	return 0;
 }
 
 
 void CAN_send(Message* msg){
 	if(CAN_transmit_complete()){
-		
 		//sending ID
 		MCP2515_write(MCP_TXB0SIDH, (uint8_t)msg->ID >> 3);
 		MCP2515_write(MCP_TXB0SIDL, (uint8_t)msg->ID << 5);
@@ -74,11 +71,8 @@ void CAN_send(Message* msg){
 		for (int i = 0; i < msg->length; i++){
 			MCP2515_write(MCP_TXB0D0 + i, msg->data[i]);  
 		}
-	
 		//initiate message transmission
-		
 		MCP2515_request_to_send(1);
-		
 	}
 }
 
@@ -90,9 +84,7 @@ int CAN_transmit_complete(){
 }
 
 Message CAN_recieve(){
-	Message msg; 
-		
-	
+	Message msg; 	
 	msg.ID = (MCP2515_read(MCP_RXB0SIDH) << 3 | MCP2515_read(MCP_RXB0SIDL) >> 5);
 	msg.length = MCP2515_read(MCP_RXB0DLC) & 0x0F;
 	if(msg.length > 8){
@@ -100,7 +92,6 @@ Message CAN_recieve(){
 	}
 	for (int i = 0; i < msg.length ; i++){
 		msg.data[i] = MCP2515_read(MCP_RXB0DM + i);
-		//printf("Leser %d\n", msg.data[i]);
 	}
 	rx_int_flag = 0;
 	
@@ -110,14 +101,14 @@ Message CAN_recieve(){
 int CAN_error(){
 	if(test_bit(MCP2515_read(MCP_TXB0CTRL), 4)){
 		return -1;
-	} else if (test_bit(MCP2515_read(MCP_TXB0CTRL), 5)){
+	}else if (test_bit(MCP2515_read(MCP_TXB0CTRL), 5)){
 		return -2;
 	}
 	return 0; 
 }
 
 void CAN_int_vect(){
-	//set recieve flag to 0
+	//set receive flag to 0
 	MCP2515_bit_modify(MCP_CANINTF, 0x01, 0x00);
 	//set transmit flag to 0 
 	MCP2515_bit_modify(MCP_CANINTF, 0x04, 0x00);
