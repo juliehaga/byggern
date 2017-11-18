@@ -44,12 +44,9 @@ void motor_init(void){
 	
 	set_bit(PORTH, PH5);			//Output enables
 	set_bit(PORTH, PH6);			//set restart to pin
-	
-	
-	
+
 	DDRK = 0x00;
 	motor_reset_encoder();
-	
 	
 	//Set timer/counter0 interrupt
 	//Normal mode
@@ -163,19 +160,20 @@ int motor_PID(int slider_value, float Kp, float Ki, float Kd){
 	return output;
 }
 
-void motor_velocity_control(int joystick_value){
-	if (joystick_value < 150){
+void motor_velocity_control(int control_value){
+	
+	if (control_value < 160){
 		dir = LEFT;
-	}else if (joystick_value > 100){
+	}else if (control_value > 90){
 		dir = RIGHT;
 	}
 	int input;
 	motor_set_dir();
-	if(joystick_value > 135){
-		input = (int)(joystick_value-135)*2.125;
+	if(control_value > 160){
+		input = (int)(control_value-135)*2.125;
 	}
-	else if(joystick_value < 130){
-		input = (int)(130-joystick_value)*(double)255/130;
+	else if(control_value < 90){
+		input = (int)(130-control_value)*(double)255/130;
 	}
 	else{
 		input = 0;

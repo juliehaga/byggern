@@ -162,6 +162,7 @@ void main_menu(void){
 	
 	int end_menu = 0; 
 	joystick_dir joy_dir = find_joystick_dir();
+	printf("%d\n", joy_dir);
 	if(joy_dir != last_joy_dir){
 		switch(joy_dir){
 			case UP:

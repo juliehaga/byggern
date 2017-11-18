@@ -130,7 +130,6 @@ void CAN_send_ps2_controllers(void){
 	CAN_send_controllers();
 	ps2 ps2_joy_values = ps2_joystick_values();
 	int button_r2 =  ps2_R2_pushed();
-	printf("LEFT: %d\t RIGHT %d\n", ps2_joy_values.lx, ps2_joy_values.rx);
 	Message msg = {0, 3, {ps2_joy_values.rx ,ps2_joy_values.lx, button_r2, 1}};
 	CAN_send(&msg);
 }
@@ -140,6 +139,5 @@ void CAN_send_ps2_controllers(void){
 ISR(INT0_vect){
 	//RX0 interrupt flag set to 0
 	CAN_int_vect();
-	printf("NODE 1 FÅR MELDING\n");
 }
 

@@ -174,9 +174,20 @@ char oled_read_SRAM(int page, int col){
 void oled_loading_game(){
 	oled_sram_reset();
 	oled_sram_string("****************",0,0);
-	oled_sram_string("INITIALIZE", 3, 0);
+	oled_sram_string("LOADING GAME\n", 3, 0);
+	oled_sram_string("-------",2,6); 
+	oled_sram_string("|", 3,12); 
+	oled_sram_string("|", 3,12);
+	oled_sram_string("-------",2,6); 
 	oled_sram_string("****************",7,0);
 	oled_update();
+	_delay_ms(10);
+	oled_sram_reset();
+	oled_sram_string("****************",0,0);
+	oled_sram_string("-------",2,6);
+	oled_sram_string("|", 3,6);
+	oled_sram_string("-------",2,6);
+	oled_sram_string("****************",7,0);
 } 
 
 

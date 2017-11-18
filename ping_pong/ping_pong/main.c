@@ -48,6 +48,7 @@ int main(void) {
 	ps2_init();
 	//Enable global interrupts
 	sei();
+	printf("\n--------------------\n\nNODE 1 \n\n ---------------------\n");
 	
 	/*IKKE FJÆRN*/
 	menu_setup();
@@ -85,6 +86,7 @@ int main(void) {
 				break;
 			default:
 				break;
+		_delay_ms(10);
 		}
 	}
 	return 0;

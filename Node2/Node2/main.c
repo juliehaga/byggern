@@ -24,6 +24,9 @@
 #include "bit_functions.h"
 #include "game.h"
 
+#define INIT_ID 0
+
+
 volatile uint8_t rx_int_flag = 0;
 
 states current_state = IDLE;
@@ -44,42 +47,54 @@ int main(void)
 	solenoid_init();
 	motor_init();
 	sei();
-	
+	printf("\n----------------------\n\nNODE 2 \n\n -------------------------\n");
 	while (!rx_int_flag);
 	config_msg = CAN_recieve();
-	motor_calibration();
+
+	
 	if(config_msg.data[0] > -1 && config_msg.data[0] < 3){
-		Message init_succeeded = {0, 1, {0}};
-		CAN_send(&init_succeeded);
-		printf("MELDING sent til node 1\n");
+		Message init_succeeded = {INIT_ID, 1, {0}};
+		CAN_send(&init_succeeded);							//Init success, start game in Node 1
+
+		motor_calibration();
 		current_state = config_msg.data[0];
 		mode = config_msg.data[1];
-		//LEGG TIL FAILED TO INIT
+		printf("Controller %d\t Mode %d\n", current_state, mode);
 	}
 	
 	
 	
-	printf("CONFIG state %d \t mode %d \n", config_msg.data[0], config_msg.data[1]);
 	while(1)
-	{
+	{	
+		
+		
+		printf("while\n");
 		switch (current_state)
 		{
 			printf("Current state: %d\n", current_state);
 			case IDLE:
-				if(config_msg.data[0] > -1 && config_msg.data[0] < 3){
-					current_state = config_msg.data[0];
-					mode = config_msg.data[1];
-					//LEGG TIL FAILED TO INIT
+				if(rx_int_flag){
+					if(config_msg.data[0] > -1 && config_msg.data[0] < 3){
+						Message init_succeeded = {0, 1, {0}};
+						CAN_send(&init_succeeded);
+						current_state = config_msg.data[0];
+						mode = config_msg.data[1];
+					
+					}
 				}
 				break;
+				
+				
 			case USB:
 				set_USB_mode(mode);
 				USB_play_game();
 				break;
+				
 			case PS2:
 				set_PS2_mode(mode);
 				PS2_play_game();
 				break;
+				
 			default:
 				break;
 		}
