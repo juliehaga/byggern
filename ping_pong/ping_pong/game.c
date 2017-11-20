@@ -41,7 +41,7 @@ void play_game(){
 	int life = 0;  
 	Message boot_node2 = {INIT_ID, 2, {controller, difficulty}};
 	CAN_send(&boot_node2);
-	printf("Controller %d\t MODE: %d\t\n", controller, difficulty);
+	printf("Controller %d\t MODE: %d\n", controller, difficulty);
 	int game_over = 0;
 	life = 3;
 	highest_score = 0; 
@@ -103,9 +103,10 @@ void play_game(){
 					}else{
 						printf("Play another game\n");
 						//If yes - Send play game signal to node 2
-						_delay_ms(500);
-						oled_loading_game();
+						
+				
 						CAN_send(&boot_node2);
+						oled_loading_game();
 						printf("Message sent for another game");
 						score = 0;
 					}
@@ -117,7 +118,7 @@ void play_game(){
 	}
 	//If highscore, add to list and display highscore-list
 	current_state = NEW_HIGHSCORE;
-	printf("NEW HIGHSCORE STATE\n");
+	
 }
 
 

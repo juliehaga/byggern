@@ -192,8 +192,6 @@ void oled_loading_game(){
 	
 	int j = 6*9+1; 
 	oled_update();
-	
-
 	for(int i = 4; i < 12; i++){
 		
 		oled_fill_square(3,i*8);
@@ -211,8 +209,6 @@ void oled_loading_game(){
 
 char* oled_type_in_name(char* score){
 	char* name = "AAA";
-	//char* score_send = "";
-	//itoa(score, score_send, 10);
 	oled_sram_reset();
 	oled_sram_string("NEW HIGHSCORE", 0, 0);
 	oled_sram_string("^", 3, 0);
@@ -271,9 +267,6 @@ char* oled_type_in_name(char* score){
 				
 				
 			}
-			//printf("-----------OLED----------\n");
-			//print_highscores();
-			
 			prev_joy_dir = joy_dir;
 			name[i] = current_letter;
 			oled_sram_string(name, 4, 0);
@@ -288,8 +281,8 @@ void oled_play_game(int life, int score){
 	char* score_send = ""; 
 	itoa(score, score_send, 10);
 	oled_sram_reset();
-	oled_sram_string("PINGPONG GAME", 0, 0);
-	oled_sram_string("_____________", 0, 1);
+	oled_sram_string("PINGPONG GAME", 0, 1);
+	oled_sram_string("_____________", 1, 1);
 	oled_sram_string("LIVES", 4, 0);
 	oled_sram_string("SCORE", 4, 9);
 	oled_sram_char(life + '0', 6, 2);

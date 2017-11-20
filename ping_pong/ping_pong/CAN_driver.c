@@ -89,7 +89,7 @@ Message CAN_recieve(){
 	}
 	for (int i = 0; i < receive_msg.length ; i++){
 		receive_msg.data[i] = MCP2515_read(MCP_RXB0DM + i);
-		//printf("Leser %c\n", msg.data[i]);
+		
 	}
 	rx_int_flag = 0;	
 	return receive_msg; 

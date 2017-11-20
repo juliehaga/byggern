@@ -35,6 +35,7 @@ extern int max_motor_value;
 
 void update_control_values(void){
 	clr_bit(TIMSK3, TOIE3);	
+	printf("updating control values \n");
 	Message recieve_msg = CAN_recieve();
 	if(recieve_msg.ID == PLAY_ID){
 		
@@ -82,6 +83,7 @@ void USB_play_game(){
 	_delay_ms(2);
 	}
 	end_game();
+	printf("IDLE STATE\n");
 	current_state = IDLE;  //waiting for message about new game
 }
 
@@ -112,6 +114,7 @@ void set_PS2_mode(difficulty mode){
 }
 
 void PS2_update_input(void){
+	
 	clr_bit(TIMSK3, TOIE3);
 	motor_velocity_control(motor_controller);
 	servo_set_pos(servo_controller);
@@ -137,4 +140,5 @@ void PS2_play_game(){
 
 ISR(TIMER3_OVF_vect){
 	timer_flag = 1;
+
 }

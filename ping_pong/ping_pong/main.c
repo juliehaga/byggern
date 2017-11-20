@@ -53,7 +53,7 @@ int main(void) {
 	/*IKKE FJÆRN*/
 	menu_setup();
 	
-
+	
 	while(1){
 		
 		switch(current_state){
