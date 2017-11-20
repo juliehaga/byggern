@@ -35,7 +35,6 @@ extern int max_motor_value;
 
 void update_control_values(void){
 	clr_bit(TIMSK3, TOIE3);	
-	printf("mottar CAN");
 	Message recieve_msg = CAN_recieve();
 	if(recieve_msg.ID == PLAY_ID){
 		
@@ -128,7 +127,8 @@ void PS2_play_game(){
 			PS2_update_input();
 		}
 		_delay_ms(2);
-	}	
+	}
+	printf("ADC: %d\n", ADC_read());	
 	end_game();
 	printf("END GAME\n");
 	current_state = IDLE;  //waiting for message about new game

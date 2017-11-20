@@ -271,11 +271,8 @@ char* oled_type_in_name(char* score){
 				
 				
 			}
-			for (int i = 0; i < 5; i++)
-			{
-				printf("NAMES: %s\n", highscore_names[i]);
-			}
-			printf("---------------------------------- \n");
+			//printf("-----------OLED----------\n");
+			//print_highscores();
 			
 			prev_joy_dir = joy_dir;
 			name[i] = current_letter;

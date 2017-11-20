@@ -11,16 +11,21 @@
 #include "highscore.h"
 #include "OLED_driver.h"
 
+		
 void oled_print_highscore(void){
 	oled_sram_reset();
 	oled_sram_string("HIGHSCORE", 0, 3);
-	read_highscore_list();
+
 	
-	for(int i = 0; i < 5 ; i++){
-		oled_sram_string(highscore_names[i], i+2, 3);
+	char c; 
+	for (int i = 0; i < 5 ; i++){
+		for(int j = 0 ; j < 3 ; j++){
+			c = EEPROM_read(3*i+j);
+			oled_sram_char(c,i+2,3+j);
+		}
 		oled_sram_string(int_to_str(i+1),i+2, 0);
 		oled_sram_string(".", i+2, 1);
-		oled_sram_string(int_to_str(highscore_scores[i]), i+2, 10);
+		oled_sram_string(int_to_str(EEPROM_read(i+15)), i+2, 10);
 		
 	}
 	oled_update();
@@ -29,7 +34,7 @@ void oled_print_highscore(void){
 
 int check_highscore(int score){
 	for (int i = 0; i < 5 ; i++ ){
-		if(score > highscore_scores[i]){
+		if(score > (EEPROM_read(i+15))){
 			return i;
 		}
 	}
@@ -37,40 +42,18 @@ int check_highscore(int score){
 }
 
 void insert_highscore(int place, int score, char* new_name){
-	
-	
-	for(int j = 4 ; j > place ; j--){
-		highscore_scores[j] = highscore_scores[j-1];
-		highscore_names[j] =  highscore_names[j-1];
-	}
-	highscore_scores[place] = score;
-	highscore_names[place] =  new_name;
-	update_EEPROM();
-}
-	
-	
-void read_highscore_list(void){
-	for (int i = 0; i < 5 ; i++){
-		for(int j = 0 ; j < 3 ; j++){
-			highscore_names[i][j] = EEPROM_read(3*i+j);
-		}
-	}
-	for (int i = 0; i < 5 ; i++){
-		highscore_scores[i] = EEPROM_read(i+15);
-	}
-}
 
-void update_EEPROM(void){
-	printf("Updater highscore: \n ");
-	for (int i = 0; i < 5 ; i++){
-		for(int j = 0 ; j < 3 ; j++){
-			printf("Names %c", highscore_names[i][j]);
-			EEPROM_write(highscore_names[i][j], 3*i+j);
-		}printf("\n");
+	for(int j = 14 ; j > place*3 +3 ; j--){
+		EEPROM_write(EEPROM_read(j-3),j);
 	}
-	for (int i = 0; i < 5 ; i++){
-		EEPROM_write(highscore_scores[i], 15+i);
-		printf(" %d", highscore_scores[i]);
+	for (int k = 19; k > 15 + place; k--){
+		EEPROM_write(EEPROM_read(k-1),k);
+	}
+	EEPROM_write(score, 15 + place);
+	
+	for (int i = 0; i < 3; i++){
+		//insert new name
+		EEPROM_write(new_name[i], place*3+i);
 	}
 }
 
@@ -109,14 +92,11 @@ unsigned char EEPROM_read(unsigned int uiAddress)
 
 void reset_highscore_list(){
 	for (int i = 0; i < 5 ; i++){
-		highscore_names[i] = "---";
 		for(int j = 0 ; j < 3 ; j++){
 			EEPROM_write('-', 3*i+j);
 		}
 	}
 	for (int i = 0; i < 5 ; i++){
 		EEPROM_write(0, 15+i);
-		highscore_scores[i] = 0; 
 	}
-	update_EEPROM();
 }

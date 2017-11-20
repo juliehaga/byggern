@@ -21,6 +21,7 @@ menu* display_menu;
 static menu* current_menu;
 joystick_dir last_joy_dir = CENTER;
 int difficulty = EASY;
+int controller = USB; 
 
 
 extern states current_state; 

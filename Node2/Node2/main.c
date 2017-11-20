@@ -59,6 +59,7 @@ int main(void)
 		switch (current_state)
 		{
 			case IDLE:
+				
 				if(rx_int_flag){
 					config_msg = CAN_recieve();
 					if(config_msg.ID == INIT_ID){

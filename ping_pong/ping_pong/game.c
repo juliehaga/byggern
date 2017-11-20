@@ -18,22 +18,30 @@
 #include "highscore.h"
 
 
-int score = 0; 
-int highest_score = 0;  
-int life;
+
+
+
+
+extern int difficulty;
+extern int controller;
+
 extern int oled_flag;
 extern int highest_score;
+
 int send_can_flag = 0;
+
 volatile uint8_t rx_int_flag = 0;		//automatically set when 
+
 states current_state;
-int controller;
-int difficulty;
+int score;
 
 
 void play_game(){
-	printf("Controller %d\t MODE: %d\t\n", controller, difficulty);
+	score = 0; 
+	int life = 0;  
 	Message boot_node2 = {INIT_ID, 2, {controller, difficulty}};
 	CAN_send(&boot_node2);
+	printf("Controller %d\t MODE: %d\t\n", controller, difficulty);
 	int game_over = 0;
 	life = 3;
 	highest_score = 0; 
@@ -73,16 +81,16 @@ void play_game(){
 				current_state = IDLE;
 			}
 			else if(msg_node2.ID == SCORE_ID){
-				printf("mottar Score 2 \n");
+				printf("mottar melding om Score 2 \n");
 				//Score in Node 2, end of round
 				life --;
 				//check if new highscore
 				if(score > highest_score){
 					highest_score = score;
 				}
-				printf("life: %d\n", life);
 				if(life == 0){
 					game_over = 1;
+					printf("Game over\n");
 					oled_game_over();
 				} else{
 					//Ask for a new game
@@ -93,10 +101,12 @@ void play_game(){
 					if (button_read(RIGHT_BUTTON) != 0){
 						game_over = 1;
 					}else{
+						printf("Play another game\n");
 						//If yes - Send play game signal to node 2
 						_delay_ms(500);
 						oled_loading_game();
 						CAN_send(&boot_node2);
+						printf("Message sent for another game");
 						score = 0;
 					}
 				}
@@ -104,10 +114,10 @@ void play_game(){
 				
 		}
 		
-	}printf("EXIT WHILE\n");
-
+	}
 	//If highscore, add to list and display highscore-list
 	current_state = NEW_HIGHSCORE;
+	printf("NEW HIGHSCORE STATE\n");
 }
 
 

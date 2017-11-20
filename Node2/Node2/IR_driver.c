@@ -13,7 +13,7 @@
 
 int IR_digital_filter(void){
 	uint16_t total_read_value = 0;
-	
+
 	for(int i = 0 ; i < 4 ; i++){
 		total_read_value += ADC_read();
 	}
@@ -22,7 +22,7 @@ int IR_digital_filter(void){
 }
 
 int IR_score(){
-	if(IR_digital_filter() < 250){
+	if(IR_digital_filter() < 30){
 		return 1;
 	}
 	return 0;

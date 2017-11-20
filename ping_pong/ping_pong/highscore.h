@@ -17,8 +17,7 @@ void insert_highscore(int place, int score, char* new_name);
 void EEPROM_write(uint8_t ucData, unsigned int uiAddress);
 void reset_highscore_list();
 unsigned char EEPROM_read(unsigned int uiAddress);
+void print_highscores();
 
-static char* highscore_names[5] = {"000", "000", "000", "000", "000"};
-static int highscore_scores[5] = {0, 0, 0, 0, 0};
 	
 #endif /* HIGHSCORE_H_ */

@@ -128,7 +128,6 @@ void CAN_send_controllers(void){
 
 void CAN_send_ps2_controllers(void){
 	ps2_poll(0,0);
-	printf("Sender CAN\n");
 	CAN_send_controllers();
 	ps2 ps2_joy_values = ps2_joystick_values();
 	int button_r2 =  ps2_R2_pushed();

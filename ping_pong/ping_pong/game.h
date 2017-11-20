@@ -23,8 +23,7 @@
 
 typedef enum {IDLE, PLAY, HIGHSCORE, RESET_HIGHSCORE, NEW_HIGHSCORE} states;
 
-extern int difficulty;
-extern int controller;
+
 void play_game(void);
 
 
