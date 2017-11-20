@@ -31,7 +31,7 @@
 
 
 states current_state = IDLE;
-int oled_flag = 0;
+int update_oled_flag = 0;
 int place = 0;
 int highest_score;
 
@@ -40,7 +40,7 @@ int main(void) {
 	
 	// Disable global interrupts
 	cli();
-	UART_init(31);
+	UART_init(MYUBRR);
 	register_init();
 	oled_init();
 	ADC_init();
@@ -58,7 +58,7 @@ int main(void) {
 		
 		switch(current_state){
 			case IDLE:
-				main_menu();
+				menu_navigation();
 				break;
 			case PLAY:
 				play_game();
@@ -79,9 +79,9 @@ int main(void) {
 				if(find_joystick_dir() == LEFT){
 					current_state = IDLE;
 				}
-				if (oled_flag){
+				if (update_oled_flag){
 					oled_print_highscore();
-					oled_flag = 0;
+					update_oled_flag = 0;
 				}
 				break;
 			default:

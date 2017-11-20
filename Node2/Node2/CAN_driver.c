@@ -74,11 +74,8 @@ void CAN_send(Message* msg){
 		for (int i = 0; i < msg->length; i++){
 			MCP2515_write(MCP_TXB0D0 + i, msg->data[i]);  
 		}
-	
 		//initiate message transmission
-		
 		MCP2515_request_to_send(1);
-		
 	}
 }
 
@@ -91,7 +88,6 @@ int CAN_transmit_complete(){
 
 Message CAN_recieve(){
 	Message msg; 
-		
 	
 	msg.ID = (MCP2515_read(MCP_RXB0SIDH) << 3 | MCP2515_read(MCP_RXB0SIDL) >> 5);
 	msg.length = MCP2515_read(MCP_RXB0DLC) & 0x0F;
@@ -100,7 +96,6 @@ Message CAN_recieve(){
 	}
 	for (int i = 0; i < msg.length ; i++){
 		msg.data[i] = MCP2515_read(MCP_RXB0DM + i);
-		//printf("Leser %d\n", msg.data[i]);
 	}
 	rx_int_flag = 0;
 	

@@ -5,10 +5,11 @@
  *  Author: andrholt
  */ 
 
+#include <string.h>
 #include "SPI_driver.h"
 #include "MCP2515.h"
 #include "MCP2515_driver.h"
-#include <string.h>
+
 
 
 void MCP2515_reset(void){
@@ -51,7 +52,7 @@ uint8_t MCP2515_read_status(void){
 	SPI_activate_SS();
 	SPI_read_write(MCP_READ_STATUS);
 	status = SPI_read_write(0xFF);
-	status = SPI_read_write(0xFF);		//send same data two times
+	status = SPI_read_write(0xFF);		
 	SPI_deactivate_SS();	
 	return status;
 }

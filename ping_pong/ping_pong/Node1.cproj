@@ -143,6 +143,9 @@
     <Compile Include="MCP2515_driver.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="register_init.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="UART_driver.h">
       <SubType>compile</SubType>
     </Compile>

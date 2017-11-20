@@ -14,8 +14,6 @@
 void MCP2515_reset(void);
 uint8_t MCP2515_read(uint8_t address);
 void MCP2515_write(uint8_t address, char data);
-
-
 void MCP2515_request_to_send(uint8_t command);
 uint8_t MCP2515_read_status(void);
 void MCP2515_bit_modify(uint8_t address, uint8_t mask_byte, uint8_t data_byte);

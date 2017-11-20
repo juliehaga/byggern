@@ -20,24 +20,20 @@
 extern volatile uint8_t rx_int_flag; 
 
 
-Message msg;
-
 int CAN_init(){
 	volatile uint8_t value;
 	
-	//config-mode
+	//CAN controller in config mode
 	MCP2515_init();
 	_delay_ms(1);
+	
 	//enable interrupts in MCP
 	//Interrupt when message received in RXB0
-		
-	
 	value = MCP2515_read(MCP_CANSTAT);
 	if ((value & MODE_MASK) != MODE_CONFIG) {
 		printf("MCP2515 is NOT in config mode after reset!\n");
 		return 1;
 	}
-	
 	MCP2515_bit_modify(MCP_CANINTE, 0x01, 0x01);
 	MCP2515_bit_modify(MCP_RXB0CTRL, 0x60, 0xFF);
 	
@@ -49,7 +45,6 @@ int CAN_init(){
 		printf("MCP2515 is NOT in normal mode!\n");
 		return 1;
 	}
-	
 	return 0;
 }
 
@@ -88,8 +83,7 @@ Message CAN_recieve(){
 		receive_msg.length = 8;
 	}
 	for (int i = 0; i < receive_msg.length ; i++){
-		receive_msg.data[i] = MCP2515_read(MCP_RXB0DM + i);
-		
+		receive_msg.data[i] = MCP2515_read(MCP_RXB0DM + i);	
 	}
 	rx_int_flag = 0;	
 	return receive_msg; 
@@ -115,26 +109,21 @@ void CAN_int_vect(){
 
 
 void CAN_send_controllers(void){
-	
 	uint8_t joy_pos_x = joystick_read(CHANNEL_X);
 	uint8_t slider_pos_r = slider_read(SLIDER_R);
-	
 	int button_l = button_read(1);
-
 	Message msg = {PLAY_ID, 3, {joy_pos_x ,slider_pos_r,  button_l}};
-	
 	CAN_send(&msg);	
 }
 
 void CAN_send_ps2_controllers(void){
-	ps2_poll(0,0);
+	ps2_poll();
 	CAN_send_controllers();
 	ps2 ps2_joy_values = ps2_joystick_values();
 	int button_r2 =  ps2_R2_pushed();
 	Message msg = {PLAY_ID, 3, {ps2_joy_values.rx ,ps2_joy_values.lx, button_r2, 1}};
 	CAN_send(&msg);
 }
-
 
 
 ISR(INT0_vect){

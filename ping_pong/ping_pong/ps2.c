@@ -5,8 +5,6 @@
  *  Author: johanndk
  */ 
 
-//http://roboticsforevery1.blogspot.no/2014/08/interfacing-playstation-controller-with.html
-
 
 #include <util/delay.h>
 #include <avr/io.h>
@@ -35,8 +33,6 @@ void ps2_init()
 	_delay_ms(250);
 	ps2_analogmode();
 	_delay_ms(250);
-	ps2_setupmotor();
-	_delay_ms(250);
 	ps2_returnpres();
 	_delay_ms(250);
 	ps2_exitconfig();
@@ -46,25 +42,22 @@ void ps2_init()
 }
 
 
-// The poll command is sent to get the status of each button,
-//  and to set the speed of the motors. Can also turn on the
-//  small motor
-void ps2_poll(uint8_t speed, uint8_t smallmotor)
+void ps2_poll(void)
 {
     uint8_t i = 0;
 	set_bit(PORTB, MOSI);
 	set_bit(PORTB,SCK);
 
-    SPI_activate_SS_PS2(); // Attention
+    SPI_activate_SS_PS2(); 
 
     // Send command main polling
     rx_buffer[0] = SPI_read_write_PS2(0x01); //ID
     rx_buffer[1] = SPI_read_write_PS2(0x42); 
     rx_buffer[2] = SPI_read_write_PS2(0x00); //get Data
 	
-    // Motors on/off
-    rx_buffer[3] = SPI_read_write_PS2(smallmotor); // 0x01 => small motor on
-    rx_buffer[4] = SPI_read_write_PS2(speed);      // Big motor speed
+    // Buttons:
+    rx_buffer[3] = SPI_read_write_PS2(0x00); 
+    rx_buffer[4] = SPI_read_write_PS2(0x00);     
 
     // Joystick:
     joy_values.rx = SPI_read_write_PS2(0x00);
@@ -72,13 +65,11 @@ void ps2_poll(uint8_t speed, uint8_t smallmotor)
     joy_values.lx = SPI_read_write_PS2(0x00);
     joy_values.ly = SPI_read_write_PS2(0x00);
 
-
 	_delay_ms(1);
-
-    SPI_deactivate_SS_PS2(); // Attention off
+    SPI_deactivate_SS_PS2(); 
 }
 
-// A general function for sending commands to the ps2 controller via SPI
+
 void ps2_send_cmd(const uint8_t *cmd, uint8_t length)
 {
     uint8_t i = 0;
@@ -89,13 +80,13 @@ void ps2_send_cmd(const uint8_t *cmd, uint8_t length)
     SPI_deactivate_SS_PS2();    
 }
 
-// Go into configuration mode to adjust the settings
+
 void ps2_configmode()
 {
     ps2_send_cmd(PS2_CONFIGMODE, 5);
 }
 
-// Force analog mode to enable pressure values
+
 void ps2_analogmode()
 {
     ps2_send_cmd(PS2_ANALOGMODE, 9);
@@ -106,19 +97,12 @@ void ps2_digitalgmode()
 	ps2_send_cmd(PS2_ANALOGMODE, 9);
 }
 
-// Enable the internal vibration motors
-void ps2_setupmotor()
-{
-    ps2_send_cmd(PS2_SETUPMOTOR, 9);
-}
 
-// Ask to get the pressure values as well
 void ps2_returnpres()
 {
     ps2_send_cmd(PS2_RETURNPRES, 9);
 }
 
-// Exit configuration mode
 void ps2_exitconfig()
 {
     ps2_send_cmd(PS2_EXITCONFIG, 9);
@@ -126,7 +110,7 @@ void ps2_exitconfig()
 
 
 int ps2_R2_pushed(void){
-	//Returns 1 if R2 is pushed
+	//Shooter button
 	return !((rx_buffer[4] & R2_BUTTON_MASK) == 2);
 }
 

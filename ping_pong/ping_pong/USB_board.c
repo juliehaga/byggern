@@ -5,21 +5,20 @@
  *  Author: andrholt
  */ 
 
-#include "USB_board.h"
-#include "ADC_driver.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <stdlib.h>
+#include <util/delay.h>
+#include "USB_board.h"
+#include "ADC_driver.h"
 #include "bit_functions.h"
 #include "CAN_driver.h"
 #include "UART_driver.h"
-#include <stdlib.h>
 #include "bit_functions.h"
 
-#include <util/delay.h>
+
 
 joystick_dir last_joy_pos = 0;
-
-
 
 
 int joystick_read(int channel){
@@ -75,7 +74,6 @@ void send_slider_pos(void){
 	msg.length = 1;
 	msg.data[0] = (uint8_t)joy_pos;
 	msg.ID = 0;
-	
 	CAN_send(&msg);
 }
 

@@ -16,7 +16,6 @@
 #define PWM_FREQ FOSC/256
 
 void pwm_init(void){
-	
 	//non-invert mode
 	set_bit(TCCR1A, COM1A1);
 	clr_bit(TCCR1A, COM1A0);
@@ -35,7 +34,6 @@ void pwm_init(void){
 	//set OC1A to output pin
 	set_bit(DDRB, PB5);
 	
-	
 	pwm_set_period(0.02); 
 }
 
@@ -49,7 +47,6 @@ void pwm_set_period(float sec){
 void pwm_set_pulse_width(float sec){
 	cli();
 	if ((sec < 0.0021) & (sec > 0.0009)){
-		
 		uint16_t pulse = PWM_FREQ*sec -0.5;
 		OCR1A = pulse;
 	}

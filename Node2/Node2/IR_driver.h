@@ -10,9 +10,8 @@
 #define DRIVER_IR_H_
 
 
-
 int IR_digital_filter(void);
-int IR_score(void);
+int IR_end_game(void);
 
 
 #endif /* DRIVER_IR_H_ */

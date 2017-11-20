@@ -17,11 +17,10 @@ int IR_digital_filter(void){
 	for(int i = 0 ; i < 4 ; i++){
 		total_read_value += ADC_read();
 	}
-	
 	return total_read_value/4;
 }
 
-int IR_score(){
+int IR_end_game(){
 	if(IR_digital_filter() < 30){
 		return 1;
 	}

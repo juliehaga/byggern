@@ -13,6 +13,4 @@
 void servo_init(void);
 void servo_set_pos(uint8_t dir);
 
-
-
 #endif /* DRIVER_SERVO_H_ */

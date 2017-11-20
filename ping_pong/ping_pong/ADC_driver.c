@@ -5,15 +5,15 @@
  *  Author: andrholt
  */ 
 
-#include "ADC_driver.h"
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "bit_functions.h"
 #include <util/delay.h>
+#include "bit_functions.h"
+#include "ADC_driver.h"
 
 
-
-volatile int ADC_ready;
+volatile int ADC_ready_flag;
 
 int ADC_init(void) {
 	// Interrupt on rising edge PE0
@@ -49,14 +49,14 @@ uint8_t ADC_read(uint8_t channel) {
 	_delay_ms(2);
 	//Choose channel in ADC
 	*adc = 0x04 | channel;
-	while(!ADC_ready);
+	while(!ADC_ready_flag);
 	_delay_ms(2);
-	ADC_ready = 0; 
+	ADC_ready_flag = 0; 
 	return *adc;
 }
 
 
 ISR(INT2_vect){
-	ADC_ready = 1;
+	ADC_ready_flag = 1;
 	//wake up the CPU
 }

@@ -17,7 +17,6 @@ void motor_set_dir(void);
 void motor_reset_encoder(void);
 int16_t motor_read_encoder(void); 
 int16_t motor_read_encoder_unscaled(void);
-
 int motor_PID(int slider_value, float Kp, float Ki, float Kd);
 void motor_calibration(void);
 void motor_velocity_control(int joystick_value);

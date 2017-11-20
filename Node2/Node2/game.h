@@ -12,12 +12,12 @@
 typedef enum {IDLE, USB, PS2} states;
 typedef enum{EASY, MEDIUM, HARD}difficulty;
 
-#define SCORE_ID 1
+#define END_GAME_ID 1
 #define INIT_ID 2
 #define PLAY_ID 3
 #define ERROR_ID 4
 
-void update_control_values(void);
+void update_reference_values(void);
 void update_input(void);
 void set_USB_mode(difficulty mode);
 void USB_play_game();

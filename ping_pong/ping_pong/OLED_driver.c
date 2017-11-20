@@ -4,16 +4,19 @@
  * Created: 20.09.2017 14:17:39
  *  Author: andrholt
  */ 
-#include "OLED_driver.h"
-#include <avr/pgmspace.h>
-#include "fonts.h"
-#include "USB_board.h"
+
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <avr/pgmspace.h>
+#include <util/delay.h>
+#include "OLED_driver.h"
+#include "fonts.h"
+#include "USB_board.h"
 #include "highscore.h"
 #include "game.h"
-#include <util/delay.h>
+
 
 
 
@@ -22,9 +25,8 @@ volatile char* OLED_d = (char*) 0x1200; //Write to address OLED data
 volatile char* SRAM = (char*) 0x1800; 
 
 
-joystick_dir prev_joy_dir = CENTER;
 static uint8_t current_page, current_col;
-
+joystick_dir prev_joy_dir = CENTER;
 
 void oled_init(){
 	//  display  off
@@ -77,17 +79,19 @@ void oled_init(){
 	//  display  on
 	*OLED_c = 0xaf;
 	
-	
-
-	
+	oled_sram_reset();
+	oled_reset();
 }
+
+
 void oled_sram_reset(){
 	for(int i = 0; i < 128*8; i++){
 		SRAM[i] = ' ';
 	}
 }
+
+
 void oled_reset(){
-	
 	for (uint8_t i = 0 ; i < 8; i++){
 		oled_pos(i, 0);
 		for (uint16_t i = 0 ; i < 128; i++){
@@ -95,6 +99,7 @@ void oled_reset(){
 		}
 	}
 }
+
 
 void oled_goto_page(int page){
 	*OLED_c = (page | 0xb0);
@@ -108,9 +113,11 @@ void oled_goto_column(int column){
 	current_col = column;
 }
 
+
 int oled_return_page(void){
 	return current_page;
 }
+
 
 void oled_pos(int row,int column){
 	oled_goto_page(row);
@@ -130,12 +137,14 @@ void oled_fill_page(uint8_t page){
 	}
 }
 
+
 void oled_fill_square(uint8_t page, uint8_t col){
 	oled_pos(page, col);
 	for (uint16_t i = 0 ; i < 7; i++){
 		*OLED_d = 0xff;		
 	}
 }
+
 
 void oled_print_char(char c){
 	for (uint8_t i = 0 ; i < 8 ; i++){  //i < 8 fordi vi bruker font8
@@ -155,12 +164,12 @@ void oled_update(){
 	}
 }
 
+
 void oled_sram_string(char* string, int page, int start_col){
 	int col = start_col;
-	
 	for(uint8_t i = 0 ; i < strlen(string) ; i++){
 		if (i+start_col == 16){
-			//16 char per column, linjeskift
+			//16 char per column
 			page = (page+1)%8;
 			col = start_col;
 		}
@@ -179,9 +188,9 @@ char oled_read_SRAM(int page, int col){
 	return SRAM[128 * page + col];
 }
 
+
 void oled_loading_game(){
 	oled_sram_reset();
-	
 	oled_sram_string("LOADING ", 0, 0);
 	oled_sram_string("________",2,4); 
 	oled_sram_string("|", 3,3); 
@@ -189,20 +198,16 @@ void oled_loading_game(){
 	oled_sram_string("|", 3,12);
 	oled_sram_string("|", 4,12);
 	oled_sram_string("________",4,4); 
-	
 	int j = 6*9+1; 
 	oled_update();
 	for(int i = 4; i < 12; i++){
-		
 		oled_fill_square(3,i*8);
 		oled_fill_square(4,i*8);
 		oled_pos(0,(j++*8));
 		oled_print_char('.');
 		_delay_ms(300);
-		
 	}
 	oled_update();
-	
 } 
 
 
@@ -218,7 +223,6 @@ char* oled_type_in_name(char* score){
 	oled_update();
 	int i = 0;
 	char current_letter = 'A';
-
 	while (i < 3){
 		if(button_read(LEFT_BUTTON)){
 			break;
@@ -228,43 +232,41 @@ char* oled_type_in_name(char* score){
 			
 			switch(joy_dir){
 				case UP:
-				if(current_letter == 'A'){
-					current_letter = 'Z';
-					}else{
-					current_letter--;
-				}
-				break;
-				case DOWN:
-				if(current_letter == 'Z'){
-					current_letter = 'A';
-					}else{
-					current_letter++;
+					if(current_letter == 'A'){
+						current_letter = 'Z';
+						}else{
+						current_letter--;
+					}
 					break;
-				}
+				case DOWN:
+					if(current_letter == 'Z'){
+						current_letter = 'A';
+						}else{
+						current_letter++;
+						break;
+					}
 				case RIGHT:
-				if(i < 2){
-					current_letter = 'A';
-					i++;
-					oled_sram_string("^", 3, i);
-					oled_sram_string("v", 5, i);
-					oled_sram_string(" ", 3, i-1);
-					oled_sram_string(" ", 5, i-1);
-				}
-				break;
+					if(i < 2){
+						current_letter = 'A';
+						i++;
+						oled_sram_string("^", 3, i);
+						oled_sram_string("v", 5, i);
+						oled_sram_string(" ", 3, i-1);
+						oled_sram_string(" ", 5, i-1);
+					}
+					break;
 				case LEFT:
-				if(i>0){
-					current_letter = name[i-1];
-					i--;
-					oled_sram_string("^", 3, i);
-					oled_sram_string("v", 5, i);
-					oled_sram_string(" ", 3, i+1);
-					oled_sram_string(" ", 5, i+1);
-				}
-				break;
+					if(i>0){
+						current_letter = name[i-1];
+						i--;
+						oled_sram_string("^", 3, i);
+						oled_sram_string("v", 5, i);
+						oled_sram_string(" ", 3, i+1);
+						oled_sram_string(" ", 5, i+1);
+					}
+					break;
 				default:
-				break;
-				
-				
+					break;
 				
 			}
 			prev_joy_dir = joy_dir;
@@ -272,10 +274,10 @@ char* oled_type_in_name(char* score){
 			oled_sram_string(name, 4, 0);
 			oled_update();
 		}
-		
 	}
 	return name;
 }
+
 
 void oled_play_game(int life, int score){
 	char* score_send = ""; 
@@ -290,6 +292,8 @@ void oled_play_game(int life, int score){
 	oled_update();
 		
 }
+
+
 void oled_game_over(void){
 	oled_sram_reset(); 
 	oled_sram_string("****************", 0, 0);
@@ -306,6 +310,7 @@ void oled_game_over(void){
 	_delay_ms(300);
 }
 
+
 void oled_play_again(){
 	oled_sram_reset();
 	oled_sram_string("Play again?", 0, 0); 
@@ -315,10 +320,23 @@ void oled_play_again(){
 }
 
 
-
 char* int_to_str(int data){
 	char* data_str = "";
 	itoa(data, data_str, 10);
 	return data_str;
 }
+
+
+void oled_reset_highscore_list(void)
+{
+	oled_sram_reset();
+	oled_sram_string("****************",0,0);
+	oled_sram_string("Highscore list",3,1);
+	oled_sram_string("reset", 4, 5);
+	oled_sram_string("****************",7,0);
+	oled_update();
+	_delay_ms(2000);
+}
+
+
 

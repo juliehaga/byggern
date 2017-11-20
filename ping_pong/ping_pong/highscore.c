@@ -16,8 +16,8 @@ void oled_print_highscore(void){
 	oled_sram_reset();
 	oled_sram_string("HIGHSCORE", 0, 3);
 
-	
 	char c; 
+	//Read highscorelist from Eeprom
 	for (int i = 0; i < 5 ; i++){
 		for(int j = 0 ; j < 3 ; j++){
 			c = EEPROM_read(3*i+j);
@@ -42,17 +42,19 @@ int check_highscore(int score){
 }
 
 void insert_highscore(int place, int score, char* new_name){
-
-	for(int j = 14 ; j > place*3 +3 ; j--){
-		EEPROM_write(EEPROM_read(j-3),j);
+	//Shift names in highscorelist
+	for(int j = 14; j >= place*3 +3 ; j--){
+		EEPROM_write(EEPROM_read(j-3), j);
 	}
+	//Shift scores in highscorelist
 	for (int k = 19; k > 15 + place; k--){
-		EEPROM_write(EEPROM_read(k-1),k);
+		EEPROM_write(EEPROM_read(k-1), k);
 	}
+	//Insert new score
 	EEPROM_write(score, 15 + place);
 	
+	//Insert new name
 	for (int i = 0; i < 3; i++){
-		//insert new name
 		EEPROM_write(new_name[i], place*3+i);
 	}
 }
@@ -77,7 +79,6 @@ void EEPROM_write(uint8_t ucData, unsigned int uiAddress){
 
 unsigned char EEPROM_read(unsigned int uiAddress)
 {	
-	
 	/* Wait for completion of previous write */
 	while(EECR & (1<<EEWE));
 	

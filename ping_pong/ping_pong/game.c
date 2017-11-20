@@ -1,5 +1,5 @@
 /*
- * fsm.c
+ * game.c
  *
  * Created: 14.11.2017 09:38:38
  *  Author: julihag
@@ -18,46 +18,40 @@
 #include "highscore.h"
 
 
-
-
-
-
 extern int difficulty;
 extern int controller;
 
-extern int oled_flag;
+extern int update_oled_flag;
 extern int highest_score;
 
 int send_can_flag = 0;
 
-volatile uint8_t rx_int_flag = 0;		//automatically set when 
-
+volatile uint8_t rx_int_flag = 0;		
 states current_state;
 int score;
 
 
 void play_game(){
-	score = 0; 
-	int life = 0;  
+	highest_score = 0; 
+	int game_over = 0;
+	int life = 3;
+	
 	Message boot_node2 = {INIT_ID, 2, {controller, difficulty}};
 	CAN_send(&boot_node2);
-	printf("Controller %d\t MODE: %d\n", controller, difficulty);
-	int game_over = 0;
-	life = 3;
-	highest_score = 0; 
-	oled_loading_game();
-	while(!rx_int_flag); //wait for init succeeded
-	CAN_recieve();
 	
+	oled_loading_game();
+	while(!rx_int_flag);			//Wait for Node 2 to respond
+	CAN_recieve();					//clear rx_int_flag
 	score = 0; 
-	printf("NODE 2 initialized \n");
 	
 	while(!game_over){
+		
 		//Update display
-		if (oled_flag){
+		if (update_oled_flag){
 			oled_play_game(life, score);
-			oled_flag = 0;
+			update_oled_flag = 0;
 		}
+		
 		//Send Can-message to node2
 		if(send_can_flag){
 			clr_bit(ETIMSK, TOIE3);
@@ -72,27 +66,30 @@ void play_game(){
 		
 		
 		if(rx_int_flag){							
-			//Score in Node 2
-			
 			oled_play_game(life, score);
 			Message msg_node2 = CAN_recieve();
+			
+			//Check for communication error with Node 2 - end game
 			if (msg_node2.ID == ERROR_ID){
 				game_over = 1;
 				current_state = IDLE;
 			}
-			else if(msg_node2.ID == SCORE_ID){
-				printf("mottar melding om Score 2 \n");
-				//Score in Node 2, end of round
+			
+			//Check if game ended
+			else if(msg_node2.ID == END_GAME_ID){
 				life --;
+				
 				//check if new highscore
 				if(score > highest_score){
 					highest_score = score;
 				}
+				
 				if(life == 0){
 					game_over = 1;
-					printf("Game over\n");
 					oled_game_over();
+					
 				} else{
+					
 					//Ask for a new game
 					oled_play_again();
 					while(!button_read(LEFT_BUTTON) & !button_read(RIGHT_BUTTON));
@@ -101,33 +98,25 @@ void play_game(){
 					if (button_read(RIGHT_BUTTON) != 0){
 						game_over = 1;
 					}else{
-						printf("Play another game\n");
-						//If yes - Send play game signal to node 2
 						
-				
+						//Start new round in Node 2
 						CAN_send(&boot_node2);
 						oled_loading_game();
-						printf("Message sent for another game");
 						score = 0;
 					}
 				}
-			}
-				
+			}	
 		}
-		
 	}
-	//If highscore, add to list and display highscore-list
 	current_state = NEW_HIGHSCORE;
-	
 }
 
 
 ISR(TIMER1_OVF_vect){
-	oled_flag = 1;
+	update_oled_flag = 1;
 	score += 1;	
 }
 
 ISR(TIMER3_OVF_vect){
 	send_can_flag = 1;
-	
 }

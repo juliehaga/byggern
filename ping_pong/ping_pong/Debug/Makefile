@@ -42,6 +42,7 @@ C_SRCS +=  \
 ../game.c \
 ../highscore.c \
 ../MCP2515_driver.c \
+../register_init.c \
 ../UART_driver.c \
 ../USB_board.c \
 ../menu_framework.c \
@@ -64,6 +65,7 @@ CAN_driver.o \
 game.o \
 highscore.o \
 MCP2515_driver.o \
+register_init.o \
 UART_driver.o \
 USB_board.o \
 menu_framework.o \
@@ -79,6 +81,7 @@ CAN_driver.o \
 game.o \
 highscore.o \
 MCP2515_driver.o \
+register_init.o \
 UART_driver.o \
 USB_board.o \
 menu_framework.o \
@@ -94,6 +97,7 @@ CAN_driver.d \
 game.d \
 highscore.d \
 MCP2515_driver.d \
+register_init.d \
 UART_driver.d \
 USB_board.d \
 menu_framework.d \
@@ -109,6 +113,7 @@ CAN_driver.d \
 game.d \
 highscore.d \
 MCP2515_driver.d \
+register_init.d \
 UART_driver.d \
 USB_board.d \
 menu_framework.d \
@@ -132,6 +137,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

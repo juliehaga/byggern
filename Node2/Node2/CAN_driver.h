@@ -13,17 +13,14 @@
 typedef struct Message{
 	int ID;
 	int length;
-	uint8_t data[8];			//One message is max 8 characters
-	}Message;
+	uint8_t data[8];		//One message is max 8 characters
+}Message;
 
 int CAN_init();
 void CAN_send(Message* msg);
 int CAN_transmit_complete();
 Message CAN_recieve(); 
 int CAN_error(); 
-
 void CAN_int_vect();  
-
-
 
 #endif /* CAN_DRIVER_H_ */

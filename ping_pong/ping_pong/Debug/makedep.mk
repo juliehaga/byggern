@@ -12,6 +12,8 @@ highscore.c
 
 MCP2515_driver.c
 
+register_init.c
+
 UART_driver.c
 
 USB_board.c

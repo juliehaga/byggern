@@ -33,29 +33,26 @@ volatile uint8_t rx_int_flag;
 extern int max_motor_value; 
 
 
-void update_control_values(void){
+void update_reference_values(void){
+	//Disable counter 
 	clr_bit(TIMSK3, TOIE3);	
-	printf("updating control values \n");
 	Message recieve_msg = CAN_recieve();
 	if(recieve_msg.ID == PLAY_ID){
-		
 		servo_controller = recieve_msg.data[0];
 		motor_controller = recieve_msg.data[1];
 		int shooter = recieve_msg.data[2];
 		if (shooter == 0){
 			last_shooter = 0;
-			} if (shooter != last_shooter){
-			
+			}if (shooter != last_shooter){
 			solenoid_shoot();
-			
 			last_shooter = 1;
 		}
+	//Enable counter
 	set_bit(TIMSK3, TOIE3);
 	}else{
 		Message error_msg = {ERROR_ID, 1, {0}};
 		CAN_send(&error_msg);
 		current_state == IDLE;
-		
 	}
 }
 
@@ -68,34 +65,32 @@ void update_input(void){
 }
 
 void end_game(void){
-	Message end_game_msg = {SCORE_ID, 1, {0}};
-	printf("Sender melding om SCORE\n");
+	Message end_game_msg = {END_GAME_ID, 1, {0}};
 	CAN_send(&end_game_msg);
 }
 
 void USB_play_game(){		
-	while(!IR_score() && current_state == USB){
+	while(!IR_end_game() && current_state == USB){
 		if(rx_int_flag){
-			update_control_values();
+			update_reference_values();
 		}if(timer_flag == 1){
 			update_input();
 		}
 	_delay_ms(2);
 	}
 	end_game();
-	printf("IDLE STATE\n");
 	current_state = IDLE;  //waiting for message about new game
 }
 
 void set_USB_mode(difficulty mode){
 	if(mode == EASY){
-		Kp = 0.9;
+		Kp = 0.7;
 		Kd = 0.07;
-		Ki = 0.1;
+		Ki = 0.5;
 	}else if(mode == MEDIUM){
 		Kp = 0.95;
 		Kd = 0.1;
-		Ki = 0.05;
+		Ki = 0.1;
 	}else if(mode == HARD){
 		Kp = 1;
 		Kd = 0.1;
@@ -123,17 +118,16 @@ void PS2_update_input(void){
 }
 
 void PS2_play_game(){	
-	while(!IR_score() && current_state == PS2){
+	
+	while(!IR_end_game() && current_state == PS2){
 		if(rx_int_flag){
-			update_control_values();
+			update_reference_values();
 			}if(timer_flag == 1){
 			PS2_update_input();
 		}
 		_delay_ms(2);
-	}
-	printf("ADC: %d\n", ADC_read());	
+	}	
 	end_game();
-	printf("END GAME\n");
 	current_state = IDLE;  //waiting for message about new game
 }
 

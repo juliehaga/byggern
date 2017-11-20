@@ -6,13 +6,15 @@
  */ 
 
 #define F_CPU 16000000
-#include "MOTOR_driver.h"
-#include "bit_functions.h"
-#include "DAC_driver.h"
+
 #include <util/delay.h>
 #include <avr/io.h>
 #include <stdlib.h>
 #include <avr/interrupt.h>
+#include "MOTOR_driver.h"
+#include "bit_functions.h"
+#include "DAC_driver.h"
+
 
 #define epsilon 1
 #define dt 0.032
@@ -25,11 +27,8 @@ int left_pos;
 int right_pos;
 motor_dir dir;
 int max_motor_value = 0; 
-
-
 int prev_error = 0; 
 
- 
 
 void motor_init(void){
 	DAC_init();
@@ -61,7 +60,6 @@ void motor_init(void){
 	
 }
 
-
 void motor_power(int motor_input){
 	motor_set_dir();
 	DAC_send_data(motor_input);
@@ -80,7 +78,6 @@ void motor_reset_encoder(void){
 	clr_bit(PORTH, PH6);
 	_delay_ms(70);	
 	set_bit(PORTH, PH6);
-	//Reset
 }
 
 
@@ -91,23 +88,18 @@ int16_t motor_read_encoder_unscaled(void){
 	int16_t data = PINK << 8;	//Read MSB
 	set_bit(PORTH, PH3);		//SEL high
 	_delay_ms(20);
-	
-	//printf("K = %d\n", PINK);
 	data = PINK | data;
-	//motor_reset_encoder();
 	set_bit(PORTH, PH5);		//!OE high
-	
+
 	return data;
 }
 
 int16_t motor_read_encoder(void){
 	int data = motor_read_encoder_unscaled();
-
 	return -((double)(255)/(0-right_pos))*data;
 }
 
 void motor_calibration(void){
-	//drive to left corner
 	dir = LEFT;
 	motor_power(150);
 	_delay_ms(700);
@@ -135,14 +127,13 @@ int motor_PID(int slider_value, float Kp, float Ki, float Kd){
 	static float integral = 0; 
 	int data = motor_read_encoder();
 	int error = slider_value - data; 
-	//printf("encoder: %d\n", data);
 	if (error > 0){
 		dir = RIGHT;
 	} 
 	else{
 		dir = LEFT; 
 	}
-	//in case of error ti small, stop integration
+	//in case of error too small, stop integration
 	if(abs(error) > epsilon){
 		integral = integral + error*dt;
 	} 
@@ -161,6 +152,7 @@ int motor_PID(int slider_value, float Kp, float Ki, float Kd){
 }
 
 void motor_velocity_control(int control_value){
+	//When playing with ps2
 	
 	if (control_value < 160){
 		dir = LEFT;
